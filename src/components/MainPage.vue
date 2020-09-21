@@ -278,12 +278,23 @@ export default {
     drawLine () {
       //using a pointer to this object, as this does'nt reference within the on query
       var self = this;
+      var end = false;
+      this.map.on('mousemove', function (e) {
+        var popup = L.popup()
+          .setLatLng(e.latlng)
+          .setContent('hover')
+          .openOn(self.map)
+        if (end) {
+          self.map.off('mousemove');
+        }
+      });
       this.map.on('mousedown', function (e) {
         length = self.geoElementLine.geometry.coordinates.length;
         //checking if the current clicked point is the same as the previously added point
         if (JSON.stringify(self.geoElementLine.geometry.coordinates[length - 1]) ===
           JSON.stringify([e.latlng.lng, e.latlng.lat])) {
           console.log('end');
+          end = true;
           self.map.off('mousedown');
         }
         else {//push the coordinates to the appropriate local data element (geoElement)
@@ -297,11 +308,22 @@ export default {
       //using a pointer to this object, as this does'nt reference within the on query
       var self = this;
       var coordinates = [];
+      var end = false;
+      this.map.on('mousemove', function (e) {
+        var popup = L.popup()
+          .setLatLng(e.latlng)
+          .setContent('hover')
+          .openOn(self.map)
+        if (end) {
+          self.map.off('mousemove');
+        }
+      });
       this.map.on('mousedown', function (e) {
         //checking if the current clicked point is the same as the first point
         if (JSON.stringify(self.geoElementPolygon.geometry.coordinates[0]) ===
           JSON.stringify([e.latlng.lng, e.latlng.lat])) {
           console.log('end');
+          end = true;
           self.map.off('mousedown');//put off the event listener
         }
         else {//push the coordinates to the appropriate local data element (geoElement)
