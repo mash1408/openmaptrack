@@ -232,15 +232,17 @@ export default {
     addGeoElementPolygon () {
       this.$store.commit('addGeoElement', this.geoElementPolygon);
       this.addGeoJsonToMap();
+      this.createdGeoElements += 1;
     },
     addGeoElementMarker () {
       this.$store.commit('addGeoElement', this.geoElementMarker);
       this.addGeoJsonToMap();
-
+      this.createdGeoElements += 1;
     },
     addGeoElementLine () {
       this.$store.commit('addGeoElement', this.geoElementLine);
       this.addGeoJsonToMap();
+      this.createdGeoElements += 1;
 
     },
     addGeoJsonToMap () {
