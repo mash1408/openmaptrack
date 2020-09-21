@@ -24,6 +24,16 @@
         label="Draw Line"
         @click="drawLine"
       />
+      <q-btn 
+        class="customButtonStyle" 
+        label="Add PolyLine" 
+        @click="showPolylineSection = true"
+      />
+      <q-btn 
+        class="customButtonStyle" 
+        label="Add Polygon" 
+        @click="showPolygoneSection = true"
+      />
       <q-btn
         class="customButtonStyle"
         label="Add Point"
@@ -102,7 +112,26 @@
 
         </q-card-section>
       </q-card>
+      <q-card class="q-my-md bg-white" v-if="showPolylineSection">
+        <q-card-section>
+           <q-input v-model="polylineCoords" label="Coordinates" />
+        </q-card-section>
+        <q-card-section class="q-gutter-md">
 
+          <q-btn class="customButtonStyle" label="Add" @click="addPolyline"/>
+          <q-btn class="customButtonStyle" label="Close" @click="showPolylineSection = false"/>
+        </q-card-section>
+      </q-card>
+      <q-card class="q-my-md bg-white" v-if="showPolygoneSection">
+        <q-card-section>
+           <q-input v-model="polygonCoords" label="Coordinates" />
+        </q-card-section>
+        <q-card-section class="q-gutter-md">
+
+          <q-btn class="customButtonStyle" label="Add" @click="addPolygon"/>
+          <q-btn class="customButtonStyle" label="Close" @click="showPolygoneSection = false"/>
+        </q-card-section>
+      </q-card>
     </div>
     <div class="full-width">
       <div id="mapCanvas"></div>
@@ -125,6 +154,10 @@ export default {
       ShowPointSection: false,
       ShowCsvSection: false,
       selectPoint: false,
+      showPolygoneSection: false,
+      showPolylineSection: false,
+      polygonCoords: [],
+      polylineCoords: [],
       geoElementMarker: {
         "type": "Feature",
         "properties": {},
@@ -399,6 +432,45 @@ export default {
       L.tileLayer(this.localTiles16To17, { maxZoom: 25, maxNativeZoom: 17, minZoom: 16, bounds: boundSet16To17 }),
       L.tileLayer(this.localTiles18Panaji, { maxZoom: 25, maxNativeZoom: 18, minZoom: 18 })])
       return baseLayer
+    },
+    addPolyline() {
+      var coords = []
+      console.log(this.polylineCoords)
+      var lines = this.polylineCoords.split(' ')
+      for (let i = 0; i < lines.length; i++) {
+        var cooordinates = []
+        var currentLines = lines[i].split(',')
+        for (let j = 0; j < currentLines.length; j ++) {
+          currentLines[j] = parseFloat(currentLines[j])
+        }
+        for (let j = 0; j < currentLines.length; j = j + 2){
+          cooordinates.push(currentLines[j], currentLines[j + 1])
+          console.log(cooordinates)
+          coords.push(cooordinates)
+        }
+      }
+      console.log(coords)
+      var polyline = L.polyline(coords, {color: 'red'}).addTo(this.map);
+    },
+    addPolygon() {
+      var coords = []
+      console.log(this.polygonCoords)
+      //console.log(this.polygonCoords.length)
+      var lines = this.polygonCoords.split(' ')
+      for (let i = 0; i < lines.length; i++) {
+        var cooordinates = []
+        var currentLines = lines[i].split(',')
+        for (let j = 0; j < currentLines.length; j ++) {
+          currentLines[j] = parseFloat(currentLines[j])
+        }
+        for (let j = 0; j < currentLines.length; j = j + 2){
+          cooordinates.push(currentLines[j], currentLines[j + 1])
+          console.log(cooordinates)
+          coords.push(cooordinates)
+        }
+      }
+      console.log(coords)
+      var polygon = L.polygon(coords, {color: 'red'}).addTo(this.map);
     }
   },
   mounted () {
