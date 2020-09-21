@@ -16,13 +16,56 @@ Vue.use(Vuex)
 
 export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
-    modules: {
-      // example
+    state: {
+      geoJson: {
+
+        "type": "FeatureCollection",
+        "features": [
+          {
+            "type": "Feature",
+            "properties": {
+              "description": "Hello there"
+            },
+            "geometry": {
+              "type": "Polygon",
+              "coordinates": [
+                [
+                  [
+                    73.78143310546875,
+                    15.396755841628917
+                  ],
+                  [
+                    73.90502929687499,
+                    15.437795920240932
+                  ],
+                  [
+                    73.0316162109375,
+                    15.358356179450597
+                  ],
+                  [
+                    73.4600830078125,
+                    15.252389472825634
+                  ],
+                  [
+                    73.78143310546875,
+                    15.396755841628917
+                  ]
+                ]
+              ]
+            }
+          }
+        ]
+      }
+    },
+    mutations: {
+      addGeoElement: (state, geoElement) => {
+        state.geoJson.features.push(geoElement);
+      }
     },
 
     // enable strict mode (adds overhead!)
     // for dev mode only
-    strict: process.env.DEV
+    // strict: process.env.DEV
   })
 
   return Store
