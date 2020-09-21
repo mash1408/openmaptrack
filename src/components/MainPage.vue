@@ -243,7 +243,6 @@ export default {
       this.$store.commit('addGeoElement', this.geoElementLine);
       this.addGeoJsonToMap();
       this.createdGeoElements += 1;
-
     },
     addGeoJsonToMap () {
       //*************************************BUG************************************** */
@@ -297,6 +296,7 @@ export default {
     drawPolygon () {
       //using a pointer to this object, as this does'nt reference within the on query
       var self = this;
+      var coordinates = [];
       this.map.on('mousedown', function (e) {
         //checking if the current clicked point is the same as the first point
         if (JSON.stringify(self.geoElementPolygon.geometry.coordinates[0]) ===
@@ -305,10 +305,12 @@ export default {
           self.map.off('mousedown');//put off the event listener
         }
         else {//push the coordinates to the appropriate local data element (geoElement)
-          self.geoElementPolygon.geometry.coordinates.push([e.latlng.lng, e.latlng.lat]);
+          coordinates.push([e.latlng.lng, e.latlng.lat]);
         }
+        self.geoElementPolygon.geometry.coordinates.push(coordinates);
+        self.addGeoElementPolygon();
       });
-      this.addGeoElementPolygon(this.geoElementPolygon);
+
     },
 
     setCoordinates (lng, lat) {
