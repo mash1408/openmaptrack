@@ -246,6 +246,7 @@ export default {
 
     },
     addGeoJsonToMap () {
+      //*************************************BUG************************************** */
       //bug needs to be fixed-->'this statement superimposes the modified layer over the existing layer'
       L.geoJSON(this.geoJson, {
         style: function (feature) {
