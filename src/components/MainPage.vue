@@ -24,14 +24,14 @@
         label="Draw Line"
         @click="drawLine"
       />
-      <q-btn 
-        class="customButtonStyle" 
-        label="Add PolyLine" 
+      <q-btn
+        class="customButtonStyle"
+        label="Add PolyLine"
         @click="showPolylineSection = true"
       />
-      <q-btn 
-        class="customButtonStyle" 
-        label="Add Polygon" 
+      <q-btn
+        class="customButtonStyle"
+        label="Add Polygon"
         @click="showPolygoneSection = true"
       />
       <q-btn
@@ -112,24 +112,52 @@
 
         </q-card-section>
       </q-card>
-      <q-card class="q-my-md bg-white" v-if="showPolylineSection">
+      <q-card
+        class="q-my-md bg-white"
+        v-if="showPolylineSection"
+      >
         <q-card-section>
-           <q-input v-model="polylineCoords" label="Coordinates" />
+          <q-input
+            v-model="polylineCoords"
+            label="Coordinates"
+          />
         </q-card-section>
         <q-card-section class="q-gutter-md">
 
-          <q-btn class="customButtonStyle" label="Add" @click="addPolyline"/>
-          <q-btn class="customButtonStyle" label="Close" @click="showPolylineSection = false"/>
+          <q-btn
+            class="customButtonStyle"
+            label="Add"
+            @click="addPolyline"
+          />
+          <q-btn
+            class="customButtonStyle"
+            label="Close"
+            @click="showPolylineSection = false"
+          />
         </q-card-section>
       </q-card>
-      <q-card class="q-my-md bg-white" v-if="showPolygoneSection">
+      <q-card
+        class="q-my-md bg-white"
+        v-if="showPolygoneSection"
+      >
         <q-card-section>
-           <q-input v-model="polygonCoords" label="Coordinates" />
+          <q-input
+            v-model="polygonCoords"
+            label="Coordinates"
+          />
         </q-card-section>
         <q-card-section class="q-gutter-md">
 
-          <q-btn class="customButtonStyle" label="Add" @click="addPolygon"/>
-          <q-btn class="customButtonStyle" label="Close" @click="showPolygoneSection = false"/>
+          <q-btn
+            class="customButtonStyle"
+            label="Add"
+            @click="addPolygon"
+          />
+          <q-btn
+            class="customButtonStyle"
+            label="Close"
+            @click="showPolygoneSection = false"
+          />
         </q-card-section>
       </q-card>
     </div>
@@ -313,10 +341,19 @@ export default {
       var self = this;
       var end = false;
       this.map.on('mousemove', function (e) {
+        // using third party library(turf.js) to get distance between two geoSpatial points
+        var from = turf.point(self.geoElementLine.geometry.coordinates[0]);
+        var to = turf.point([e.latlng.lng, e.latlng.lat]);
+        var options = { units: 'kilometres' };
+
+        var distance = turf.distance(from, to, options);
+        console.log(distance);
         var popup = L.popup()
           .setLatLng(e.latlng)
-          .setContent('hover')
+          .setContent(`${distance.toString()} km 
+Click last point to conclude`)//since setContent only accepts String
           .openOn(self.map)
+
         if (end) {
           self.map.off('mousemove');
         }
@@ -457,26 +494,26 @@ export default {
       L.tileLayer(this.localTiles18Panaji, { maxZoom: 25, maxNativeZoom: 18, minZoom: 18 })])
       return baseLayer
     },
-    addPolyline() {
+    addPolyline () {
       var coords = []
       console.log(this.polylineCoords)
       var lines = this.polylineCoords.split(' ')
       for (let i = 0; i < lines.length; i++) {
         var cooordinates = []
         var currentLines = lines[i].split(',')
-        for (let j = 0; j < currentLines.length; j ++) {
+        for (let j = 0; j < currentLines.length; j++) {
           currentLines[j] = parseFloat(currentLines[j])
         }
-        for (let j = 0; j < currentLines.length; j = j + 2){
+        for (let j = 0; j < currentLines.length; j = j + 2) {
           cooordinates.push(currentLines[j], currentLines[j + 1])
           console.log(cooordinates)
           coords.push(cooordinates)
         }
       }
       console.log(coords)
-      var polyline = L.polyline(coords, {color: 'red'}).addTo(this.map);
+      var polyline = L.polyline(coords, { color: 'red' }).addTo(this.map);
     },
-    addPolygon() {
+    addPolygon () {
       var coords = []
       console.log(this.polygonCoords)
       //console.log(this.polygonCoords.length)
@@ -484,17 +521,17 @@ export default {
       for (let i = 0; i < lines.length; i++) {
         var cooordinates = []
         var currentLines = lines[i].split(',')
-        for (let j = 0; j < currentLines.length; j ++) {
+        for (let j = 0; j < currentLines.length; j++) {
           currentLines[j] = parseFloat(currentLines[j])
         }
-        for (let j = 0; j < currentLines.length; j = j + 2){
+        for (let j = 0; j < currentLines.length; j = j + 2) {
           cooordinates.push(currentLines[j], currentLines[j + 1])
           console.log(cooordinates)
           coords.push(cooordinates)
         }
       }
       console.log(coords)
-      var polygon = L.polygon(coords, {color: 'red'}).addTo(this.map);
+      var polygon = L.polygon(coords, { color: 'red' }).addTo(this.map);
     }
   },
   mounted () {
