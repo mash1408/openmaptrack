@@ -161,6 +161,20 @@
         </q-card-section>
       </q-card>
     </div>
+    <!-- Edit/Delete buttons -->
+    <div
+      class="full-width q-pa-sm q-gutter-md q-mt-xl fixed text-right"
+      style="z-index: 200;"
+    >
+      <q-btn
+        class="customButtonStyle"
+        label="Edit GeoElement"
+      />
+      <q-btn
+        class="customButtonStyle"
+        label="Delete GeoElement"
+      />
+    </div>
     <div class="full-width">
       <div id="mapCanvas"></div>
     </div>
