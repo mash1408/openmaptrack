@@ -61,7 +61,11 @@ export default function (/* { ssrContext } */) {
     mutations: {
       addGeoElement: (state, geoElement) => {
         console.log('mutate');
+        console.log(geoElement.geometry.coordinates);
+        // var pGeoElement = JSON.parse(geoElement);
+        // var pGeoJson = JSON.parse(state.geoJson);
         state.geoJson.features.push(geoElement);
+
       }
     },
 

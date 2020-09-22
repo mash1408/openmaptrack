@@ -9,7 +9,11 @@
         label="Select from Map"
         @click="selectPointFromMap"
       />
-
+      <q-btn
+        class="customButtonStyle"
+        label="check Geojson"
+        @click="check"
+      />
       <q-btn
         class="customButtonStyle"
         label="Draw Polygon"
@@ -234,6 +238,7 @@ export default {
           ]
         }
       },
+      markersCoords: [],
       baseLayerGroup: new L.layerGroup(),
       layerGroupLines: new L.layerGroup(),
       layerGroupMarkers: new L.layerGroup(),
@@ -319,6 +324,10 @@ export default {
       this.layerGroupPolygons.addTo(this.map);
       this.addLayerToMap();
     },
+    check () {
+      this.baseLayerGroup.clearLayers();
+      this.addLayerToMap();
+    },
     reset () {
       this.layerGroupLines.clearLayers();
       this.layerGroupMarkers.clearLayers();
@@ -326,16 +335,17 @@ export default {
     },
     addGeoElementPolygon () {
       this.$store.commit('addGeoElement', this.geoElementPolygon);
-      console.log(this.geoJsonFeatures);
     },
     addGeoElementMarker () {
+      // this.markersCoords.push([this.geoElementMarker.geometry.coordinates[this.geoElementMarker.geometry.coordinates.length - 1],
+      // this.geoElementMarker.geometry.coordinates[this.geoElementMarker.geometry.coordinates.length - 2]]);
+
       this.$store.commit('addGeoElement', this.geoElementMarker);
-      console.log(this.geoJsonFeatures);
 
     },
     addGeoElementLine () {
       this.$store.commit('addGeoElement', this.geoElementLine);
-      console.log(this.geoJsonFeatures);
+
     },
     getGeoJsonLayer () {
       var baseLayer = L.geoJSON(this.geoJson, {
@@ -362,10 +372,35 @@ export default {
       });
     },
     addPopupsToMarkers () {
+      var i = 0;
+      var self = this;
+      // create popup contents
+      var customPopup = "<b>My office</b><br/><img src='http://netdna.webdesignerdepot.com/uploads/2014/05/workspace_06_previo.jpg' alt='maptime logo gif' width='150px'/>";
+
+      // specify popup options 
+      var customOptions =
+      {
+        'maxWidth': '400',
+        'width': '200',
+        'className': 'popupCustom'
+      }
+
       this.layerGroupMarkers.eachLayer(function (layer) {
-        layer.bindPopup('Markers').openPopup();
+        layer.bindPopup('dfkdkfj');
       });
+
+
     },
+    addStyleToMarkers () {
+
+    },
+    addStyleToPolygons () {
+
+    },
+    addStyleToLines () {
+
+    },
+
     drawMarker () {
       //using a pointer to this object, as this does'nt reference within the on query
       var self = this;
@@ -378,12 +413,12 @@ export default {
 
         }
         self.layerGroupMarkers.addLayer(layer);
-        self.addPopupsToMarkers();
         self.addGeoElementMarker();
+        self.addPopupsToMarkers();
         self.map.off(L.Draw.Event.CREATED);
       });
       this.map.on('mousedown', function (e) {
-
+        //if there are no elements in the geoELement...coordinates
         if (self.geoElementMarker.geometry.coordinates.length === 0) {
           self.geoElementMarker.geometry.coordinates.push(e.latlng.lng);
           self.geoElementMarker.geometry.coordinates.push(e.latlng.lat);
@@ -400,7 +435,7 @@ export default {
     drawLine () {
       //using a pointer to this object, as this does'nt reference within the on query
       var self = this;
-
+      var end = false;
       self.drawCursor = new L.Draw.Polyline(self.map, self.drawControl.options.marker);
       self.drawCursor.enable();
       this.map.on(L.Draw.Event.CREATED, function (e) {
@@ -410,14 +445,21 @@ export default {
 
         }
         self.layerGroupLines.addLayer(layer);
+
+        self.map.off(L.Draw.Event.CREATED);
+        end = true;
+        self.map.off('mousedown');
         self.addPopupsToLines();
         self.addGeoElementLine();
-        self.map.off(L.Draw.Event.CREATED);
+        self.geoElementLine.geometry.coordinates.splice(0, self.geoElementLine.geometry.coordinates.length);
+        console.log('end');
+        return;
       });
       this.map.on('mousedown', function (e) {
         self.geoElementLine.geometry.coordinates.push([e.latlng.lng, e.latlng.lat]);
+        console.table(self.geoElementLine.geometry.coordinates);
         console.log(e);
-        self.map.off('mousedown');
+
       })
 
     },
@@ -425,6 +467,7 @@ export default {
       //using a pointer to this object, as this does'nt reference within the on query
       var self = this;
       var coordinates = [];
+      var end = false;
       self.drawCursor = new L.Draw.Polygon(self.map, self.drawControl.options.marker);
       self.drawCursor.enable()
       this.map.on(L.Draw.Event.CREATED, function (e) {
@@ -434,15 +477,22 @@ export default {
 
         }
         self.layerGroupPolygons.addLayer(layer);
-        self.addPopupsToPolygons();
         self.geoElementPolygon.geometry.coordinates.push(coordinates);
-        self.addGeoElementPolygon();
         self.map.off(L.Draw.Event.CREATED);
+        self.addPopupsToPolygons();
+        self.addGeoElementPolygon();
+        end = true;
+        console.table(self.geoElementPolygon.geometry.coordinates);
+        self.geoElementPolygon.geometry.coordinates.splice(0, self.geoElementPolygon.geometry.coordinates.length);
+        console.log('end');
+        self.map.off('mousedown');
+        return;
       });
       this.map.on('mousedown', function (e) {
         coordinates.push([e.latlng.lng, e.latlng.lat]);
+        console.table(coordinates)
         console.log(e);
-        self.map.off('mousedown');
+
       })
     },
 
@@ -587,7 +637,11 @@ export default {
   height: 100vh;
   position: relative;
 }
-
+.popupCustom .leaflet-popup-tip,
+.popupCustom .leaflet-popup-content-wrapper {
+  background: #e0e0e0;
+  color: #234c5e;
+}
 textarea {
   background-color: #fff;
 }
