@@ -50,6 +50,12 @@
         @click="ShowCsvSection = true"
       />
 
+       <q-btn
+        class="customButtonStyle"
+        label="Download CSV"
+        @click="getCsvData"
+      />
+
       <q-card
         class="q-my-md bg-white"
         v-if="ShowPointSection"
@@ -623,7 +629,54 @@ export default {
       }
       console.log(coords)
       var polygon = L.polygon(coords, { color: 'red' }).addTo(this.map);
+    },
+
+    // ############## Conversion Methods ##################################//
+    // ** get data in csv format **//
+    getCsvData () {
+      const data = this.geoJsonFeatures
+      const reqData = data.map(row => ({
+        geometry: row.geometry.type,
+        coordinates: row.geometry.coordinates
+      }))
+      const csvData = this.convertoCsv(reqData)
+      console.log(csvData)
+      this.download(csvData)
+    },
+
+    /* Convert geojson object to csv */
+    convertoCsv (data) {
+      const csvRows = []
+
+      // get the headers
+      const headers = Object.keys(data[0])
+      csvRows.push(headers.join(','))
+
+      // loop over the rows
+      for (const row of data) {
+        const values = headers.map(header => {
+          const escaped = ('' + row[header]).replace(/"/g, '\\"')
+          return `"${escaped}"`
+        })
+        csvRows.push(values.join(','))
+      }
+      // console.log(csvRows);
+
+      return csvRows.join('\n')
+    },
+    /* Download csv file */
+    download (data) {
+      const blob = new Blob([data], { type: 'text/csv' })
+      const url = window.URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.setAttribute('hidden', '')
+      a.setAttribute('href', url)
+      a.setAttribute('download', 'data.csv')
+      document.body.appendChild(a)
+      a.click()
+      document.body.removeChild(a)
     }
+
   },
   mounted () {
     this.initMap()
