@@ -9,6 +9,7 @@
         label="Select from Map"
         @click="selectPointFromMap"
       />
+
       <q-btn
         class="customButtonStyle"
         label="Draw Polygon"
@@ -168,6 +169,11 @@
     >
       <q-btn
         class="customButtonStyle"
+        label="reset"
+        @click="reset"
+      />
+      <q-btn
+        class="customButtonStyle"
         label="Edit GeoElement"
       />
       <q-btn
@@ -200,6 +206,7 @@ export default {
       showPolylineSection: false,
       polygonCoords: [],
       polylineCoords: [],
+      first: false,
       geoElementMarker: {
         "type": "Feature",
         "properties": {},
@@ -227,6 +234,10 @@ export default {
           ]
         }
       },
+      baseLayerGroup: new L.layerGroup(),
+      layerGroupLines: new L.layerGroup(),
+      layerGroupMarkers: new L.layerGroup(),
+      layerGroupPolygons: new L.layerGroup(),
       createdGeoElements: ""
     }
   },
@@ -253,6 +264,9 @@ export default {
     geoJson: function () {
       //retrieve the geoJson object from store
       return this.$store.state.geoJson;
+    },
+    geoJsonFeatures () {
+      return this.$store.state.geoJson.features;
     }
 
   },
@@ -299,44 +313,62 @@ export default {
         self.createdGeoElements.addLayer(layer);
         self.map.addLayer(self.createdGeoElements);
       });
-      //add the geoJson object to the map
-      this.addGeoJsonToMap();
-
-
+      this.baseLayerGroup.addTo(this.map);
+      this.layerGroupLines.addTo(this.map);
+      this.layerGroupMarkers.addTo(this.map);
+      this.layerGroupPolygons.addTo(this.map);
+      this.addLayerToMap();
+    },
+    reset () {
+      this.layerGroupLines.clearLayers();
+      this.layerGroupMarkers.clearLayers();
+      this.layerGroupPolygons.clearLayers();
     },
     addGeoElementPolygon () {
       this.$store.commit('addGeoElement', this.geoElementPolygon);
-      this.addGeoJsonToMap();
-      this.createdGeoElements += 1;
+      console.log(this.geoJsonFeatures);
     },
     addGeoElementMarker () {
       this.$store.commit('addGeoElement', this.geoElementMarker);
-      this.addGeoJsonToMap();
-      this.createdGeoElements += 1;
+      console.log(this.geoJsonFeatures);
+
     },
     addGeoElementLine () {
       this.$store.commit('addGeoElement', this.geoElementLine);
-      this.addGeoJsonToMap();
-      this.createdGeoElements += 1;
+      console.log(this.geoJsonFeatures);
     },
-    addGeoJsonToMap () {
-      //*************************************BUG************************************** */
-      //bug needs to be fixed-->'this statement superimposes the modified layer over the existing layer'
-      L.geoJSON(this.geoJson, {
+    getGeoJsonLayer () {
+      var baseLayer = L.geoJSON(this.geoJson, {
         style: function (feature) {
-          return { color: 'purple' };// change the style properties here
+          return { color: 'yellow' };// change the style properties here
         },
-        onEachFeature: function (feature) {
-          //changes for individual features to be made here
-        }
       }).bindPopup(function (layer) {
         return 'layer';
-      }).addTo(this.map);
+      });
+      return baseLayer;
     },
+    addLayerToMap () {
+      this.baseLayerGroup.addLayer(this.getGeoJsonLayer());
+
+    },
+
     drawMarker () {
       //using a pointer to this object, as this does'nt reference within the on query
       var self = this;
+      self.drawCursor = new L.Draw.Marker(self.map, self.drawControl.options.marker);
+      self.drawCursor.enable()
+      this.map.on(L.Draw.Event.CREATED, function (e) {
+        var type = e.layerType,
+          layer = e.layer;
+        if (type === 'marker') {
+
+        }
+        self.layerGroupMarkers.addLayer(layer);
+        self.addGeoElementMarker();
+        self.map.off(L.Draw.Event.CREATED);
+      });
       this.map.on('mousedown', function (e) {
+
         if (self.geoElementMarker.geometry.coordinates.length === 0) {
           self.geoElementMarker.geometry.coordinates.push(e.latlng.lng);
           self.geoElementMarker.geometry.coordinates.push(e.latlng.lat);
@@ -346,77 +378,55 @@ export default {
           self.geoElementMarker.geometry.coordinates[1] = e.latlng.lat;
         }
 
-        self.addGeoElementMarker();
         self.map.off('mousedown');
       });
+
     },
     drawLine () {
       //using a pointer to this object, as this does'nt reference within the on query
       var self = this;
-      var end = false;
-      this.map.on('mousemove', function (e) {
-        // using third party library(turf.js) to get distance between two geoSpatial points
-        var from = turf.point(self.geoElementLine.geometry.coordinates[0]);
-        var to = turf.point([e.latlng.lng, e.latlng.lat]);
-        var options = { units: 'kilometres' };
 
-        var distance = turf.distance(from, to, options);
-        console.log(distance);
-        var popup = L.popup()
-          .setLatLng(e.latlng)
-          .setContent(`${distance.toString()} km 
-Click last point to conclude`)//since setContent only accepts String
-          .openOn(self.map)
+      self.drawCursor = new L.Draw.Polyline(self.map, self.drawControl.options.marker);
+      self.drawCursor.enable();
+      this.map.on(L.Draw.Event.CREATED, function (e) {
+        var type = e.layerType,
+          layer = e.layer;
+        if (type === 'polyline') {
 
-        if (end) {
-          self.map.off('mousemove');
         }
+        self.layerGroupLines.addLayer(layer);
+        self.addGeoElementLine();
+        self.map.off(L.Draw.Event.CREATED);
       });
       this.map.on('mousedown', function (e) {
-        length = self.geoElementLine.geometry.coordinates.length;
-        //checking if the current clicked point is the same as the previously added point
-        if (JSON.stringify(self.geoElementLine.geometry.coordinates[length - 1]) ===
-          JSON.stringify([e.latlng.lng, e.latlng.lat])) {
-          console.log('end');
-          end = true;
-          self.map.off('mousedown');
-        }
-        else {//push the coordinates to the appropriate local data element (geoElement)
-          self.geoElementLine.geometry.coordinates.push([e.latlng.lng, e.latlng.lat]);
-        }
-        self.addGeoElementLine();
-      });
+        self.geoElementLine.geometry.coordinates.push([e.latlng.lng, e.latlng.lat]);
+        console.log(e);
+        self.map.off('mousedown');
+      })
 
     },
     drawPolygon () {
       //using a pointer to this object, as this does'nt reference within the on query
       var self = this;
       var coordinates = [];
-      var end = false;
-      this.map.on('mousemove', function (e) {
-        var popup = L.popup()
-          .setLatLng(e.latlng)
-          .setContent('hover')
-          .openOn(self.map)
-        if (end) {
-          self.map.off('mousemove');
+      self.drawCursor = new L.Draw.Polygon(self.map, self.drawControl.options.marker);
+      self.drawCursor.enable()
+      this.map.on(L.Draw.Event.CREATED, function (e) {
+        var type = e.layerType,
+          layer = e.layer;
+        if (type === 'polygon') {
+
         }
-      });
-      this.map.on('mousedown', function (e) {
-        //checking if the current clicked point is the same as the first point
-        if (JSON.stringify(self.geoElementPolygon.geometry.coordinates[0]) ===
-          JSON.stringify([e.latlng.lng, e.latlng.lat])) {
-          console.log('end');
-          end = true;
-          self.map.off('mousedown');//put off the event listener
-        }
-        else {//push the coordinates to the appropriate local data element (geoElement)
-          coordinates.push([e.latlng.lng, e.latlng.lat]);
-        }
+        self.layerGroupPolygons.addLayer(layer);
         self.geoElementPolygon.geometry.coordinates.push(coordinates);
         self.addGeoElementPolygon();
+        self.map.off(L.Draw.Event.CREATED);
       });
-
+      this.map.on('mousedown', function (e) {
+        coordinates.push([e.latlng.lng, e.latlng.lat]);
+        console.log(e);
+        self.map.off('mousedown');
+      })
     },
 
     setCoordinates (lng, lat) {

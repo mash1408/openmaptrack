@@ -11,7 +11,8 @@ Vue.use(Vuex)
  *
  * The function below can be async too; either use
  * async/await or return a Promise which resolves
- * with the Store instance.
+ * with the Store instance.console.log(self.geoElementLine.geometry.coordinates[length - 1], 
+        [e.latlng.lng, e.latlng.lat]);
  */
 
 export default function (/* { ssrContext } */) {
@@ -24,7 +25,7 @@ export default function (/* { ssrContext } */) {
           {
             "type": "Feature",
             "properties": {
-              "description": "Hello there"
+              "description": ""
             },
             "geometry": {
               "type": "Polygon",
@@ -53,12 +54,13 @@ export default function (/* { ssrContext } */) {
                 ]
               ]
             }
-          }
+          },
         ]
       }
     },
     mutations: {
       addGeoElement: (state, geoElement) => {
+        console.log('mutate');
         state.geoJson.features.push(geoElement);
       }
     },
