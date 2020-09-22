@@ -351,7 +351,21 @@ export default {
       this.baseLayerGroup.addLayer(this.getGeoJsonLayer());
 
     },
-
+    addPopupsToLines () {
+      this.layerGroupLines.eachLayer(function (layer) {
+        layer.bindPopup('Lines').openPopup();
+      });
+    },
+    addPopupsToPolygons () {
+      this.layerGroupPolygons.eachLayer(function (layer) {
+        layer.bindPopup('Polygons').openPopup();
+      });
+    },
+    addPopupsToMarkers () {
+      this.layerGroupMarkers.eachLayer(function (layer) {
+        layer.bindPopup('Markers').openPopup();
+      });
+    },
     drawMarker () {
       //using a pointer to this object, as this does'nt reference within the on query
       var self = this;
@@ -364,6 +378,7 @@ export default {
 
         }
         self.layerGroupMarkers.addLayer(layer);
+        self.addPopupsToMarkers();
         self.addGeoElementMarker();
         self.map.off(L.Draw.Event.CREATED);
       });
@@ -395,6 +410,7 @@ export default {
 
         }
         self.layerGroupLines.addLayer(layer);
+        self.addPopupsToLines();
         self.addGeoElementLine();
         self.map.off(L.Draw.Event.CREATED);
       });
@@ -418,6 +434,7 @@ export default {
 
         }
         self.layerGroupPolygons.addLayer(layer);
+        self.addPopupsToPolygons();
         self.geoElementPolygon.geometry.coordinates.push(coordinates);
         self.addGeoElementPolygon();
         self.map.off(L.Draw.Event.CREATED);
