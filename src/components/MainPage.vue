@@ -282,7 +282,7 @@ export default {
 
   },
   methods: {
-
+    /***************************************************Function running at startup ******************************************************/
     initMap () {
       var self = this
 
@@ -330,6 +330,7 @@ export default {
       this.layerGroupPolygons.addTo(this.map);
       this.addLayerToMap();
     },
+    /***************************************************//////////////******************************************************/
     check () {
       this.baseLayerGroup.clearLayers();
       this.addLayerToMap();
@@ -339,6 +340,7 @@ export default {
       this.layerGroupMarkers.clearLayers();
       this.layerGroupPolygons.clearLayers();
     },
+    /***************************************************GeoJson-related Functions******************************************************/
     addGeoElementPolygon () {
       this.$store.commit('addGeoElement', this.geoElementPolygon);
     },
@@ -367,21 +369,32 @@ export default {
       this.baseLayerGroup.addLayer(this.getGeoJsonLayer());
 
     },
-    addPopupsToLines () {
-      this.layerGroupLines.eachLayer(function (layer) {
-        layer.bindPopup('Lines').openPopup();
-      });
-    },
-    addPopupsToPolygons () {
-      this.layerGroupPolygons.eachLayer(function (layer) {
-        layer.bindPopup('Polygons').openPopup();
-      });
-    },
+    /***************************************************PopUp Functions******************************************************/
     addPopupsToMarkers () {
       var i = 0;
       var self = this;
       // create popup contents-->change the url here to change the background image
-      var customPopup = "<b>My office</b><br/><img src='http://netdna.webdesignerdepot.com/uploads/2014/05/workspace_06_previo.jpg' alt='maptime logo gif' width='150px'/>";
+      var customPopup = "<b>My office</b><br/><img src='https://cdn.pixabay.com/photo/2012/04/23/15/45/parking-38625_960_720.png' alt='maptime logo gif' width='150px'/>";
+
+      // specify popup options 
+      var customOptions =
+      {
+        'maxWidth': '400',
+        'width': '200',
+        'className': 'popupCustom'
+      }
+      //finally bind a popup to each layer
+      this.layerGroupMarkers.eachLayer(function (layer) {
+        layer.bindPopup(customPopup, customOptions).openPopup();
+      });
+
+
+    },
+    addPopupsToLines () {
+      var i = 0;
+      var self = this;
+      // create popup contents-->change the url here to change the background image
+      var customPopup = "<b>My office</b><br/><img src='https://cdn.pixabay.com/photo/2012/04/23/15/45/parking-38625_960_720.png' alt='maptime logo gif' width='150px'/>";
 
       // specify popup options 
       var customOptions =
@@ -391,12 +404,28 @@ export default {
         'className': 'popupCustom'
       }
 
-      this.layerGroupMarkers.eachLayer(function (layer) {
-        layer.bindPopup(customPopup, customOptions);
+      this.layerGroupLines.eachLayer(function (layer) {
+        layer.bindPopup(customPopup, customOptions).openPopup();
       });
-
-
     },
+    addPopupsToPolygons () {
+      var i = 0;
+      var self = this;
+      // create popup contents-->change the url here to change the background image
+      var customPopup = "<b>My office</b><br/><img src='https://cdn.pixabay.com/photo/2012/04/23/15/45/parking-38625_960_720.png' alt='maptime logo gif' width='150px'/>";
+
+      // specify popup options 
+      var customOptions =
+      {
+        'maxWidth': '400',
+        'width': '200',
+        'className': 'popupCustom'
+      }
+      this.layerGroupPolygons.eachLayer(function (layer) {
+        layer.bindPopup(customPopup, customOptions).openPopup();
+      });
+    },
+    /***************************************************Style Functions******************************************************/
     addStyleToMarkers () {
 
     },
@@ -406,18 +435,21 @@ export default {
     addStyleToLines () {
 
     },
-
+    /***************************************************Drawing Functions******************************************************/
     drawMarker () {
       //using a pointer to this object, as this does'nt reference within the on query
       var self = this;
       self.drawCursor = new L.Draw.Marker(self.map, self.drawControl.options.marker);
       self.drawCursor.enable()
+      //setup the event listener to fire after the marker is drawn
       this.map.on(L.Draw.Event.CREATED, function (e) {
+        //getting the layer from the drawn shape(marker)
         var type = e.layerType,
           layer = e.layer;
         if (type === 'marker') {
 
         }
+        //adding that layer to layerGroupMarkers
         self.layerGroupMarkers.addLayer(layer);
         self.addGeoElementMarker();
         self.addPopupsToMarkers();
@@ -433,7 +465,8 @@ export default {
           self.geoElementMarker.geometry.coordinates[0] = e.latlng.lng;
           self.geoElementMarker.geometry.coordinates[1] = e.latlng.lat;
         }
-
+        //putting off the mousedown event listener from map
+        //since it is to be ran once only(one click for marker)
         self.map.off('mousedown');
       });
 
@@ -442,27 +475,35 @@ export default {
       //using a pointer to this object, as this does'nt reference within the on query
       var self = this;
       var end = false;
+      //Drawing polyline
       self.drawCursor = new L.Draw.Polyline(self.map, self.drawControl.options.marker);
       self.drawCursor.enable();
+      //event listener setup to fire when shape is created
       this.map.on(L.Draw.Event.CREATED, function (e) {
+        //getting the layer from the drawn shape
         var type = e.layerType,
           layer = e.layer;
         if (type === 'polyline') {
 
         }
+        //adding that layer to the layerGroupLines
         self.layerGroupLines.addLayer(layer);
 
         self.map.off(L.Draw.Event.CREATED);
         end = true;
+        //putting off the mousedown event listener from map
         self.map.off('mousedown');
         self.addPopupsToLines();
+        //pushing data to geoJson in the store 
         self.addGeoElementLine();
+        //flushing the existing data
         self.geoElementLine.geometry.coordinates.splice(0, self.geoElementLine.geometry.coordinates.length);
         console.log('end');
         return;
       });
       this.map.on('mousedown', function (e) {
         self.geoElementLine.geometry.coordinates.push([e.latlng.lng, e.latlng.lat]);
+        //displaying the clicked points in tabular form
         console.table(self.geoElementLine.geometry.coordinates);
         console.log(e);
 
@@ -472,30 +513,38 @@ export default {
     drawPolygon () {
       //using a pointer to this object, as this does'nt reference within the on query
       var self = this;
+      //for polygon we require array of arrays
       var coordinates = [];
       var end = false;
       self.drawCursor = new L.Draw.Polygon(self.map, self.drawControl.options.marker);
       self.drawCursor.enable()
+      //setup the event listener to fire after the shape is drawn
       this.map.on(L.Draw.Event.CREATED, function (e) {
         var type = e.layerType,
+          //getting the layer of the drawn shape
           layer = e.layer;
         if (type === 'polygon') {
 
         }
+        //add that layer to the layerGroupPolygon group
         self.layerGroupPolygons.addLayer(layer);
         self.geoElementPolygon.geometry.coordinates.push(coordinates);
         self.map.off(L.Draw.Event.CREATED);
         self.addPopupsToPolygons();
         self.addGeoElementPolygon();
         end = true;
+        //just to crosscheck before pushing into the geoElement GeoJson
         console.table(self.geoElementPolygon.geometry.coordinates);
+        //flushing the existing data 
         self.geoElementPolygon.geometry.coordinates.splice(0, self.geoElementPolygon.geometry.coordinates.length);
         console.log('end');
         self.map.off('mousedown');
         return;
       });
       this.map.on('mousedown', function (e) {
+        //storing the points locally in the coordinates variable
         coordinates.push([e.latlng.lng, e.latlng.lat]);
+        //displaying the points in tabular form
         console.table(coordinates)
         console.log(e);
 
@@ -692,8 +741,13 @@ export default {
 }
 .popupCustom .leaflet-popup-tip,
 .popupCustom .leaflet-popup-content-wrapper {
-  background: #e0e0e0;
-  color: #234c5e;
+  background: linear-gradient(
+    0deg,
+    rgba(34, 193, 195, 1) 0%,
+    rgba(253, 187, 45, 1) 95%
+  );
+  color: white;
+  opacity: 0.95;
 }
 textarea {
   background-color: #fff;
