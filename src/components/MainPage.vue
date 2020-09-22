@@ -50,7 +50,7 @@
         @click="ShowCsvSection = true"
       />
 
-       <q-btn
+      <q-btn
         class="customButtonStyle"
         label="Download CSV"
         @click="getCsvData"
@@ -380,7 +380,7 @@ export default {
     addPopupsToMarkers () {
       var i = 0;
       var self = this;
-      // create popup contents
+      // create popup contents-->change the url here to change the background image
       var customPopup = "<b>My office</b><br/><img src='http://netdna.webdesignerdepot.com/uploads/2014/05/workspace_06_previo.jpg' alt='maptime logo gif' width='150px'/>";
 
       // specify popup options 
@@ -392,7 +392,7 @@ export default {
       }
 
       this.layerGroupMarkers.eachLayer(function (layer) {
-        layer.bindPopup('dfkdkfj');
+        layer.bindPopup(customPopup, customOptions);
       });
 
 
