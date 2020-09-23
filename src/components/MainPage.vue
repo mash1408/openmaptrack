@@ -12,17 +12,17 @@
 
       <q-btn
         class="customButtonStyle"
-        label="Draw Polygon"
+        label="Draw-Polygon"
         @click="drawPolygon"
       />
       <q-btn
         class="customButtonStyle"
-        label="Draw Marker"
+        label="Draw-Marker"
         @click="drawMarker"
       />
       <q-btn
         class="customButtonStyle"
-        label="Draw Line"
+        label="Draw-Line"
         @click="drawLine"
       />
       <q-btn
@@ -167,8 +167,20 @@
           />
         </q-card-section>
       </q-card>
+      <q-card
+        class="customStyleCard"
+        v-if="showDeleteLayersSection"
+      >
+        <q-card-section class="q-gutter-md ">
+          <q-btn
+            class="customButtonStyle"
+            label="Cancel"
+            @click="stopDeletingLayers();showDeleteLayersSection = false"
+          />
+        </q-card-section>
+      </q-card>
 
-      <q-card>
+      <!-- <q-card>
         <div>
           <h3>Hello</h3>
           <ul>
@@ -179,9 +191,9 @@
             >{{list.geometry.type}}</li>
           </ul>
         </div>
-      </q-card>
+      </q-card> -->
     </div>
-    <!-- Edit/Delete buttons -->
+    <!-- Edit/Delete and Reset buttons -->
     <div
       class="full-width q-pa-sm q-gutter-md q-mt-xl fixed text-right"
       style="z-index: 200;"
@@ -199,6 +211,7 @@
       <q-btn
         class="customButtonStyle"
         label="Delete GeoElement"
+        @click="deleteLayers();showDeleteLayersSection=true"
       />
     </div>
 
@@ -216,7 +229,6 @@ export default {
   name: 'app',
   data () {
     return {
-      count: 545,
       map: '',
       text: '',
       point: '',
@@ -227,6 +239,7 @@ export default {
       selectPoint: false,
       showPolygoneSection: false,
       showPolylineSection: false,
+      showDeleteLayersSection: false,
       polygonCoords: [],
       polylineCoords: [],
       first: false,
@@ -294,9 +307,6 @@ export default {
     geoJsonFeatures () {
       return this.$store.state.geoJson.features;
     },
-    pushData () {
-      this.features.push(this.geoElementMarker);
-    }
 
   },
   methods: {
@@ -380,7 +390,6 @@ export default {
     },
     addLayerToMap () {
       this.baseLayerGroup.addLayer(this.getGeoJsonLayer());
-
     },
     addPopupsToLines () {
       this.layerGroupLines.eachLayer(function (layer) {
@@ -423,14 +432,10 @@ export default {
           self.geoElementMarker.geometry.coordinates[0] = e.latlng.lng;
           self.geoElementMarker.geometry.coordinates[1] = e.latlng.lat;
         }
-<<<<<<< HEAD
-        self.geoElementMarker.properties.id = this.count;
-        self.count += 1;
+        // self.geoElementMarker.properties.id = this.count;
+        // self.count += 1;
         //putting off the mousedown event listener from map
         //since it is to be ran once only(one click for marker)
-=======
-
->>>>>>> 958f7efa7b755c74745a0896f79562831e2fc648
         self.map.off('mousedown');
       });
 
@@ -463,7 +468,6 @@ export default {
       //using a pointer to this object, as this does'nt reference within the on query
       var self = this;
       var coordinates = [];
-<<<<<<< HEAD
       var end = false;
       this.map.on('mousedown', function (e) {
         //storing the points locally in the coordinates variable
@@ -473,8 +477,6 @@ export default {
         console.log(e);
 
       })
-=======
->>>>>>> 958f7efa7b755c74745a0896f79562831e2fc648
       self.drawCursor = new L.Draw.Polygon(self.map, self.drawControl.options.marker);
       self.drawCursor.enable()
       this.map.on(L.Draw.Event.CREATED, function (e) {
@@ -483,7 +485,6 @@ export default {
         if (type === 'polygon') {
         }
         self.layerGroupPolygons.addLayer(layer);
-<<<<<<< HEAD
         // Ensure that last point's coordinates are same as first
         coordinates.push(coordinates[0]);
         self.geoElementPolygon.geometry.coordinates.push(coordinates);
@@ -502,18 +503,6 @@ export default {
         return;
       });
 
-=======
-        self.addPopupsToPolygons();
-        self.geoElementPolygon.geometry.coordinates.push(coordinates);
-        self.addGeoElementPolygon();
-        self.map.off(L.Draw.Event.CREATED);
-      });
-      this.map.on('mousedown', function (e) {
-        coordinates.push([e.latlng.lng, e.latlng.lat]);
-        console.log(e);
-        self.map.off('mousedown');
-      })
->>>>>>> 958f7efa7b755c74745a0896f79562831e2fc648
     },
     /***************************************************Edit/Delete Functions******************************************************/
     editLayers () {
@@ -522,6 +511,51 @@ export default {
           console.log(e);
         });
       });
+
+    },
+    stopDeletingLayers () {
+      var self = this;
+      this.layerGroupMarkers.eachLayer(function (layer) {
+
+        console.log('stop');
+        layer.off('click');
+
+      })
+      this.layerGroupLines.eachLayer(function (layer) {
+
+        console.log('stop');
+        layer.off('click');
+
+      })
+      this.layerGroupPolygons.eachLayer(function (layer) {
+        console.log('stop');
+        layer.off('click');
+
+      })
+    },
+    deleteLayers () {
+      var self = this;
+      this.layerGroupMarkers.eachLayer(function (layer) {
+        layer.on('click', function (e) {
+          console.log('deleted');
+          self.layerGroupMarkers.removeLayer(layer);
+          layer.off('click');
+        })
+      })
+      this.layerGroupLines.eachLayer(function (layer) {
+        layer.on('click', function (e) {
+          console.log('deleted');
+          self.layerGroupLines.removeLayer(layer);
+          layer.off('click');
+        })
+      })
+      this.layerGroupPolygons.eachLayer(function (layer) {
+        layer.on('click', function (e) {
+          console.log('deleted');
+          self.layerGroupPolygons.removeLayer(layer);
+          layer.off('click');
+        })
+      })
 
     },
     setCoordinates (lng, lat) {
@@ -728,5 +762,10 @@ body {
 <style lang="stylus" scoped>
 .customButtonStyle {
   background-color: $accent;
+}
+
+.customStyleCard {
+  margin-top: 100px;
+  background: rgba(210, 146, 133, 0.7);
 }
 </style>
