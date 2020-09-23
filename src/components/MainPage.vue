@@ -543,12 +543,13 @@ export default {
         }
         //add that layer to the layerGroupPolygon group
         self.layerGroupPolygons.addLayer(layer);
+        // Ensure that last point's coordinates are same as first
         coordinates.push(coordinates[0]);
         self.geoElementPolygon.geometry.coordinates.push(coordinates);
         self.map.off(L.Draw.Event.CREATED);
         self.addPopupsToPolygons();
         end = true;
-        // Ensure that last point's coordinates are same as first
+
 
         // just to crosscheck before pushing into the geoElement GeoJson
         console.table(self.geoElementPolygon.geometry.coordinates);
