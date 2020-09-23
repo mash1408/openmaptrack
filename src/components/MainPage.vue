@@ -1,5 +1,6 @@
 <template>
   <q-page class="">
+<<<<<<< Updated upstream
     <div
       class="full-width q-pa-sm q-gutter-md fixed text-right	"
       style="z-index: 200;"
@@ -49,6 +50,12 @@
         label="CSV To geoJSON"
         @click="ShowCsvSection = true"
       />
+=======
+    <div class="full-width q-pa-sm q-gutter-md fixed text-right	" style="z-index: 200;">
+      <q-btn class="customButtonStyle bg-accent" label="Select from Map" @click="selectPointFromMap"/>
+      <q-btn class="customButtonStyle bg-accent" label="Add Point" @click="ShowPointSection = true"/>
+      <q-btn class="customButtonStyle bg-accent" label="CSV To geoJSON" @click="ShowCsvSection = true"/>
+>>>>>>> Stashed changes
 
       <q-btn
         class="customButtonStyle"
