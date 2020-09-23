@@ -185,6 +185,7 @@
       <q-btn
         class="customButtonStyle"
         label="Edit GeoElement"
+        @click="editLayers"
       />
       <q-btn
         class="customButtonStyle"
@@ -204,6 +205,7 @@ export default {
   name: 'app',
   data () {
     return {
+      count: 545,
       map: '',
       text: '',
       point: '',
@@ -219,28 +221,30 @@ export default {
       first: false,
       geoElementMarker: {
         "type": "Feature",
-        "properties": {},
         "geometry": {
-          "type": "Point",
-          "coordinates": [
-          ]
+          "type": "Point", "coordinates": []
+        },
+        "properties": {
+          "assetStatus": "FULL",
+          "id": 897,
+          "item": "53 Trailer"
         }
       },
       geoElementLine: {
-        "type": "Feature",
-        "properties": {},
-        "geometry": {
-          "type": "LineString",
-          "coordinates": [
+        type: "Feature",
+        properties: {},
+        geometry: {
+          type: "LineString",
+          coordinates: [
           ]
         }
       },
       geoElementPolygon: {
-        "type": "Feature",
-        "properties": {},
-        "geometry": {
-          "type": "Polygon",
-          "coordinates": [
+        type: "Feature",
+        properties: {},
+        geometry: {
+          type: "Polygon",
+          coordinates: [
           ]
         }
       },
@@ -278,6 +282,9 @@ export default {
     },
     geoJsonFeatures () {
       return this.$store.state.geoJson.features;
+    },
+    pushData () {
+      this.features.push(this.geoElementMarker);
     }
 
   },
@@ -328,7 +335,8 @@ export default {
       this.layerGroupLines.addTo(this.map);
       this.layerGroupMarkers.addTo(this.map);
       this.layerGroupPolygons.addTo(this.map);
-      this.addLayerToMap();
+      //Render the geoJson data onto the map
+      //this.addLayerToMap();
     },
     /***************************************************//////////////******************************************************/
     check () {
@@ -342,12 +350,10 @@ export default {
     },
     /***************************************************GeoJson-related Functions******************************************************/
     addGeoElementPolygon () {
+
       this.$store.commit('addGeoElement', this.geoElementPolygon);
     },
     addGeoElementMarker () {
-      // this.markersCoords.push([this.geoElementMarker.geometry.coordinates[this.geoElementMarker.geometry.coordinates.length - 1],
-      // this.geoElementMarker.geometry.coordinates[this.geoElementMarker.geometry.coordinates.length - 2]]);
-
       this.$store.commit('addGeoElement', this.geoElementMarker);
 
     },
@@ -465,6 +471,8 @@ export default {
           self.geoElementMarker.geometry.coordinates[0] = e.latlng.lng;
           self.geoElementMarker.geometry.coordinates[1] = e.latlng.lat;
         }
+        self.geoElementMarker.properties.id = this.count;
+        self.count += 1;
         //putting off the mousedown event listener from map
         //since it is to be ran once only(one click for marker)
         self.map.off('mousedown');
@@ -516,31 +524,6 @@ export default {
       //for polygon we require array of arrays
       var coordinates = [];
       var end = false;
-      self.drawCursor = new L.Draw.Polygon(self.map, self.drawControl.options.marker);
-      self.drawCursor.enable()
-      //setup the event listener to fire after the shape is drawn
-      this.map.on(L.Draw.Event.CREATED, function (e) {
-        var type = e.layerType,
-          //getting the layer of the drawn shape
-          layer = e.layer;
-        if (type === 'polygon') {
-
-        }
-        //add that layer to the layerGroupPolygon group
-        self.layerGroupPolygons.addLayer(layer);
-        self.geoElementPolygon.geometry.coordinates.push(coordinates);
-        self.map.off(L.Draw.Event.CREATED);
-        self.addPopupsToPolygons();
-        self.addGeoElementPolygon();
-        end = true;
-        //just to crosscheck before pushing into the geoElement GeoJson
-        console.table(self.geoElementPolygon.geometry.coordinates);
-        //flushing the existing data 
-        self.geoElementPolygon.geometry.coordinates.splice(0, self.geoElementPolygon.geometry.coordinates.length);
-        console.log('end');
-        self.map.off('mousedown');
-        return;
-      });
       this.map.on('mousedown', function (e) {
         //storing the points locally in the coordinates variable
         coordinates.push([e.latlng.lng, e.latlng.lat]);
@@ -549,8 +532,44 @@ export default {
         console.log(e);
 
       })
-    },
+      self.drawCursor = new L.Draw.Polygon(self.map, self.drawControl.options.marker);
+      self.drawCursor.enable()
+      //setup the event listener to fire after the shape is drawn
+      this.map.on(L.Draw.Event.CREATED, function (e) {
+        var type = e.layerType,
+          //getting the layer of the drawn shape
+          layer = e.layer;
+        if (type === 'polygon') {
+        }
+        //add that layer to the layerGroupPolygon group
+        self.layerGroupPolygons.addLayer(layer);
+        coordinates.push(coordinates[0]);
+        self.geoElementPolygon.geometry.coordinates.push(coordinates);
+        self.map.off(L.Draw.Event.CREATED);
+        self.addPopupsToPolygons();
+        end = true;
+        // Ensure that last point's coordinates are same as first
 
+        // just to crosscheck before pushing into the geoElement GeoJson
+        console.table(self.geoElementPolygon.geometry.coordinates);
+        self.addGeoElementPolygon();
+        //flushing the existing data 
+        self.geoElementPolygon.geometry.coordinates.splice(0, self.geoElementPolygon.geometry.coordinates.length);
+        console.log('end');
+        self.map.off('mousedown');
+        return;
+      });
+
+    },
+    /***************************************************Edit/Delete Functions******************************************************/
+    editLayers () {
+      this.layerGroupMarkers.eachLayer(function (layer) {
+        layer.on('mouseover', function (e) {
+          console.log(e);
+        });
+      });
+
+    },
     setCoordinates (lng, lat) {
       if (this.selectPoint == true) {
         // console.log(lng,lat)
