@@ -1,6 +1,5 @@
 <template>
   <q-page class="">
-<<<<<<< Updated upstream
     <div
       class="full-width q-pa-sm q-gutter-md fixed text-right	"
       style="z-index: 200;"
@@ -10,11 +9,7 @@
         label="Select from Map"
         @click="selectPointFromMap"
       />
-      <q-btn
-        class="customButtonStyle"
-        label="check Geojson"
-        @click="check"
-      />
+
       <q-btn
         class="customButtonStyle"
         label="Draw Polygon"
@@ -49,18 +44,6 @@
         class="customButtonStyle"
         label="CSV To geoJSON"
         @click="ShowCsvSection = true"
-      />
-=======
-    <div class="full-width q-pa-sm q-gutter-md fixed text-right	" style="z-index: 200;">
-      <q-btn class="customButtonStyle bg-accent" label="Select from Map" @click="selectPointFromMap"/>
-      <q-btn class="customButtonStyle bg-accent" label="Add Point" @click="ShowPointSection = true"/>
-      <q-btn class="customButtonStyle bg-accent" label="CSV To geoJSON" @click="ShowCsvSection = true"/>
->>>>>>> Stashed changes
-
-      <q-btn
-        class="customButtonStyle"
-        label="Download CSV"
-        @click="getCsvData"
       />
 
       <q-card
@@ -178,6 +161,19 @@
           />
         </q-card-section>
       </q-card>
+      
+    <q-card>
+       <div>
+         <h3>Hello</h3>
+          <ul>
+            <li
+              v-for="list in legendData"
+              :key="list.id"
+              class="text-blue-8 text-bold"
+            >{{list.geometry.type}}</li>
+          </ul>
+      </div>
+    </q-card>
     </div>
     <!-- Edit/Delete buttons -->
     <div
@@ -198,9 +194,12 @@
         label="Delete GeoElement"
       />
     </div>
+
     <div class="full-width">
       <div id="mapCanvas"></div>
     </div>
+
+
   </q-page>
 </template>
 
@@ -251,12 +250,12 @@ export default {
           ]
         }
       },
-      markersCoords: [],
       baseLayerGroup: new L.layerGroup(),
       layerGroupLines: new L.layerGroup(),
       layerGroupMarkers: new L.layerGroup(),
       layerGroupPolygons: new L.layerGroup(),
-      createdGeoElements: ""
+      createdGeoElements: "",
+      legendData: this.$store.state.geoJson.features
     }
   },
   components: {
@@ -289,7 +288,7 @@ export default {
 
   },
   methods: {
-    /***************************************************Function running at startup ******************************************************/
+
     initMap () {
       var self = this
 
@@ -337,30 +336,23 @@ export default {
       this.layerGroupPolygons.addTo(this.map);
       this.addLayerToMap();
     },
-    /***************************************************//////////////******************************************************/
-    check () {
-      this.baseLayerGroup.clearLayers();
-      this.addLayerToMap();
-    },
     reset () {
       this.layerGroupLines.clearLayers();
       this.layerGroupMarkers.clearLayers();
       this.layerGroupPolygons.clearLayers();
     },
-    /***************************************************GeoJson-related Functions******************************************************/
     addGeoElementPolygon () {
       this.$store.commit('addGeoElement', this.geoElementPolygon);
+      console.log(this.geoJsonFeatures);
     },
     addGeoElementMarker () {
-      // this.markersCoords.push([this.geoElementMarker.geometry.coordinates[this.geoElementMarker.geometry.coordinates.length - 1],
-      // this.geoElementMarker.geometry.coordinates[this.geoElementMarker.geometry.coordinates.length - 2]]);
-
       this.$store.commit('addGeoElement', this.geoElementMarker);
+      console.log(this.geoJsonFeatures);
 
     },
     addGeoElementLine () {
       this.$store.commit('addGeoElement', this.geoElementLine);
-
+      console.log(this.geoJsonFeatures);
     },
     getGeoJsonLayer () {
       var baseLayer = L.geoJSON(this.geoJson, {
@@ -376,94 +368,39 @@ export default {
       this.baseLayerGroup.addLayer(this.getGeoJsonLayer());
 
     },
-    /***************************************************PopUp Functions******************************************************/
-    addPopupsToMarkers () {
-      var i = 0;
-      var self = this;
-      // create popup contents-->change the url here to change the background image
-      var customPopup = "<b>My office</b><br/><img src='https://cdn.pixabay.com/photo/2012/04/23/15/45/parking-38625_960_720.png' alt='maptime logo gif' width='150px'/>";
-
-      // specify popup options 
-      var customOptions =
-      {
-        'maxWidth': '400',
-        'width': '200',
-        'className': 'popupCustom'
-      }
-      //finally bind a popup to each layer
-      this.layerGroupMarkers.eachLayer(function (layer) {
-        layer.bindPopup(customPopup, customOptions).openPopup();
-      });
-
-
-    },
     addPopupsToLines () {
-      var i = 0;
-      var self = this;
-      // create popup contents-->change the url here to change the background image
-      var customPopup = "<b>My office</b><br/><img src='https://cdn.pixabay.com/photo/2012/04/23/15/45/parking-38625_960_720.png' alt='maptime logo gif' width='150px'/>";
-
-      // specify popup options 
-      var customOptions =
-      {
-        'maxWidth': '400',
-        'width': '200',
-        'className': 'popupCustom'
-      }
-
       this.layerGroupLines.eachLayer(function (layer) {
-        layer.bindPopup(customPopup, customOptions).openPopup();
+        layer.bindPopup('Lines').openPopup();
       });
     },
     addPopupsToPolygons () {
-      var i = 0;
-      var self = this;
-      // create popup contents-->change the url here to change the background image
-      var customPopup = "<b>My office</b><br/><img src='https://cdn.pixabay.com/photo/2012/04/23/15/45/parking-38625_960_720.png' alt='maptime logo gif' width='150px'/>";
-
-      // specify popup options 
-      var customOptions =
-      {
-        'maxWidth': '400',
-        'width': '200',
-        'className': 'popupCustom'
-      }
       this.layerGroupPolygons.eachLayer(function (layer) {
-        layer.bindPopup(customPopup, customOptions).openPopup();
+        layer.bindPopup('Polygons').openPopup();
       });
     },
-    /***************************************************Style Functions******************************************************/
-    addStyleToMarkers () {
-
+    addPopupsToMarkers () {
+      this.layerGroupMarkers.eachLayer(function (layer) {
+        layer.bindPopup('Markers').openPopup();
+      });
     },
-    addStyleToPolygons () {
-
-    },
-    addStyleToLines () {
-
-    },
-    /***************************************************Drawing Functions******************************************************/
     drawMarker () {
       //using a pointer to this object, as this does'nt reference within the on query
       var self = this;
       self.drawCursor = new L.Draw.Marker(self.map, self.drawControl.options.marker);
       self.drawCursor.enable()
-      //setup the event listener to fire after the marker is drawn
       this.map.on(L.Draw.Event.CREATED, function (e) {
-        //getting the layer from the drawn shape(marker)
         var type = e.layerType,
           layer = e.layer;
         if (type === 'marker') {
 
         }
-        //adding that layer to layerGroupMarkers
         self.layerGroupMarkers.addLayer(layer);
-        self.addGeoElementMarker();
         self.addPopupsToMarkers();
+        self.addGeoElementMarker();
         self.map.off(L.Draw.Event.CREATED);
       });
       this.map.on('mousedown', function (e) {
-        //if there are no elements in the geoELement...coordinates
+
         if (self.geoElementMarker.geometry.coordinates.length === 0) {
           self.geoElementMarker.geometry.coordinates.push(e.latlng.lng);
           self.geoElementMarker.geometry.coordinates.push(e.latlng.lat);
@@ -472,8 +409,7 @@ export default {
           self.geoElementMarker.geometry.coordinates[0] = e.latlng.lng;
           self.geoElementMarker.geometry.coordinates[1] = e.latlng.lat;
         }
-        //putting off the mousedown event listener from map
-        //since it is to be ran once only(one click for marker)
+
         self.map.off('mousedown');
       });
 
@@ -481,80 +417,49 @@ export default {
     drawLine () {
       //using a pointer to this object, as this does'nt reference within the on query
       var self = this;
-      var end = false;
-      //Drawing polyline
+
       self.drawCursor = new L.Draw.Polyline(self.map, self.drawControl.options.marker);
       self.drawCursor.enable();
-      //event listener setup to fire when shape is created
       this.map.on(L.Draw.Event.CREATED, function (e) {
-        //getting the layer from the drawn shape
         var type = e.layerType,
           layer = e.layer;
         if (type === 'polyline') {
 
         }
-        //adding that layer to the layerGroupLines
         self.layerGroupLines.addLayer(layer);
-
-        self.map.off(L.Draw.Event.CREATED);
-        end = true;
-        //putting off the mousedown event listener from map
-        self.map.off('mousedown');
         self.addPopupsToLines();
-        //pushing data to geoJson in the store 
         self.addGeoElementLine();
-        //flushing the existing data
-        self.geoElementLine.geometry.coordinates.splice(0, self.geoElementLine.geometry.coordinates.length);
-        console.log('end');
-        return;
+        self.map.off(L.Draw.Event.CREATED);
       });
       this.map.on('mousedown', function (e) {
         self.geoElementLine.geometry.coordinates.push([e.latlng.lng, e.latlng.lat]);
-        //displaying the clicked points in tabular form
-        console.table(self.geoElementLine.geometry.coordinates);
         console.log(e);
-
+        self.map.off('mousedown');
       })
 
     },
     drawPolygon () {
       //using a pointer to this object, as this does'nt reference within the on query
       var self = this;
-      //for polygon we require array of arrays
       var coordinates = [];
-      var end = false;
       self.drawCursor = new L.Draw.Polygon(self.map, self.drawControl.options.marker);
       self.drawCursor.enable()
-      //setup the event listener to fire after the shape is drawn
       this.map.on(L.Draw.Event.CREATED, function (e) {
         var type = e.layerType,
-          //getting the layer of the drawn shape
           layer = e.layer;
         if (type === 'polygon') {
 
         }
-        //add that layer to the layerGroupPolygon group
         self.layerGroupPolygons.addLayer(layer);
-        self.geoElementPolygon.geometry.coordinates.push(coordinates);
-        self.map.off(L.Draw.Event.CREATED);
         self.addPopupsToPolygons();
+        self.geoElementPolygon.geometry.coordinates.push(coordinates);
         self.addGeoElementPolygon();
-        end = true;
-        //just to crosscheck before pushing into the geoElement GeoJson
-        console.table(self.geoElementPolygon.geometry.coordinates);
-        //flushing the existing data 
-        self.geoElementPolygon.geometry.coordinates.splice(0, self.geoElementPolygon.geometry.coordinates.length);
-        console.log('end');
-        self.map.off('mousedown');
-        return;
+        self.map.off(L.Draw.Event.CREATED);
       });
       this.map.on('mousedown', function (e) {
-        //storing the points locally in the coordinates variable
         coordinates.push([e.latlng.lng, e.latlng.lat]);
-        //displaying the points in tabular form
-        console.table(coordinates)
         console.log(e);
-
+        self.map.off('mousedown');
       })
     },
 
@@ -685,54 +590,7 @@ export default {
       }
       console.log(coords)
       var polygon = L.polygon(coords, { color: 'red' }).addTo(this.map);
-    },
-
-    // ############## Conversion Methods ##################################//
-    // ** get data in csv format **//
-    getCsvData () {
-      const data = this.geoJsonFeatures
-      const reqData = data.map(row => ({
-        geometry: row.geometry.type,
-        coordinates: row.geometry.coordinates
-      }))
-      const csvData = this.convertoCsv(reqData)
-      console.log(csvData)
-      this.download(csvData)
-    },
-
-    /* Convert geojson object to csv */
-    convertoCsv (data) {
-      const csvRows = []
-
-      // get the headers
-      const headers = Object.keys(data[0])
-      csvRows.push(headers.join(','))
-
-      // loop over the rows
-      for (const row of data) {
-        const values = headers.map(header => {
-          const escaped = ('' + row[header]).replace(/"/g, '\\"')
-          return `"${escaped}"`
-        })
-        csvRows.push(values.join(','))
-      }
-      // console.log(csvRows);
-
-      return csvRows.join('\n')
-    },
-    /* Download csv file */
-    download (data) {
-      const blob = new Blob([data], { type: 'text/csv' })
-      const url = window.URL.createObjectURL(blob)
-      const a = document.createElement('a')
-      a.setAttribute('hidden', '')
-      a.setAttribute('href', url)
-      a.setAttribute('download', 'data.csv')
-      document.body.appendChild(a)
-      a.click()
-      document.body.removeChild(a)
     }
-
   },
   mounted () {
     this.initMap()
@@ -746,16 +604,7 @@ export default {
   height: 100vh;
   position: relative;
 }
-.popupCustom .leaflet-popup-tip,
-.popupCustom .leaflet-popup-content-wrapper {
-  background: linear-gradient(
-    0deg,
-    rgba(34, 193, 195, 1) 0%,
-    rgba(253, 187, 45, 1) 95%
-  );
-  color: white;
-  opacity: 0.95;
-}
+
 textarea {
   background-color: #fff;
 }
@@ -766,4 +615,10 @@ body {
   color: #fff;
   background-color: #ff702d;
 }
+</style>
+
+<style lang="stylus" scoped>
+  .customButtonStyle {
+    background-color: $accent;
+  }
 </style>
