@@ -4,11 +4,6 @@
       class="full-width q-pa-sm q-gutter-md fixed text-right	"
       style="z-index: 200;"
     >
-      <q-btn
-        class="customButtonStyle"
-        label="Select from Map"
-        @click="selectPointFromMap"
-      />
 
       <q-btn
         class="customButtonStyle"
@@ -121,54 +116,6 @@
         </q-card-section>
       </q-card>
       <q-card
-        class="q-my-md bg-white"
-        v-if="showPolylineSection"
-      >
-        <q-card-section>
-          <q-input
-            v-model="polylineCoords"
-            label="Coordinates"
-          />
-        </q-card-section>
-        <q-card-section class="q-gutter-md">
-
-          <q-btn
-            class="customButtonStyle"
-            label="Add"
-            @click="addPolyline"
-          />
-          <q-btn
-            class="customButtonStyle"
-            label="Close"
-            @click="showPolylineSection = false"
-          />
-        </q-card-section>
-      </q-card>
-      <q-card
-        class="q-my-md bg-white"
-        v-if="showPolygoneSection"
-      >
-        <q-card-section>
-          <q-input
-            v-model="polygonCoords"
-            label="Coordinates"
-          />
-        </q-card-section>
-        <q-card-section class="q-gutter-md">
-
-          <q-btn
-            class="customButtonStyle"
-            label="Add"
-            @click="addPolygon"
-          />
-          <q-btn
-            class="customButtonStyle"
-            label="Close"
-            @click="showPolygoneSection = false"
-          />
-        </q-card-section>
-      </q-card>
-      <q-card
         class="customStyleCard"
         v-if="showDeleteLayersSection"
       >
@@ -232,6 +179,54 @@
             label="Close"
             @click="stopEditingMarkers();showIconSection = false"
           />
+      </q-card>
+            <q-card
+        class="q-my-md bg-white"
+        v-if="showPolylineSection"
+      >
+        <q-card-section>
+          <q-input
+            v-model="polylineCoords"
+            label="Coordinates"
+          />
+        </q-card-section>
+        <q-card-section class="q-gutter-md">
+
+          <q-btn
+            class="customButtonStyle"
+            label="Add"
+            @click="addPolyline"
+          />
+          <q-btn
+            class="customButtonStyle"
+            label="Close"
+            @click="showPolylineSection = false"
+          />
+        </q-card-section>
+      </q-card>
+      <q-card
+        class="q-my-md bg-white"
+        v-if="showPolygoneSection"
+      >
+        <q-card-section>
+          <q-input
+            v-model="polygonCoords"
+            label="Coordinates"
+          />
+        </q-card-section>
+        <q-card-section class="q-gutter-md">
+
+          <q-btn
+            class="customButtonStyle"
+            label="Add"
+            @click="addPolygon"
+          />
+          <q-btn
+            class="customButtonStyle"
+            label="Close"
+            @click="showPolygoneSection = false"
+          />
+        </q-card-section>
       </q-card>
     </div>
 
@@ -628,10 +623,10 @@ export default {
       L.geoJSON(lin).addTo(this.map)
     },
 
-    selectPointFromMap () {
-      this.drawCursor = new L.Draw.Marker(this.map, this.drawControl.options.marker);
-      this.drawCursor.enable()
-    },
+    // selectPointFromMap () {
+    //   this.drawCursor = new L.Draw.Marker(this.map, this.drawControl.options.marker);
+    //   this.drawCursor.enable()
+    // },
 
     AddPoint () {
       var lines = this.point.split('\n')
