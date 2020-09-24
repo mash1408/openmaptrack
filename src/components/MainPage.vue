@@ -323,7 +323,15 @@ export default {
       layerGroupLines: new L.layerGroup(),
       layerGroupMarkers: new L.layerGroup(),
       layerGroupPolygons: new L.layerGroup(),
+<<<<<<< HEAD
       createdGeoElements: '',
+=======
+      createdGeoElements: "",
+      popUpOptions: {
+        autoPan: true,
+        autoClose: false
+      },
+>>>>>>> internship
       legendData: this.$store.state.geoJson.features
     }
   },
@@ -412,7 +420,11 @@ export default {
       var polygons = this.layerGroupPolygons.toGeoJSON()
       var allFeatures = lines.features.concat(markers.features.concat(polygons.features))
       console.log(JSON.stringify(allFeatures))
+<<<<<<< HEAD
       this.$store.commit('addGeoElements', allFeatures)
+=======
+      this.$store.commit('addGeoElements', allFeatures);
+>>>>>>> internship
     },
     reset () {
       this.layerGroupLines.clearLayers()
@@ -430,22 +442,53 @@ export default {
       return baseLayer
     },
     addLayerToMap () {
+<<<<<<< HEAD
       this.baseLayerGroup.addLayer(this.getGeoJsonLayer())
+=======
+      this.baseLayerGroup.addLayer(self.getGeoJsonLayer());
+>>>>>>> internship
     },
     addPopupsToLines () {
+      var self = this
       this.layerGroupLines.eachLayer(function (layer) {
+<<<<<<< HEAD
         layer.bindPopup('Lines').openPopup()
       })
+=======
+        layer.bindPopup('Lines', self.popUpOptions);
+        layer.on('mouseover', function (e) {
+          layer.openPopup();
+        })
+      });
+>>>>>>> internship
     },
     addPopupsToPolygons () {
+      var self = this
       this.layerGroupPolygons.eachLayer(function (layer) {
+<<<<<<< HEAD
         layer.bindPopup('Polygons').openPopup()
       })
+=======
+        layer.bindPopup('Polygons', self.popUpOptions);
+        layer.on('mouseover', function (e) {
+          layer.openPopup();
+        })
+      });
+>>>>>>> internship
     },
     addPopupsToMarkers () {
+      var self = this
       this.layerGroupMarkers.eachLayer(function (layer) {
+<<<<<<< HEAD
         layer.bindPopup('Markers').openPopup()
       })
+=======
+        layer.bindPopup('Markers', self.popUpOptions);
+        layer.on('mouseover', function (e) {
+          layer.openPopup();
+        })
+      });
+>>>>>>> internship
     },
     drawMarker () {
       // using a pointer to this object, as this does'nt reference within the on query
@@ -458,9 +501,16 @@ export default {
         if (type === 'marker') {
 
         }
+<<<<<<< HEAD
         self.layerGroupMarkers.addLayer(layer)
         self.map.off(L.Draw.Event.CREATED)
       })
+=======
+        self.layerGroupMarkers.addLayer(layer);
+        self.addPopupsToMarkers();
+        self.map.off(L.Draw.Event.CREATED);
+      });
+>>>>>>> internship
       this.map.on('mousedown', function (e) {
         if (self.geoElementMarkers.length === 0) {
           self.geoElementMarkers.push(e.latlng.lng)
