@@ -15,6 +15,7 @@
         label="Draw-Polygon"
         @click="drawPolygon"
       />
+      <!-- ***********HERE****************** -->
       <q-btn
         class="customButtonStyle"
         label="Draw-Marker"
@@ -205,14 +206,33 @@
       />
       <q-btn
         class="customButtonStyle"
-        label="Edit GeoElement"
-        @click="editLayers"
+        label="Edit Markers"
+        @click="showIconSection=true"
       />
       <q-btn
         class="customButtonStyle"
         label="Delete GeoElement"
         @click="deleteLayers();showDeleteLayersSection=true"
       />
+      <q-card
+        class="customStyleCard"
+        v-if="showIconSection"
+      >
+        <div class="center-contents">
+          <h3>Select Category</h3>
+        </div>
+        <div class="center-contents">
+          <q-btn class="customButtonStyle" label="Car Parking" @click='editCar' />
+          <q-btn class="customButtonStyle" label="Bus Parking" @click='editBus' />
+          <q-btn class="customButtonStyle" label="Truck Parking" @click='editTruck' />
+          <q-btn class="customButtonStyle" label="Taxi Parking" @click='editTaxi' />
+        </div>
+        <q-btn
+            class="customButtonStyle"
+            label="Close"
+            @click="stopEditingMarkers();showIconSection = false"
+          />
+      </q-card>
     </div>
 
     <div class="full-width">
@@ -239,6 +259,7 @@ export default {
       selectPoint: false,
       showPolygoneSection: false,
       showPolylineSection: false,
+      showIconSection: false,
       showDeleteLayersSection: false,
       polygonCoords: [],
       polylineCoords: [],
@@ -505,13 +526,50 @@ export default {
 
     },
     /***************************************************Edit/Delete Functions******************************************************/
-    editLayers () {
+    editCar () {
       this.layerGroupMarkers.eachLayer(function (layer) {
-        layer.on('mouseover', function (e) {
+        layer.on('click', function (e) {
           console.log(e);
+          e.target._icon.setAttribute("src", "https://image.flaticon.com/icons/png/512/51/51778.png")
         });
       });
+      return;
+    },
+    editTruck () {
+      this.layerGroupMarkers.eachLayer(function (layer) {
+        layer.on('click', function (e) {
+          console.log(e);
+          e.target._icon.setAttribute("src", "https://www.iconfinder.com/data/icons/eldorado-transport/40/truck_1-512.png")
+        });
+      });
+      return;
+    },
+    editBus () {
+      this.layerGroupMarkers.eachLayer(function (layer) {
+        layer.on('click', function (e) {
+          console.log(e);
+          e.target._icon.setAttribute("src", "https://cdn.iconscout.com/icon/premium/png-256-thumb/bus-1734816-1471755.png")
+        });
+      });
+      return;
+    },
+    editTaxi () {
+      this.layerGroupMarkers.eachLayer(function (layer) {
+        layer.on('click', function (e) {
+          console.log(e);
+          e.target._icon.setAttribute("src", "https://www.iconfinder.com/data/icons/car-11/100/taxi3-512.png")
+        });
+      });
+      return;
+    },
+    stopEditingMarkers() {
+      var self = this;
+      this.layerGroupMarkers.eachLayer(function (layer) {
 
+        console.log('stop');
+        layer.off('click');
+
+      })
     },
     stopDeletingLayers () {
       var self = this;
@@ -767,5 +825,9 @@ body {
 .customStyleCard {
   margin-top: 100px;
   background: rgba(210, 146, 133, 0.7);
+}
+
+.center-contents{
+  text-align:center;
 }
 </style>
