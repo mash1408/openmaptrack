@@ -323,6 +323,10 @@ export default {
       layerGroupMarkers: new L.layerGroup(),
       layerGroupPolygons: new L.layerGroup(),
       createdGeoElements: "",
+      popUpOptions: {
+        autoPan: true,
+        autoClose: false
+      },
       legendData: this.$store.state.geoJson.features
     }
   },
@@ -412,7 +416,6 @@ export default {
       var allFeatures = lines.features.concat(markers.features.concat(polygons.features));
       console.log(JSON.stringify(allFeatures))
       this.$store.commit('addGeoElements', allFeatures);
-
     },
     reset () {
       this.layerGroupLines.clearLayers();
@@ -430,21 +433,33 @@ export default {
       return baseLayer;
     },
     addLayerToMap () {
-      this.baseLayerGroup.addLayer(this.getGeoJsonLayer());
+      this.baseLayerGroup.addLayer(self.getGeoJsonLayer());
     },
     addPopupsToLines () {
+      var self = this
       this.layerGroupLines.eachLayer(function (layer) {
-        layer.bindPopup('Lines').openPopup();
+        layer.bindPopup('Lines', self.popUpOptions);
+        layer.on('mouseover', function (e) {
+          layer.openPopup();
+        })
       });
     },
     addPopupsToPolygons () {
+      var self = this
       this.layerGroupPolygons.eachLayer(function (layer) {
-        layer.bindPopup('Polygons').openPopup();
+        layer.bindPopup('Polygons', self.popUpOptions);
+        layer.on('mouseover', function (e) {
+          layer.openPopup();
+        })
       });
     },
     addPopupsToMarkers () {
+      var self = this
       this.layerGroupMarkers.eachLayer(function (layer) {
-        layer.bindPopup('Markers').openPopup();
+        layer.bindPopup('Markers', self.popUpOptions);
+        layer.on('mouseover', function (e) {
+          layer.openPopup();
+        })
       });
     },
     drawMarker () {
@@ -459,6 +474,7 @@ export default {
 
         }
         self.layerGroupMarkers.addLayer(layer);
+        self.addPopupsToMarkers();
         self.map.off(L.Draw.Event.CREATED);
       });
       this.map.on('mousedown', function (e) {
