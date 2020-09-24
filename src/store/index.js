@@ -21,40 +21,14 @@ export default function (/* { ssrContext } */) {
       geoJson: {
         "type": "FeatureCollection",
         "features": [
-          {
-            "type": "Feature",
-            "geometry": {
-              "type": "Point", "coordinates": [73.93798828125,
-                15.44309082346371]
-            },
-            "properties": {
-              "assetStatus": "FULL",
-              "id": 1747,
-              "item": "53 Trailer"
-            }
-          },
-          {
-            "type": "Feature",
-            "geometry": {
-              "type": "Point", "coordinates": [72.2900390625,
-                14.859850400601037]
-            },
-            "properties": {
-              "assetStatus": "LOADED",
-              "id": 1745,
-              "item": "53 Trailer"
-            }
-          }
         ]
       }
 
     },
     mutations: {
-      addGeoElement: (state, geoElement) => {
+      addGeoElements: (state, features) => {
         console.log('mutate');
-        console.log(JSON.stringify(geoElement, null, 2));
-        state.geoJson['features'].push(geoElement);
-
+        state.geoJson.features = features
         console.log('GeoJson');
         console.log(JSON.stringify(state.geoJson, null, 2));
       }

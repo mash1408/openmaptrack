@@ -4,7 +4,11 @@
       class="full-width q-pa-sm q-gutter-md fixed text-right	"
       style="z-index: 200;"
     >
-
+      <q-btn
+        class="customButtonStyle"
+        label="Save"
+        @click="save"
+      />
       <q-btn
         class="customButtonStyle"
         label="Draw-Polygon"
@@ -222,6 +226,11 @@
       />
       <q-btn
         class="customButtonStyle"
+        label="Edit Polygons"
+        @click="editPolygons();showEditLinesSection=true"
+      />
+      <q-btn
+        class="customButtonStyle"
         label="Delete GeoElement"
         @click="deleteLayers();showDeleteLayersSection=true"
       />
@@ -306,35 +315,9 @@ export default {
       polygonCoords: [],
       polylineCoords: [],
       first: false,
-      geoElementMarker: {
-        "type": "Feature",
-        "geometry": {
-          "type": "Point", "coordinates": []
-        },
-        "properties": {
-          "assetStatus": "FULL",
-          "id": 897,
-          "item": "53 Trailer"
-        }
-      },
-      geoElementLine: {
-        type: "Feature",
-        properties: {},
-        geometry: {
-          type: "LineString",
-          coordinates: [
-          ]
-        }
-      },
-      geoElementPolygon: {
-        type: "Feature",
-        properties: {},
-        geometry: {
-          type: "Polygon",
-          coordinates: [
-          ]
-        }
-      },
+      geoElementMarkers: [],
+      geoElementLines: [],
+      geoElementPolygons: [],
       baseLayerGroup: new L.layerGroup(),
       layerGroupLines: new L.layerGroup(),
       layerGroupMarkers: new L.layerGroup(),
@@ -422,24 +405,19 @@ export default {
       //Render the geoJson data onto the map
       //this.addLayerToMap();
     },
+    save () {
+      var lines = this.layerGroupLines.toGeoJSON();
+      var markers = this.layerGroupMarkers.toGeoJSON();
+      var polygons = this.layerGroupPolygons.toGeoJSON();
+      var allFeatures = lines.features.concat(markers.features.concat(polygons.features));
+      console.log(JSON.stringify(allFeatures))
+      this.$store.commit('addGeoElements', allFeatures);
+
+    },
     reset () {
       this.layerGroupLines.clearLayers();
       this.layerGroupMarkers.clearLayers();
       this.layerGroupPolygons.clearLayers();
-    },
-    addGeoElementPolygon () {
-
-      this.$store.commit('addGeoElement', this.geoElementPolygon);
-      console.log(this.geoJsonFeatures);
-    },
-    addGeoElementMarker () {
-      this.$store.commit('addGeoElement', this.geoElementMarker);
-      console.log(this.geoJsonFeatures);
-
-    },
-    addGeoElementLine () {
-      this.$store.commit('addGeoElement', this.geoElementLine);
-      console.log(this.geoJsonFeatures);
     },
     getGeoJsonLayer () {
       var baseLayer = L.geoJSON(this.geoJson, {
@@ -481,19 +459,17 @@ export default {
 
         }
         self.layerGroupMarkers.addLayer(layer);
-        self.addPopupsToMarkers();
-        self.addGeoElementMarker();
         self.map.off(L.Draw.Event.CREATED);
       });
       this.map.on('mousedown', function (e) {
 
-        if (self.geoElementMarker.geometry.coordinates.length === 0) {
-          self.geoElementMarker.geometry.coordinates.push(e.latlng.lng);
-          self.geoElementMarker.geometry.coordinates.push(e.latlng.lat);
+        if (self.geoElementMarkers.length === 0) {
+          self.geoElementMarkers.push(e.latlng.lng);
+          self.geoElementMarkers.push(e.latlng.lat);
         }
         else {
-          self.geoElementMarker.geometry.coordinates[0] = e.latlng.lng;
-          self.geoElementMarker.geometry.coordinates[1] = e.latlng.lat;
+          self.geoElementMarkers[0] = e.latlng.lng;
+          self.geoElementMarkers[1] = e.latlng.lat;
         }
         // self.geoElementMarker.properties.id = this.count;
         // self.count += 1;
@@ -517,11 +493,10 @@ export default {
         }
         self.layerGroupLines.addLayer(layer);
         self.addPopupsToLines();
-        self.addGeoElementLine();
         self.map.off(L.Draw.Event.CREATED);
       });
       this.map.on('mousedown', function (e) {
-        self.geoElementLine.geometry.coordinates.push([e.latlng.lng, e.latlng.lat]);
+        self.geoElementLines.push([e.latlng.lng, e.latlng.lat]);
         console.log(e);
         self.map.off('mousedown');
       })
@@ -550,17 +525,16 @@ export default {
         self.layerGroupPolygons.addLayer(layer);
         // Ensure that last point's coordinates are same as first
         coordinates.push(coordinates[0]);
-        self.geoElementPolygon.geometry.coordinates.push(coordinates);
+        self.geoElementPolygons.push(coordinates);
         self.map.off(L.Draw.Event.CREATED);
         self.addPopupsToPolygons();
         end = true;
 
 
         // just to crosscheck before pushing into the geoElement GeoJson
-        console.table(self.geoElementPolygon.geometry.coordinates);
-        self.addGeoElementPolygon();
+        console.table(self.geoElementPolygons);
         //flushing the existing data 
-        self.geoElementPolygon.geometry.coordinates.splice(0, self.geoElementPolygon.geometry.coordinates.length);
+        self.geoElementPolygons.splice(0, self.geoElementPolygon.geometry.coordinates.length);
         console.log('end');
         self.map.off('mousedown');
         return;
@@ -570,6 +544,14 @@ export default {
     /***************************************************Edit/Delete Functions******************************************************/
     editLines () {
       this.layerGroupLines.eachLayer(function (layer) {
+        layer.on('click', function (e) {
+          console.log(e);
+
+        });
+      });
+    },
+    editPolygons () {
+      this.layerGroupPolygons.eachLayer(function (layer) {
         layer.on('click', function (e) {
           console.log(e);
         });
@@ -677,10 +659,6 @@ export default {
       L.geoJSON(lin).addTo(this.map)
     },
 
-    // selectPointFromMap () {
-    //   this.drawCursor = new L.Draw.Marker(this.map, this.drawControl.options.marker);
-    //   this.drawCursor.enable()
-    // },
 
     AddPoint () {
       var lines = this.point.split('\n')
