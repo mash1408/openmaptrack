@@ -10,7 +10,6 @@
         label="Draw-Polygon"
         @click="drawPolygon"
       />
-      <!-- ***********HERE****************** -->
       <q-btn
         class="customButtonStyle"
         label="Draw-Marker"
@@ -119,7 +118,8 @@
         class="customStyleCard"
         v-if="showDeleteLayersSection"
       >
-        <q-card-section class="q-gutter-md ">
+        <q-card-section class="q-gutter-md center-contents">
+          <h4>Click on element to delete</h4>
           <q-btn
             class="customButtonStyle"
             label="Cancel"
@@ -162,17 +162,17 @@
         @click="deleteLayers();showDeleteLayersSection=true"
       />
       <q-card
-        class="customStyleCard"
+        class="customStyleCard center-contents padding-class"
         v-if="showIconSection"
       >
         <div class="center-contents">
-          <h3>Select Category</h3>
-        </div>
-        <div class="center-contents">
-          <q-btn class="customButtonStyle" label="Car Parking" @click='editCar' />
-          <q-btn class="customButtonStyle" label="Bus Parking" @click='editBus' />
-          <q-btn class="customButtonStyle" label="Truck Parking" @click='editTruck' />
-          <q-btn class="customButtonStyle" label="Taxi Parking" @click='editTaxi' />
+          <h4 class="header-margin">Select Category</h4>
+          <div class="header-margin">
+          <q-btn class="customButtonStyle button-margin" label="Car Parking" @click='editCar' />
+          <q-btn class="customButtonStyle button-margin" label="Bus Parking" @click='editBus' />
+          <q-btn class="customButtonStyle button-margin" label="Truck Parking" @click='editTruck' />
+          <q-btn class="customButtonStyle button-margin" label="Taxi Parking" @click='editTaxi' />
+          </div>
         </div>
         <q-btn
             class="customButtonStyle"
@@ -818,8 +818,23 @@ body {
 }
 
 .customStyleCard {
-  margin-top: 100px;
+  width: 35%;
+  position: absolute;
+  margin-top: 10%;
+  float: left;
   background: rgba(210, 146, 133, 0.7);
+}
+
+.button-margin{
+  margin: 4px;
+}
+
+.header-margin{
+  margin: 5px;
+}
+
+.padding-class{
+  padding-bottom: 10px;
 }
 
 .center-contents{
