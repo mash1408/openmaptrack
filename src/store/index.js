@@ -11,7 +11,7 @@ Vue.use(Vuex)
  *
  * The function below can be async too; either use
  * async/await or return a Promise which resolves
- * with the Store instance.console.log(self.geoElementLine.geometry.coordinates[length - 1], 
+ * with the Store instance.console.log(self.geoElementLine.geometry.coordinates[length - 1],
         [e.latlng.lng, e.latlng.lat]);
  */
 
@@ -19,20 +19,26 @@ export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
     state: {
       geoJson: {
-        "type": "FeatureCollection",
-        "features": [
+        'type': 'FeatureCollection',
+        'features': [
         ]
       }
 
     },
     mutations: {
       addGeoElements: (state, features) => {
-        console.log('mutate');
+        console.log('mutate')
         state.geoJson.features = features
-        console.log('GeoJson');
-        console.log(JSON.stringify(state.geoJson, null, 2));
+        console.log('GeoJson')
+        console.log(JSON.stringify(state.geoJson, null, 2))
+      },
+
+      updateGeoElements (state, newFeatures) {
+        state.geoJson.features = state.geoJson.features.concat(newFeatures)
+        console.log(state.geoJson.features)
       }
-    },
+
+    }
 
     // enable strict mode (adds overhead!)
     // for dev mode only
