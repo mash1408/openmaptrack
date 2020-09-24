@@ -102,13 +102,13 @@
             <textarea
               rows="8"
               cols="74"
-              v-model="myLinesString"
+              v-model="geoJsonText"
             ></textarea>
           </div>
           <q-btn
             class="customButtonStyle"
             label="Add to Map"
-            @click="Add"
+            @click="AddToMap"
           />
           <q-btn
             class="customButtonStyle"
@@ -353,6 +353,7 @@ export default {
     return {
       map: '',
       text: '',
+      geoJsonText: '',
       point: '',
       myLines: [],
       myLinesString: [],
@@ -405,12 +406,12 @@ export default {
       return 'https://maptrack.in/tiles1588/18Panaji/{z}/{x}/{y}.png'
     },
     geoJson: function () {
-      //retrieve the geoJson object from store
-      return this.$store.state.geoJson;
+      // retrieve the geoJson object from store
+      return this.$store.state.geoJson
     },
     geoJsonFeatures () {
-      return this.$store.state.geoJson.features;
-    },
+      return this.$store.state.geoJson.features
+    }
 
   },
   methods: {
@@ -433,11 +434,11 @@ export default {
       L.control.scale({ metric: true, imperial: false }).addTo(self.map)
       L.control.attribution({ prefix: '<a href="http://leafletjs.com" title="A JS library for interactive maps" target="_blank">Leaflet</a> | 2020 © <a href="https://freethink.co.in/" target="_blank">freeTHINK(India)</a> | © <a href="http://osm.org/copyright" title="OpenStreetMap" target="_blank">OpenStreetMap</a>' }).addTo(self.map)
       self.map.on('click', function (e) {
-        self.setCoordinates(e.latlng.lng, e.latlng.lat);
-      });
-      this.createdGeoElements = new L.FeatureGroup();
+        self.setCoordinates(e.latlng.lng, e.latlng.lat)
+      })
+      this.createdGeoElements = new L.FeatureGroup()
       this.drawControl = new L.Control.Draw({
-        position: "bottomright",
+        position: 'bottomright',
         draw: {
           rectangle: false,
           circle: false,
@@ -479,9 +480,9 @@ export default {
       // this.addLayerToMap();
     },
     reset () {
-      this.layerGroupLines.clearLayers();
-      this.layerGroupMarkers.clearLayers();
-      this.layerGroupPolygons.clearLayers();
+      this.layerGroupLines.clearLayers()
+      this.layerGroupMarkers.clearLayers()
+      this.layerGroupPolygons.clearLayers()
     },
     getGeoJsonLayer () {
       var baseLayer = L.geoJSON(this.geoJson, {
@@ -489,12 +490,12 @@ export default {
         //   return { color: 'yellow' };// change the style properties here
         // },
       }).bindPopup(function (layer) {
-        return 'layer';
-      });
-      return baseLayer;
+        return 'layer'
+      })
+      return baseLayer
     },
     addLayerToMap () {
-      this.baseLayerGroup.addLayer(this.getGeoJsonLayer());
+      this.baseLayerGroup.addLayer(this.getGeoJsonLayer())
     },
     /***************************************************Popup Functions******************************************************/
     addPopupsToLines (layer) {
@@ -526,9 +527,9 @@ export default {
     },
     /***************************************************Draw Functions******************************************************/
     drawMarker () {
-      //using a pointer to this object, as this does'nt reference within the on query
-      var self = this;
-      self.drawCursor = new L.Draw.Marker(self.map, self.drawControl.options.marker);
+      // using a pointer to this object, as this does'nt reference within the on query
+      var self = this
+      self.drawCursor = new L.Draw.Marker(self.map, self.drawControl.options.marker)
       self.drawCursor.enable()
       this.map.on(L.Draw.Event.CREATED, function (e) {
         var type = e.layerType,
@@ -542,12 +543,11 @@ export default {
       })
       this.map.on('mousedown', function (e) {
         if (self.geoElementMarkers.length === 0) {
-          self.geoElementMarkers.push(e.latlng.lng);
-          self.geoElementMarkers.push(e.latlng.lat);
-        }
-        else {
-          self.geoElementMarkers[0] = e.latlng.lng;
-          self.geoElementMarkers[1] = e.latlng.lat;
+          self.geoElementMarkers.push(e.latlng.lng)
+          self.geoElementMarkers.push(e.latlng.lat)
+        } else {
+          self.geoElementMarkers[0] = e.latlng.lng
+          self.geoElementMarkers[1] = e.latlng.lat
         }
         // self.geoElementMarker.properties.id = this.count;
         // self.count += 1;
@@ -558,8 +558,8 @@ export default {
 
     },
     drawLine () {
-      //using a pointer to this object, as this does'nt reference within the on query
-      var self = this;
+      // using a pointer to this object, as this does'nt reference within the on query
+      var self = this
 
       self.drawCursor = new L.Draw.Polyline(self.map, self.drawControl.options.polyline);
       self.drawCursor.enable();
@@ -579,22 +579,20 @@ export default {
         console.log(e);
 
       })
-
     },
     drawPolygon () {
-      //using a pointer to this object, as this does'nt reference within the on query
-      var self = this;
-      var coordinates = [];
-      var end = false;
+      // using a pointer to this object, as this does'nt reference within the on query
+      var self = this
+      var coordinates = []
+      var end = false
       this.map.on('mousedown', function (e) {
-        //storing the points locally in the coordinates variable
-        coordinates.push([e.latlng.lng, e.latlng.lat]);
-        //displaying the points in tabular form
+        // storing the points locally in the coordinates variable
+        coordinates.push([e.latlng.lng, e.latlng.lat])
+        // displaying the points in tabular form
         console.table(coordinates)
-        console.log(e);
-
+        console.log(e)
       })
-      self.drawCursor = new L.Draw.Polygon(self.map, self.drawControl.options.marker);
+      self.drawCursor = new L.Draw.Polygon(self.map, self.drawControl.options.marker)
       self.drawCursor.enable()
       this.map.on(L.Draw.Event.CREATED, function (e) {
         var type = e.layerType,
@@ -697,7 +695,7 @@ export default {
       return;
     },
     stopEditingMarkers () {
-      var self = this;
+      var self = this
       this.layerGroupMarkers.eachLayer(function (layer) {
 
         console.log('Markers stop');
@@ -724,54 +722,48 @@ export default {
       })
     },
     stopDeletingLayers () {
-      var self = this;
+      var self = this
       this.layerGroupMarkers.eachLayer(function (layer) {
-
-        console.log('stop');
-        layer.off('click');
-
+        console.log('stop')
+        layer.off('click')
       })
       this.layerGroupLines.eachLayer(function (layer) {
-
-        console.log('stop');
-        layer.off('click');
-
+        console.log('stop')
+        layer.off('click')
       })
       this.layerGroupPolygons.eachLayer(function (layer) {
-        console.log('stop');
-        layer.off('click');
-
+        console.log('stop')
+        layer.off('click')
       })
     },
     deleteLayers () {
-      var self = this;
+      var self = this
       this.layerGroupMarkers.eachLayer(function (layer) {
         layer.on('click', function (e) {
-          console.log('deleted');
-          self.layerGroupMarkers.removeLayer(layer);
-          layer.off('click');
+          console.log('deleted')
+          self.layerGroupMarkers.removeLayer(layer)
+          layer.off('click')
         })
       })
       this.layerGroupLines.eachLayer(function (layer) {
         layer.on('click', function (e) {
-          console.log('deleted');
-          self.layerGroupLines.removeLayer(layer);
-          layer.off('click');
+          console.log('deleted')
+          self.layerGroupLines.removeLayer(layer)
+          layer.off('click')
         })
       })
       this.layerGroupPolygons.eachLayer(function (layer) {
         layer.on('click', function (e) {
-          console.log('deleted');
-          self.layerGroupPolygons.removeLayer(layer);
-          layer.off('click');
+          console.log('deleted')
+          self.layerGroupPolygons.removeLayer(layer)
+          layer.off('click')
         })
       })
-
     },
     setCoordinates (lng, lat) {
       if (this.selectPoint == true) {
         // console.log(lng,lat)
-        this.point = lng + "," + lat;
+        this.point = lng + ',' + lat
       }
     },
     /***************************************************Manual Add Functions******************************************************/
@@ -782,28 +774,28 @@ export default {
       this.layerGroupMarkers.addLayer(marker)
       this.point = ''
     },
-    Convert () {
-      var temp = []
-      var lines = this.text.split('\n')
-      for (var i = 0; i < lines.length; i++) {
-        var obj = {
-          'type': '',
-          'coordinates': []
-        }
-        var currentline = lines[i].split(',')
-        obj.type = currentline[0]
-        for (var j = 1; j < currentline.length; j++) {
-          currentline[j] = parseFloat(currentline[j])
-        }
-        if (currentline[0] === 'Point') { for (j = 1; j < currentline.length; j = j + 2) { obj.coordinates.push(currentline[j], currentline[j + 1]) } }
-        if (currentline[0] === 'LineString') { for (j = 1; j < currentline.length; j = j + 2) { obj.coordinates.push([currentline[j], currentline[j + 1]]) } }
-        if (currentline[0] === 'Polygon') { for (j = 1; j < currentline.length; j = j + 2) { temp.push([currentline[j], currentline[j + 1]]) } obj.coordinates.push(temp) }
-        this.myLines.push(obj)
-        this.myLinesString.push(JSON.stringify(obj))
-        console.log(this.myLines)
-      }
-      this.text = ''
-    },
+    // Convert () {
+    //   var temp = []
+    //   var lines = this.text.split('\n')
+    //   for (var i = 0; i < lines.length; i++) {
+    //     var obj = {
+    //       'type': '',
+    //       'coordinates': []
+    //     }
+    //     var currentline = lines[i].split(',')
+    //     obj.type = currentline[0]
+    //     for (var j = 1; j < currentline.length; j++) {
+    //       currentline[j] = parseFloat(currentline[j])
+    //     }
+    //     if (currentline[0] === 'Point') { for (j = 1; j < currentline.length; j = j + 2) { obj.coordinates.push(currentline[j], currentline[j + 1]) } }
+    //     if (currentline[0] === 'LineString') { for (j = 1; j < currentline.length; j = j + 2) { obj.coordinates.push([currentline[j], currentline[j + 1]]) } }
+    //     if (currentline[0] === 'Polygon') { for (j = 1; j < currentline.length; j = j + 2) { temp.push([currentline[j], currentline[j + 1]]) } obj.coordinates.push(temp) }
+    //     this.myLines.push(obj)
+    //     this.myLinesString.push(JSON.stringify(obj))
+    //     console.log(this.myLines)
+    //   }
+    //   this.text = ''
+    // },
     getBaseMap: function () {
       var southWest5to6 = L.latLng(3.776559, 55.986328), northEast5to6 = L.latLng(36.456636, 104.501953), boundSet5to6 = L.latLngBounds(southWest5to6, northEast5to6)
       var southWest7to10 = L.latLng(4.653080, 67.763672), northEast7to10 = L.latLng(29.573457, 89.208984), boundSet7to10 = L.latLngBounds(southWest7to10, northEast7to10)
@@ -811,10 +803,10 @@ export default {
       var southWest16To17 = L.latLng(14.881087, 73.666077), northEast16To17 = L.latLng(15.813396, 74.358215), boundSet16To17 = L.latLngBounds(southWest16To17, northEast16To17)
 
       var baseLayer = L.layerGroup([L.tileLayer(this.localTiles5To6, { maxZoom: 6, minZoom: 5, bounds: boundSet5to6 }),
-      L.tileLayer(this.localTiles7To10, { maxZoom: 10, minZoom: 7, bounds: boundSet7to10 }),
-      L.tileLayer(this.localTiles11To15, { maxZoom: 15, minZoom: 11, bounds: boundSet11To15 }),
-      L.tileLayer(this.localTiles16To17, { maxZoom: 25, maxNativeZoom: 17, minZoom: 16, bounds: boundSet16To17 }),
-      L.tileLayer(this.localTiles18Panaji, { maxZoom: 25, maxNativeZoom: 18, minZoom: 18 })])
+        L.tileLayer(this.localTiles7To10, { maxZoom: 10, minZoom: 7, bounds: boundSet7to10 }),
+        L.tileLayer(this.localTiles11To15, { maxZoom: 15, minZoom: 11, bounds: boundSet11To15 }),
+        L.tileLayer(this.localTiles16To17, { maxZoom: 25, maxNativeZoom: 17, minZoom: 16, bounds: boundSet16To17 }),
+        L.tileLayer(this.localTiles18Panaji, { maxZoom: 25, maxNativeZoom: 18, minZoom: 18 })])
       return baseLayer
     },
     addPolyline () {
@@ -840,7 +832,7 @@ export default {
     addPolygon () {
       var coords = []
       console.log(this.polygonCoords)
-      //console.log(this.polygonCoords.length)
+      // console.log(this.polygonCoords.length)
       var lines = this.polygonCoords.split(' ')
       for (let i = 0; i < lines.length; i++) {
         var cooordinates = []
@@ -862,6 +854,10 @@ export default {
     // ############## Conversion Methods ##################################//
     // ** get data in csv format **//
     getCsvData () {
+      if (this.geoJsonFeatures.length === 0) {
+        return alert('No Geo Elements found on map!')
+      }
+
       const data = this.geoJsonFeatures
       const reqData = data.map(row => ({
         geometry: row.geometry.type,
@@ -903,6 +899,87 @@ export default {
       document.body.appendChild(a)
       a.click()
       document.body.removeChild(a)
+    },
+
+    /** ************   Convert csv text to JSON  ********************/
+    converToJson (csv) {
+      const geoJson = {
+        type: 'FeatureCollection',
+        features: []
+      }
+      const features = geoJson.features
+      // console.log(geoJson);
+      const records = csv.split('\n').splice(1)
+      const regex = /(".*?"|[^",\s]+)(?=\s*,|\s*$)/g
+
+      records.forEach(record => {
+        let data = record.split(regex)
+        data = data.filter(value => {
+          return value !== ',' && value !== ''
+        })
+
+        features.push({
+          type: 'Feature',
+          properties: {},
+          geometry: {
+            type: data[0].replaceAll('"', ''),
+            coordinates: this.parseCoords(data)
+          }
+        })
+      })
+
+      return geoJson
+    },
+
+    /** ************   Parse appropriate coordinates for different geometry  ********************/
+    parseCoords (data) {
+      const type = data[0].replaceAll('"', '')
+      let coords = data[1].replaceAll('"', '').split(',')
+      coords = coords.map(value => parseFloat(value))
+
+      if (type === 'Point') {
+        return coords
+      } else if (type === 'LineString') {
+        coords = this.splitIntoSubArray(coords, 2)
+        return coords
+      } else if (type === 'Polygon') {
+        coords = this.splitIntoSubArray(coords, 2)
+        coords = [coords]
+        return coords
+      }
+    },
+
+    //* *************   function to split 1D array to multi dimensional array  ********************/
+    splitIntoSubArray (arr, count) {
+      const newArray = []
+      while (arr.length > 0) {
+        newArray.push(arr.splice(0, count))
+      }
+      return newArray
+    },
+
+    //* *************   Convert csv text to geojson  ********************/
+    Convert () {
+      if (!this.text) {
+        return alert('Upload a csv file!')
+      }
+      const json = this.converToJson(this.text)
+
+      this.geoJsonText = JSON.stringify(json, null, 2)
+      this.text = ''
+    },
+
+    //* *************   Add csv data to map  ********************/
+    AddToMap () {
+      if (!this.text) {
+        return alert('Upload a csv file!')
+      }
+      const features = this.converToJson(this.text).features
+
+      this.$store.commit('updateGeoElements', features)
+      this.text = ''
+      this.addLayerToMap()
+      this.ShowCsvSection = false
     }
 
   },
