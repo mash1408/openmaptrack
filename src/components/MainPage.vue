@@ -185,9 +185,46 @@
 
         <div class="center-contents absolute-bottom">
           <q-btn
+            class="q-mb-xs customButtonStyle"
+            label="Green"
+            @click="editLines('green');"
+          />
+          <q-btn
+            class="q-mb-xs customButtonStyle"
+            label="Green"
+            @click="editLines('purple');"
+          />
+          <q-btn
             class="q-mb-xs customButtonStyle closeButton"
             label="Close"
-            @click="stopEditingMarkers();showIconSection = false"
+            @click="stopEditingMarkers();showLinesEditSection = false"
+          />
+        </div>
+      </q-card>
+      <!-- Edit Layer-Section Polygons -->
+      <q-card
+        class="customStyleCard "
+        v-if="showPolygonsEditSection"
+      >
+        <div class="center-contents">
+          <h3>Select Category</h3>
+        </div>
+
+        <div class="center-contents absolute-bottom">
+          <q-btn
+            class="q-mb-xs customButtonStyle"
+            label="Green"
+            @click="editPolygons('green');"
+          />
+          <q-btn
+            class="q-mb-xs customButtonStyle"
+            label="Purple"
+            @click="editPolygons('purple');"
+          />
+          <q-btn
+            class="q-mb-xs customButtonStyle closeButton"
+            label="Close"
+            @click="stopEditingMarkers();showPolygonsEditSection = false"
           />
         </div>
       </q-card>
@@ -222,12 +259,12 @@
       <q-btn
         class="customButtonStyle"
         label="Edit Lines"
-        @click="editLines();showEditLinesSection=true"
+        @click="showLinesEditSection=true"
       />
       <q-btn
         class="customButtonStyle"
         label="Edit Polygons"
-        @click="editPolygons();showEditLinesSection=true"
+        @click="showPolygonsEditSection=true"
       />
       <q-btn
         class="customButtonStyle"
@@ -295,7 +332,6 @@
 
 <script>
 import FileReader from './FileReader'
-// import DrawElements from './DrawElements'
 
 export default {
   name: 'app',
@@ -314,6 +350,7 @@ export default {
       showIconSection: false,
       showDeleteLayersSection: false,
       showLinesEditSection: false,
+      showPolygonsEditSection: false,
       polygonCoords: [],
       polylineCoords: [],
       first: false,
@@ -391,8 +428,8 @@ export default {
           rectangle: false,
           circle: false,
           circlemarker: false,
-          polygon: false,
-          polyline: false,
+          polygon: true,
+          polyline: true,
           featureGroup: self.createdGeoElements
         }
       });
@@ -471,13 +508,18 @@ export default {
       var self = this;
       self.drawCursor = new L.Draw.Marker(self.map, self.drawControl.options.marker);
       self.drawCursor.enable()
+      self.drawCursor.setOptions({
+        opacity: 0.1,
+      });
       this.map.on(L.Draw.Event.CREATED, function (e) {
         var type = e.layerType,
           layer = e.layer;
         if (type === 'marker') {
 
         }
+        console.log(e);
         self.layerGroupMarkers.addLayer(layer);
+
         self.addPopupsToMarkers();
         self.map.off(L.Draw.Event.CREATED);
       });
@@ -503,7 +545,7 @@ export default {
       //using a pointer to this object, as this does'nt reference within the on query
       var self = this;
 
-      self.drawCursor = new L.Draw.Polyline(self.map, self.drawControl.options.marker);
+      self.drawCursor = new L.Draw.Polyline(self.map, self.drawControl.options.polyline);
       self.drawCursor.enable();
       this.map.on(L.Draw.Event.CREATED, function (e) {
         var type = e.layerType,
@@ -563,18 +605,22 @@ export default {
     },
 
     /***************************************************Edit/Delete Functions******************************************************/
-    editLines () {
+    editLines (col) {
       this.layerGroupLines.eachLayer(function (layer) {
         layer.on('click', function (e) {
-          console.log(e);
+          layer.setStyle({
+            color: col
+          })
 
         });
       });
     },
-    editPolygons () {
+    editPolygons (col) {
       this.layerGroupPolygons.eachLayer(function (layer) {
         layer.on('click', function (e) {
-          console.log(e);
+          layer.setStyle({
+            color: col
+          })
         });
       });
     },
