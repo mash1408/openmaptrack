@@ -12,17 +12,17 @@
       <q-btn
         class="customButtonStyle"
         label="Draw-Polygon"
-        @click="drawPolygon"
+        @click="this.drawPolygon"
       />
       <q-btn
         class="customButtonStyle"
         label="Draw-Marker"
-        @click="drawMarker"
+        @click="this.drawMarker"
       />
       <q-btn
         class="customButtonStyle"
         label="Draw-Line"
-        @click="drawLine"
+        @click="this.drawLine"
       />
       <q-btn
         class="customButtonStyle"
@@ -290,10 +290,12 @@
     </div>
 
   </q-page>
+
 </template>
 
 <script>
 import FileReader from './FileReader'
+// import DrawElements from './DrawElements'
 
 export default {
   name: 'app',
@@ -331,7 +333,8 @@ export default {
     }
   },
   components: {
-    FileReader
+    FileReader,
+
   },
 
   computed: {
@@ -416,6 +419,7 @@ export default {
       var allFeatures = lines.features.concat(markers.features.concat(polygons.features));
       console.log(JSON.stringify(allFeatures))
       this.$store.commit('addGeoElements', allFeatures);
+      this.addLayerToMap();
     },
     reset () {
       this.layerGroupLines.clearLayers();
@@ -433,7 +437,7 @@ export default {
       return baseLayer;
     },
     addLayerToMap () {
-      this.baseLayerGroup.addLayer(self.getGeoJsonLayer());
+      this.baseLayerGroup.addLayer(this.getGeoJsonLayer());
     },
     addPopupsToLines () {
       var self = this
@@ -557,6 +561,7 @@ export default {
       });
 
     },
+
     /***************************************************Edit/Delete Functions******************************************************/
     editLines () {
       this.layerGroupLines.eachLayer(function (layer) {
@@ -840,7 +845,6 @@ export default {
   }
 }
 </script>
-
 <style>
 #mapCanvas {
   z-index: 100;
@@ -879,3 +883,4 @@ body {
   text-align: center;
 }
 </style>
+
