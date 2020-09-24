@@ -114,20 +114,79 @@
 
         </q-card-section>
       </q-card>
+      <!-- Delete layer Section -->
       <q-card
-        class="customStyleCard"
+        class="q-mt-lg customStyleCard"
         v-if="showDeleteLayersSection"
       >
-        <q-card-section class="q-gutter-md center-contents">
-          <h4>Click on element to delete</h4>
+        <div class="center-contents">
+          <h4>Click On Items You Wish To Delete</h4>
+
+        </div>
+        <div class="absolute-bottom center-contents">
+          <p class="q-ml-xl absolute-left">Click cancel to <b>STOP</b></p>
           <q-btn
-            class="customButtonStyle"
+            class="q-mb-xs customButtonStyle"
             label="Cancel"
             @click="stopDeletingLayers();showDeleteLayersSection = false"
           />
-        </q-card-section>
-      </q-card>
 
+        </div>
+      </q-card>
+      <!-- Edit Layer Section-Markers -->
+      <q-card
+        class="customStyleCard "
+        v-if="showIconSection"
+      >
+        <div class="center-contents">
+          <h3>Select Category</h3>
+        </div>
+
+        <div class="center-contents absolute-bottom">
+          <q-btn
+            class="q-ml-xs q-mb-xs customButtonStyle"
+            label="Car Parking"
+            @click='editCar'
+          />
+          <q-btn
+            class="q-ml-xs q-mb-xs customButtonStyle"
+            label="Bus Parking"
+            @click='editBus'
+          />
+          <q-btn
+            class="q-ml-xs q-mb-xs customButtonStyle"
+            label="Truck Parking"
+            @click='editTruck'
+          />
+          <q-btn
+            class=" q-ml-xs q-mb-xs customButtonStyle"
+            label="Taxi Parking"
+            @click='editTaxi'
+          />
+          <q-btn
+            class="q-mb-xs customButtonStyle closeButton"
+            label="Close"
+            @click="stopEditingMarkers();showIconSection = false"
+          />
+        </div>
+      </q-card>
+      <!-- Edit Layer-Section Lines -->
+      <q-card
+        class="customStyleCard "
+        v-if="showLinesEditSection"
+      >
+        <div class="center-contents">
+          <h3>Select Category</h3>
+        </div>
+
+        <div class="center-contents absolute-bottom">
+          <q-btn
+            class="q-mb-xs customButtonStyle closeButton"
+            label="Close"
+            @click="stopEditingMarkers();showIconSection = false"
+          />
+        </div>
+      </q-card>
       <!-- <q-card>
         <div>
           <h3>Hello</h3>
@@ -158,29 +217,16 @@
       />
       <q-btn
         class="customButtonStyle"
+        label="Edit Lines"
+        @click="editLines();showEditLinesSection=true"
+      />
+      <q-btn
+        class="customButtonStyle"
         label="Delete GeoElement"
         @click="deleteLayers();showDeleteLayersSection=true"
       />
+
       <q-card
-        class="customStyleCard center-contents padding-class"
-        v-if="showIconSection"
-      >
-        <div class="center-contents">
-          <h4 class="header-margin">Select Category</h4>
-          <div class="header-margin">
-          <q-btn class="customButtonStyle button-margin" label="Car Parking" @click='editCar' />
-          <q-btn class="customButtonStyle button-margin" label="Bus Parking" @click='editBus' />
-          <q-btn class="customButtonStyle button-margin" label="Truck Parking" @click='editTruck' />
-          <q-btn class="customButtonStyle button-margin" label="Taxi Parking" @click='editTaxi' />
-          </div>
-        </div>
-        <q-btn
-            class="customButtonStyle"
-            label="Close"
-            @click="stopEditingMarkers();showIconSection = false"
-          />
-      </q-card>
-            <q-card
         class="q-my-md bg-white"
         v-if="showPolylineSection"
       >
@@ -256,6 +302,7 @@ export default {
       showPolylineSection: false,
       showIconSection: false,
       showDeleteLayersSection: false,
+      showLinesEditSection: false,
       polygonCoords: [],
       polylineCoords: [],
       first: false,
@@ -521,6 +568,13 @@ export default {
 
     },
     /***************************************************Edit/Delete Functions******************************************************/
+    editLines () {
+      this.layerGroupLines.eachLayer(function (layer) {
+        layer.on('click', function (e) {
+          console.log(e);
+        });
+      });
+    },
     editCar () {
       this.layerGroupMarkers.eachLayer(function (layer) {
         layer.on('click', function (e) {
@@ -557,7 +611,7 @@ export default {
       });
       return;
     },
-    stopEditingMarkers() {
+    stopEditingMarkers () {
       var self = this;
       this.layerGroupMarkers.eachLayer(function (layer) {
 
@@ -818,26 +872,16 @@ body {
 }
 
 .customStyleCard {
-  width: 35%;
-  position: absolute;
-  margin-top: 10%;
-  float: left;
+  top: 20px;
+  height: 100px;
   background: rgba(210, 146, 133, 0.7);
 }
 
-.button-margin{
-  margin: 4px;
+.closeButton {
+  float: right;
 }
 
-.header-margin{
-  margin: 5px;
-}
-
-.padding-class{
-  padding-bottom: 10px;
-}
-
-.center-contents{
-  text-align:center;
+.center-contents {
+  text-align: center;
 }
 </style>
