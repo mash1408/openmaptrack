@@ -231,10 +231,10 @@
       <q-card
         class="q-my-md bg-white"
         v-if="ShowCsvSection"
-      >   
+      >
         <q-card-section class="q-gutter-sm row items-start">
           <div id="app">
-           <FileReader @load="text=$event"></FileReader>
+            <FileReader @load="text=$event"></FileReader>
             <textarea
               style="resize:none"
               rows="13"
@@ -382,32 +382,54 @@
           />
         </div>
       </q-card>
-    <!--Legend Section-->
-    <q-btn-dropdown label="Legends" class="legend customButtonStyle" dropdown-icon="change_history">
-      <q-list>
-        <q-item 
-        v-for="list in legendData"
-        :key="list.label">
-         <q-item-section><img class="icon" :src="list.source"></q-item-section>
-          <q-item-section >
-            <q-item-label>{{list.label}}</q-item-label>
-          </q-item-section>
-        </q-item>
-        <q-item >
-         <q-item-section><q-avatar square bordered color="green" class="icon"/></q-item-section>
-          <q-item-section >
-            <q-item-label>Unknown</q-item-label>
-          </q-item-section>
-        </q-item>
-        <q-item >
-         <q-item-section><q-avatar square bordered color="purple" class="icon"/></q-item-section>
-          <q-item-section >
-            <q-item-label>Unknown</q-item-label>
-          </q-item-section>
-        </q-item>
-      </q-list>
-    </q-btn-dropdown>
-    <!--legend end--->
+      <!--Legend Section-->
+      <q-btn-dropdown
+        label="Legends"
+        class="legend customButtonStyle"
+        dropdown-icon="change_history"
+      >
+        <q-list>
+          <q-item
+            v-for="list in legendData"
+            :key="list.label"
+          >
+            <q-item-section><img
+                class="icon"
+                :src="list.source"
+              ></q-item-section>
+            <q-item-section>
+              <q-item-label>{{list.label}}</q-item-label>
+            </q-item-section>
+          </q-item>
+          <q-item>
+            <q-item-section>
+              <q-avatar
+                square
+                bordered
+                color="green"
+                class="icon"
+              />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>Unknown</q-item-label>
+            </q-item-section>
+          </q-item>
+          <q-item>
+            <q-item-section>
+              <q-avatar
+                square
+                bordered
+                color="purple"
+                class="icon"
+              />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>Unknown</q-item-label>
+            </q-item-section>
+          </q-item>
+        </q-list>
+      </q-btn-dropdown>
+      <!--legend end--->
     </div>
     <!-- Edit/Delete and Reset buttons -->
     <div
@@ -525,14 +547,13 @@ export default {
       showPolygonsEditSection: false,
       polygonCoords: [],
       polylineCoords: [],
-      first: false,
-      geoElementMarkers: [],
-      geoElementLines: [],
-      geoElementPolygons: [],
       baseLayerGroup: new L.layerGroup(),
       layerGroupLines: new L.layerGroup(),
       layerGroupMarkers: new L.layerGroup(),
       layerGroupPolygons: new L.layerGroup(),
+      layerGroupRectangles: new L.layerGroup(),
+      layerGroupCircles: new L.layerGroup(),
+      layerGroupCircleMarkers: new L.layerGroup(),
       createdGeoElements: "",
       popUpOptions: {
         autoPan: true,
@@ -590,19 +611,49 @@ export default {
 
       L.control.scale({ metric: true, imperial: false }).addTo(self.map)
       L.control.attribution({ prefix: '<a href="http://leafletjs.com" title="A JS library for interactive maps" target="_blank">Leaflet</a> | 2020 © <a href="https://freethink.co.in/" target="_blank">freeTHINK(India)</a> | © <a href="http://osm.org/copyright" title="OpenStreetMap" target="_blank">OpenStreetMap</a>' }).addTo(self.map)
-      self.map.on('click', function (e) {
-        self.setCoordinates(e.latlng.lng, e.latlng.lat)
-      })
+
       this.createdGeoElements = new L.FeatureGroup()
       this.drawControl = new L.Control.Draw({
         position: 'bottomright',
         draw: {
-          rectangle: false,
-          circle: false,
-          circlemarker: false,
-          polygon: true,
-          polyline: true,
-          featureGroup: self.createdGeoElements
+
+          circlemarker: true,
+          rectangle: true,
+          circle: true,
+          toolbar: {
+            buttons: {
+              polygon: 'Draw an awesome polygon'
+            }
+          },
+
+          circle: {
+            shapeOptions: {
+              color: 'steelblue'
+            },
+          },
+          marker: {
+
+          },
+          polyline: {
+            allowIntersection: false,
+            showLength: true,
+            metric: ['km', 'm'],
+            drawError: {
+              color: '#b00b00',
+              timeout: 2500
+            },
+            shapeOptions: {
+              color: 'red'
+            },
+          },
+          polygon: {
+            showArea: true,
+            showLength: true,
+            metric: ['km', 'm'],
+            shapeOptions: {
+              color: 'red'
+            },
+          }
         }
       });
       self.map.addControl(this.drawControl);
@@ -611,28 +662,69 @@ export default {
         self.isleftDrawerOpen = true;
         var layerType = e.layerType;
         var layer = e.layer;
-        self.createdGeoElements.addLayer(layer);
-        self.map.addLayer(self.createdGeoElements);
+        if (layerType === 'marker') {
+          self.drawMarker();
+          self.layerGroupMarkers.addLayer(layer);
+          self.addPopupsToMarkers(layer);
+        }
+        else if (layerType === 'polyline') {
+          self.drawLine();
+          self.layerGroupLines.addLayer(layer);
+          self.addPopupsToLines(layer);
+        }
+        else if (layerType === 'polygon') {
+          self.drawPolygon();
+          self.layerGroupPolygons.addLayer(layer);
+          self.addPopupsToPolygons(layer);
+        }
+        else if (layerType === 'rectangle') {
+          self.drawRectangle();
+          console.log('ping')
+          self.layerGroupRectangles.addLayer(layer);
+          console.log(JSON.stringify(self.layerGroupRectangles.toGeoJSON(), null, 2))
+          self.addPopupsToRectangles(layer);
+        }
+        else if (layerType === 'circle') {
+          self.drawCircle();
+          self.layerGroupCircles.addLayer(layer);
+          self.addPopupsToCircles(layer);
+        }
+        else if (layerType === 'circlemarker') {
+          self.drawCircleMarkers();
+          self.layerGroupCircleMarkers.addLayer(layer);
+          self.addPopupsToCircleMarkers(layer);
+        }
       });
+
       this.baseLayerGroup.addTo(this.map);
 
-
-
+      this.layerGroupCircles.addTo(this.map)
+      this.layerGroupRectangles.addTo(this.map)
       this.layerGroupLines.addTo(this.map);
       this.layerGroupMarkers.addTo(this.map);
       this.layerGroupPolygons.addTo(this.map);
+      this.layerGroupCircleMarkers.addTo(this.map)
 
       //Render the geoJson data onto the map
       //this.addLayerToMap();
     },
+    // Create additional Control placeholders
+
+
     /***************************************************GeoJson-related Functions******************************************************/
     save () {
       var lines = this.layerGroupLines.toGeoJSON();
-
+      var circles = this.layerGroupCircles.toGeoJSON();
+      var circleMarkers = this.layerGroupCircleMarkers.toGeoJSON();
+      var rectangles = this.layerGroupRectangles.toGeoJSON()
       var markers = this.layerGroupMarkers.toGeoJSON();
       var polygons = this.layerGroupPolygons.toGeoJSON();
-      var allFeatures = lines.features.concat(markers.features.concat(polygons.features));
-      console.log(JSON.stringify(allFeatures))
+      var allFeatures = lines.features.concat(markers.features.concat
+        (polygons.features.concat
+          (circles.features.concat
+            (rectangles.features.concat(circleMarkers.features)))));
+
+      console.log(JSON.stringify(allFeatures, null, 2))
       this.$store.commit('addGeoElements', allFeatures);
       // this.addLayerToMap();
     },
@@ -640,6 +732,8 @@ export default {
       this.layerGroupLines.clearLayers()
       this.layerGroupMarkers.clearLayers()
       this.layerGroupPolygons.clearLayers()
+      this.layerGroupCircles.clearLayers()
+      this.layerGroupRectangles.clearLayers()
     },
     getGeoJsonLayer () {
       var baseLayer = L.geoJSON(this.geoJson, {
@@ -673,6 +767,15 @@ export default {
       })
 
     },
+    addPopupsToCircleMarkers (layer) {
+      var self = this
+      layer.bindPopup('Markers', self.popUpOptions);
+      //no need to turn off the event as it is supposed to be on till the end
+      layer.on('mouseover', function (e) {
+        layer.openPopup();
+      })
+
+    },
     addPopupsToMarkers (layer) {
       var self = this
       layer.bindPopup('Markers', self.popUpOptions);
@@ -682,97 +785,76 @@ export default {
       })
 
     },
+    addPopupsToRectangles (layer) {
+      var self = this
+      layer.bindPopup('Rectangles', self.popUpOptions);
+      //no need to turn off the event as it is supposed to be on till the end
+      layer.on('mouseover', function (e) {
+        layer.openPopup();
+      })
+
+    },
+    addPopupsToCircles (layer) {
+      var self = this
+      layer.bindPopup('circles', self.popUpOptions);
+      //no need to turn off the event as it is supposed to be on till the end
+      layer.on('mouseover', function (e) {
+        layer.openPopup();
+      })
+
+    },
     /***************************************************Draw Functions******************************************************/
     drawMarker () {
-      // using a pointer to this object, as this does'nt reference within the on query
-      var self = this
-      self.drawCursor = new L.Draw.Marker(self.map, self.drawControl.options.marker)
-      self.drawCursor.enable()
-      this.map.on(L.Draw.Event.CREATED, function (e) {
-        var type = e.layerType,
-          layer = e.layer;
-
-        console.log(e);
-        self.layerGroupMarkers.addLayer(layer);
-        if (type === 'marker') {
-          self.addPopupsToMarkers(layer);
-        }
-      })
-      this.map.on('mousedown', function (e) {
-        if (self.geoElementMarkers.length === 0) {
-          self.geoElementMarkers.push(e.latlng.lng)
-          self.geoElementMarkers.push(e.latlng.lat)
-        } else {
-          self.geoElementMarkers[0] = e.latlng.lng
-          self.geoElementMarkers[1] = e.latlng.lat
-        }
-        // self.geoElementMarker.properties.id = this.count;
-        // self.count += 1;
-        //putting off the mousedown event listener from map
-        //since it is to be ran once only(one click for marker)
-        self.map.off('mousedown');
+      //using a pointer to this object, as this does'nt reference within the on query
+      var self = this;
+      this.map.on("draw:drawstop", function (e) {
+        console.log('Draw end marker');
+        self.map.off("draw:drawstop");
       })
 
     },
     drawLine () {
-      // using a pointer to this object, as this does'nt reference within the on query
-      var self = this
-
-      self.drawCursor = new L.Draw.Polyline(self.map, self.drawControl.options.polyline);
-      self.drawCursor.enable();
-      this.map.on(L.Draw.Event.CREATED, function (e) {
-        var type = e.layerType,
-          layer = e.layer;
-
-        self.layerGroupLines.addLayer(layer);
-        if (type === 'polyline') {
-          self.addPopupsToLines(layer);
-        }
-        self.map.off('mousedown');
-        self.map.off(L.Draw.Event.CREATED);
+      //using a pointer to this object, as this does'nt reference within the on query
+      var self = this;
+      this.map.on("draw:drawstop", function (e) {
+        console.log("draw end line")
+        self.map.off("draw:drawstop");
       });
-      this.map.on('mousedown', function (e) {
-        self.geoElementLines.push([e.latlng.lng, e.latlng.lat]);
-        console.log(e);
 
-      })
     },
     drawPolygon () {
-      // using a pointer to this object, as this does'nt reference within the on query
-      var self = this
-      var coordinates = []
-      var end = false
-      this.map.on('mousedown', function (e) {
-        // storing the points locally in the coordinates variable
-        coordinates.push([e.latlng.lng, e.latlng.lat])
-        // displaying the points in tabular form
-        console.table(coordinates)
-        console.log(e)
-      })
-      self.drawCursor = new L.Draw.Polygon(self.map, self.drawControl.options.marker)
-      self.drawCursor.enable()
-      this.map.on(L.Draw.Event.CREATED, function (e) {
-        var type = e.layerType,
-          layer = e.layer;
+      //using a pointer to this object, as this does'nt reference within the on query
+      var self = this;
+      this.map.on("draw:drawstop", function (e) {
+        console.log('draw end polygon')
+        self.map.off("draw:drawstop");
+      });
 
-        self.layerGroupPolygons.addLayer(layer);
-        // Ensure that last point's coordinates are same as first
-        coordinates.push(coordinates[0]);
+    },
+    drawCircle () {
+      //using a pointer to this object, as this does'nt reference within the on query
+      var self = this;
+      this.map.on("draw:drawstop", function (e) {
+        console.log('draw end circle')
+        self.map.off("draw:drawstop");
+      });
 
-        if (type === 'polygon') {
-          self.addPopupsToPolygons(layer);
-        }
-        self.map.off(L.Draw.Event.CREATED);
-
-        end = true;
-        // just to crosscheck before pushing into the geoElement
-        console.table(self.geoElementPolygons);
-        self.geoElementPolygons.push(coordinates);
-        //flushing the existing data 
-        self.geoElementPolygons.splice(0, self.geoElementPolygons.length);
-        console.log('end');
-        self.map.off('mousedown');
-        return;
+    },
+    drawCircleMarkers () {
+      //using a pointer to this object, as this does'nt reference within the on query
+      var self = this;
+      this.map.on("draw:drawstop", function (e) {
+        console.log('draw end circle')
+        self.map.off("draw:drawstop");
+      });
+      console.log(' stop draw circle marker')
+    },
+    drawRectangle () {
+      //using a pointer to this object, as this does'nt reference within the on query
+      var self = this;
+      this.map.on("draw:drawstop", function (e) {
+        console.log('draw end rectangle')
+        self.map.off("draw:drawstop");
       });
 
     },
@@ -800,7 +882,8 @@ export default {
     },
     updateMarkersIcon (icon, layer) {
       var feature = layer.feature = layer.feature || {};
-      feature.properties = feature.properties || {};
+      feature.type = "Feature"
+      feature["properties"] = feature["properties"] || {};
       feature.properties["icon"] = icon;
     },
     editCar () {
@@ -960,10 +1043,10 @@ export default {
       var southWest16To17 = L.latLng(14.881087, 73.666077), northEast16To17 = L.latLng(15.813396, 74.358215), boundSet16To17 = L.latLngBounds(southWest16To17, northEast16To17)
 
       var baseLayer = L.layerGroup([L.tileLayer(this.localTiles5To6, { maxZoom: 6, minZoom: 5, bounds: boundSet5to6 }),
-        L.tileLayer(this.localTiles7To10, { maxZoom: 10, minZoom: 7, bounds: boundSet7to10 }),
-        L.tileLayer(this.localTiles11To15, { maxZoom: 15, minZoom: 11, bounds: boundSet11To15 }),
-        L.tileLayer(this.localTiles16To17, { maxZoom: 25, maxNativeZoom: 17, minZoom: 16, bounds: boundSet16To17 }),
-        L.tileLayer(this.localTiles18Panaji, { maxZoom: 25, maxNativeZoom: 18, minZoom: 18 })])
+      L.tileLayer(this.localTiles7To10, { maxZoom: 10, minZoom: 7, bounds: boundSet7to10 }),
+      L.tileLayer(this.localTiles11To15, { maxZoom: 15, minZoom: 11, bounds: boundSet11To15 }),
+      L.tileLayer(this.localTiles16To17, { maxZoom: 25, maxNativeZoom: 17, minZoom: 16, bounds: boundSet16To17 }),
+      L.tileLayer(this.localTiles18Panaji, { maxZoom: 25, maxNativeZoom: 18, minZoom: 18 })])
       return baseLayer
     },
     addPolyline () {
@@ -1165,18 +1248,20 @@ body {
 </style>
 
 <style lang="stylus" scoped>
-.legend{
-  position:absolute;
-  left:0px;
-  margin-top:120px;
-  width:160px;
+.legend {
+  position: absolute;
+  left: 0px;
+  margin-top: 120px;
+  width: 160px;
 }
-.legendlist{
+
+.legendlist {
   background: rgba(210, 146, 133, 0.7);
 }
-.icon{
-  height:30px;
-  width:30px;
+
+.icon {
+  height: 30px;
+  width: 30px;
 }
 
 .customButtonStyle {
