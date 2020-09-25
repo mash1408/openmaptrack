@@ -148,22 +148,22 @@
 
         <div class="center-contents absolute-bottom">
           <q-btn
-            class="q-ml-xs q-mb-xs customButtonStyle"
+            class="q-ml-xs q-mb-xs q-mr-xs customButtonStyle"
             label="Car Parking"
             @click='editCar'
           />
           <q-btn
-            class="q-ml-xs q-mb-xs customButtonStyle"
+            class="q-ml-xs q-mb-xs q-mr-xs customButtonStyle"
             label="Bus Parking"
             @click='editBus'
           />
           <q-btn
-            class="q-ml-xs q-mb-xs customButtonStyle"
+            class="q-ml-xs q-mb-xs q-mr-xs customButtonStyle"
             label="Truck Parking"
             @click='editTruck'
           />
           <q-btn
-            class=" q-ml-xs q-mb-xs customButtonStyle"
+            class=" q-ml-xs q-mb-xs q-mr-xs customButtonStyle"
             label="Taxi Parking"
             @click='editTaxi'
           />
@@ -185,19 +185,19 @@
 
         <div class="center-contents absolute-bottom">
           <q-btn
-            class="q-mb-xs customButtonStyle"
+            class="q-mb-xs q-ml-xs q-mr-xs customButtonStyle"
             label="Green"
             @click="editLines('green');"
           />
           <q-btn
-            class="q-mb-xs customButtonStyle"
-            label="Green"
+            class="q-mb-xs q-ml-xs q-mr-xs customButtonStyle"
+            label="Purple"
             @click="editLines('purple');"
           />
           <q-btn
             class="q-mb-xs customButtonStyle closeButton"
             label="Close"
-            @click="stopEditingMarkers();showLinesEditSection = false"
+            @click="stopEditingLines();showLinesEditSection = false"
           />
         </div>
       </q-card>
@@ -212,19 +212,19 @@
 
         <div class="center-contents absolute-bottom">
           <q-btn
-            class="q-mb-xs customButtonStyle"
+            class="q-mb-xs q-ml-xs q-mr-xs customButtonStyle"
             label="Green"
             @click="editPolygons('green');"
           />
           <q-btn
-            class="q-mb-xs customButtonStyle"
+            class="q-mb-xs q-ml-xs q-mr-xs customButtonStyle"
             label="Purple"
             @click="editPolygons('purple');"
           />
           <q-btn
             class="q-mb-xs customButtonStyle closeButton"
             label="Close"
-            @click="stopEditingMarkers();showPolygonsEditSection = false"
+            @click="stopEditingPolygons();showPolygonsEditSection = false"
           />
         </div>
       </q-card>
@@ -457,20 +457,26 @@ export default {
         self.map.addLayer(self.createdGeoElements);
       });
       this.baseLayerGroup.addTo(this.map);
+
+
+
       this.layerGroupLines.addTo(this.map);
       this.layerGroupMarkers.addTo(this.map);
       this.layerGroupPolygons.addTo(this.map);
+
       //Render the geoJson data onto the map
       //this.addLayerToMap();
     },
+    /***************************************************GeoJson-related Functions******************************************************/
     save () {
       var lines = this.layerGroupLines.toGeoJSON();
+
       var markers = this.layerGroupMarkers.toGeoJSON();
       var polygons = this.layerGroupPolygons.toGeoJSON();
       var allFeatures = lines.features.concat(markers.features.concat(polygons.features));
       console.log(JSON.stringify(allFeatures))
       this.$store.commit('addGeoElements', allFeatures);
-      this.addLayerToMap();
+      // this.addLayerToMap();
     },
     reset () {
       this.layerGroupLines.clearLayers();
@@ -479,9 +485,9 @@ export default {
     },
     getGeoJsonLayer () {
       var baseLayer = L.geoJSON(this.geoJson, {
-        style: function (feature) {
-          return { color: 'yellow' };// change the style properties here
-        },
+        // style: function (feature) {
+        //   return { color: 'yellow' };// change the style properties here
+        // },
       }).bindPopup(function (layer) {
         return 'layer';
       });
@@ -490,55 +496,51 @@ export default {
     addLayerToMap () {
       this.baseLayerGroup.addLayer(this.getGeoJsonLayer());
     },
-    addPopupsToLines () {
+    /***************************************************Popup Functions******************************************************/
+    addPopupsToLines (layer) {
       var self = this
-      this.layerGroupLines.eachLayer(function (layer) {
-        layer.bindPopup('Lines', self.popUpOptions);
-        layer.on('mouseover', function (e) {
-          layer.openPopup();
-        })
-      });
+      layer.bindPopup('Lines', self.popUpOptions);
+      //no need to turn off the event as it is supposed to be on till the end
+      layer.on('mouseover', function (e) {
+        layer.openPopup();
+      })
+
     },
-    addPopupsToPolygons () {
+    addPopupsToPolygons (layer) {
       var self = this
-      this.layerGroupPolygons.eachLayer(function (layer) {
-        layer.bindPopup('Polygons', self.popUpOptions);
-        layer.on('mouseover', function (e) {
-          layer.openPopup();
-        })
-      });
+      layer.bindPopup('Polygons', self.popUpOptions);
+      //no need to turn off the event as it is supposed to be on till the end
+      layer.on('mouseover', function (e) {
+        layer.openPopup();
+      })
+
     },
-    addPopupsToMarkers () {
+    addPopupsToMarkers (layer) {
       var self = this
-      this.layerGroupMarkers.eachLayer(function (layer) {
-        layer.bindPopup('Markers', self.popUpOptions);
-        layer.on('mouseover', function (e) {
-          layer.openPopup();
-        })
-      });
+      layer.bindPopup('Markers', self.popUpOptions);
+      //no need to turn off the event as it is supposed to be on till the end
+      layer.on('mouseover', function (e) {
+        layer.openPopup();
+      })
+
     },
+    /***************************************************Draw Functions******************************************************/
     drawMarker () {
       //using a pointer to this object, as this does'nt reference within the on query
       var self = this;
       self.drawCursor = new L.Draw.Marker(self.map, self.drawControl.options.marker);
       self.drawCursor.enable()
-      self.drawCursor.setOptions({
-        opacity: 0.1,
-      });
       this.map.on(L.Draw.Event.CREATED, function (e) {
         var type = e.layerType,
           layer = e.layer;
-        if (type === 'marker') {
 
-        }
         console.log(e);
         self.layerGroupMarkers.addLayer(layer);
-
-        self.addPopupsToMarkers();
-        self.map.off(L.Draw.Event.CREATED);
-      });
+        if (type === 'marker') {
+          self.addPopupsToMarkers(layer);
+        }
+      })
       this.map.on('mousedown', function (e) {
-
         if (self.geoElementMarkers.length === 0) {
           self.geoElementMarkers.push(e.latlng.lng);
           self.geoElementMarkers.push(e.latlng.lat);
@@ -552,7 +554,7 @@ export default {
         //putting off the mousedown event listener from map
         //since it is to be ran once only(one click for marker)
         self.map.off('mousedown');
-      });
+      })
 
     },
     drawLine () {
@@ -564,17 +566,18 @@ export default {
       this.map.on(L.Draw.Event.CREATED, function (e) {
         var type = e.layerType,
           layer = e.layer;
-        if (type === 'polyline') {
 
-        }
         self.layerGroupLines.addLayer(layer);
-        self.addPopupsToLines();
+        if (type === 'polyline') {
+          self.addPopupsToLines(layer);
+        }
+        self.map.off('mousedown');
         self.map.off(L.Draw.Event.CREATED);
       });
       this.map.on('mousedown', function (e) {
         self.geoElementLines.push([e.latlng.lng, e.latlng.lat]);
         console.log(e);
-        self.map.off('mousedown');
+
       })
 
     },
@@ -596,21 +599,22 @@ export default {
       this.map.on(L.Draw.Event.CREATED, function (e) {
         var type = e.layerType,
           layer = e.layer;
-        if (type === 'polygon') {
-        }
+
         self.layerGroupPolygons.addLayer(layer);
         // Ensure that last point's coordinates are same as first
         coordinates.push(coordinates[0]);
-        self.geoElementPolygons.push(coordinates);
+
+        if (type === 'polygon') {
+          self.addPopupsToPolygons(layer);
+        }
         self.map.off(L.Draw.Event.CREATED);
-        self.addPopupsToPolygons();
+
         end = true;
-
-
-        // just to crosscheck before pushing into the geoElement GeoJson
+        // just to crosscheck before pushing into the geoElement
         console.table(self.geoElementPolygons);
+        self.geoElementPolygons.push(coordinates);
         //flushing the existing data 
-        self.geoElementPolygons.splice(0, self.geoElementPolygon.geometry.coordinates.length);
+        self.geoElementPolygons.splice(0, self.geoElementPolygons.length);
         console.log('end');
         self.map.off('mousedown');
         return;
@@ -619,6 +623,7 @@ export default {
     },
 
     /***************************************************Edit/Delete Functions******************************************************/
+
     editLines (col) {
       this.layerGroupLines.eachLayer(function (layer) {
         layer.on('click', function (e) {
@@ -638,38 +643,55 @@ export default {
         });
       });
     },
+    updateMarkersIcon (icon, layer) {
+      var feature = layer.feature = layer.feature || {};
+      feature.properties = feature.properties || {};
+      feature.properties["icon"] = icon;
+    },
     editCar () {
+      var self = this
       this.layerGroupMarkers.eachLayer(function (layer) {
         layer.on('click', function (e) {
           console.log(e);
-          e.target._icon.setAttribute("src", "https://image.flaticon.com/icons/png/512/51/51778.png")
+          var icon = "https://image.flaticon.com/icons/png/512/51/51778.png"
+          self.updateMarkersIcon(icon, layer)
+          e.target._icon.setAttribute("src", icon)
         });
       });
       return;
     },
     editTruck () {
+      var self = this
       this.layerGroupMarkers.eachLayer(function (layer) {
         layer.on('click', function (e) {
           console.log(e);
-          e.target._icon.setAttribute("src", "https://www.iconfinder.com/data/icons/eldorado-transport/40/truck_1-512.png")
+          var icon = "https://www.iconfinder.com/data/icons/eldorado-transport/40/truck_1-512.png"
+          self.updateMarkersIcon(icon, layer)
+          e.target._icon.setAttribute("src", icon)
         });
       });
       return;
     },
     editBus () {
+      var self = this
       this.layerGroupMarkers.eachLayer(function (layer) {
         layer.on('click', function (e) {
           console.log(e);
-          e.target._icon.setAttribute("src", "https://cdn.iconscout.com/icon/premium/png-256-thumb/bus-1734816-1471755.png")
+          var icon = "https://cdn.iconscout.com/icon/premium/png-256-thumb/bus-1734816-1471755.png"
+          self.updateMarkersIcon(icon, layer)
+          e.target._icon.setAttribute("src", icon)
         });
       });
       return;
     },
     editTaxi () {
+      var self = this
       this.layerGroupMarkers.eachLayer(function (layer) {
         layer.on('click', function (e) {
           console.log(e);
-          e.target._icon.setAttribute("src", "https://www.iconfinder.com/data/icons/car-11/100/taxi3-512.png")
+          var icon = "https://www.iconfinder.com/data/icons/car-11/100/taxi3-512.png"
+          self.updateMarkersIcon(icon, layer)
+          e.target._icon.setAttribute("src", icon)
         });
       });
       return;
@@ -678,7 +700,25 @@ export default {
       var self = this;
       this.layerGroupMarkers.eachLayer(function (layer) {
 
-        console.log('stop');
+        console.log('Markers stop');
+        layer.off('click');
+
+      })
+    },
+    stopEditingPolygons () {
+      var self = this;
+      this.layerGroupPolygons.eachLayer(function (layer) {
+
+        console.log('Polygons stop');
+        layer.off('click');
+
+      })
+    },
+    stopEditingLines () {
+      var self = this;
+      this.layerGroupLines.eachLayer(function (layer) {
+
+        console.log('Lines stop');
         layer.off('click');
 
       })
@@ -734,49 +774,14 @@ export default {
         this.point = lng + "," + lat;
       }
     },
-
-    Add () {
-      var lin = this.myLines
-      L.geoJSON(lin).addTo(this.map)
-    },
-
-
+    /***************************************************Manual Add Functions******************************************************/
     AddPoint () {
-      var lines = this.point.split('\n')
-      for (var i = 0; i < lines.length; i++) {
-        var obj = {
-          'type': '',
-          'coordinates': []
-        }
-        var currentline = lines[i].split(',')
-        obj.type = 'Point'
-        for (var j = 0; j < currentline.length; j++) {
-          currentline[j] = parseFloat(currentline[j])
-        }
-        for (j = 0; j < currentline.length; j = j + 2) {
-          obj.coordinates.push(currentline[j], currentline[j + 1])
-        }
-        this.myLines = []
-        this.myLines.push(obj)
-        this.myLinesString.push(JSON.stringify(obj))
-        console.log(this.myLines)
-      }
-      this.text = ''
-      this.Add();
-    },
 
-    Add () {
-      var lin = this.myLines
-      console.log(lin[0].coordinates[0])
-      console.log(lin[0].coordinates[1])
-      for (var i = 0; i < lin.length; i++) {
-        var lng = lin[i].coordinates[0]
-        var lat = lin[i].coordinates[1]
-        L.marker([lng, lat]).addTo(this.map);
-      }
-      // L.geoJSON(lin).addTo(this.map)
+      var coords = this.point.split(',')
+      var marker = L.marker([coords[0], coords[1]])
+      this.layerGroupMarkers.addLayer(marker)
+      this.point = ''
     },
-
     Convert () {
       var temp = []
       var lines = this.text.split('\n')
@@ -799,7 +804,6 @@ export default {
       }
       this.text = ''
     },
-
     getBaseMap: function () {
       var southWest5to6 = L.latLng(3.776559, 55.986328), northEast5to6 = L.latLng(36.456636, 104.501953), boundSet5to6 = L.latLngBounds(southWest5to6, northEast5to6)
       var southWest7to10 = L.latLng(4.653080, 67.763672), northEast7to10 = L.latLng(29.573457, 89.208984), boundSet7to10 = L.latLngBounds(southWest7to10, northEast7to10)
@@ -830,7 +834,8 @@ export default {
         }
       }
       console.log(coords)
-      var polyline = L.polyline(coords, { color: 'red' }).addTo(this.map);
+      var polyline = L.polyline(coords, { color: 'red' });
+      this.layerGroupLines.addLayer(polyline)
     },
     addPolygon () {
       var coords = []
@@ -850,7 +855,8 @@ export default {
         }
       }
       console.log(coords)
-      var polygon = L.polygon(coords, { color: 'red' }).addTo(this.map);
+      var polygon = L.polygon(coords, { color: 'red' })
+      this.layerGroupPolygons.addLayer(polygon);
     },
 
     // ############## Conversion Methods ##################################//
