@@ -22,8 +22,25 @@ export default function (/* { ssrContext } */) {
         'type': 'FeatureCollection',
         'features': [
         ]
-      }
-
+      },
+      legendMarker:[
+        {
+          label: 'Car Parking',
+          source: 'https://image.flaticon.com/icons/png/512/51/51778.png'
+        },
+        {
+          label: 'Bus Parking',
+          source: 'https://cdn.iconscout.com/icon/premium/png-256-thumb/bus-1734816-1471755.png'
+        },
+        {
+          label: 'Truck Parking',
+          source: 'https://www.iconfinder.com/data/icons/eldorado-transport/40/truck_1-512.png'
+        },
+        {
+          label: 'Taxi Parking',
+          source: 'https://www.iconfinder.com/data/icons/car-11/100/taxi3-512.png'
+        }
+      ]
     },
     mutations: {
       addGeoElements: (state, features) => {

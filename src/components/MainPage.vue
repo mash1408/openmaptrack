@@ -228,22 +228,31 @@
           />
         </div>
       </q-card>
-    <!--Legend Section(this is the updated legend box)-->
-      <!-- <q-card class="legend-box">
-         <h4 style="margin-bottom:10px;">Legends</h4>
-         <hr>
-          <q-list >
-            <q-item
-            v-for="list in legendData"
-              :key="list.properties.id"
-              class=" text-bold box">
-              <q-item-section>
-                <q-icon></q-icon>
-              </q-item-section>
-              <q-item-section>{{list.geometry.type}}</q-item-section>
-            </q-item>
-          </q-list>
-    </q-card> -->
+    <!--Legend Section-->
+    <q-btn-dropdown label="Legends" class="legend customButtonStyle" dropdown-icon="change_history">
+      <q-list>
+        <q-item 
+        v-for="list in legendData"
+        :key="list.label">
+         <q-item-section><img class="icon" :src="list.source"></q-item-section>
+          <q-item-section >
+            <q-item-label>{{list.label}}</q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-item >
+         <q-item-section><q-avatar square bordered color="green" class="icon"/></q-item-section>
+          <q-item-section >
+            <q-item-label>Unknown</q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-item >
+         <q-item-section><q-avatar square bordered color="purple" class="icon"/></q-item-section>
+          <q-item-section >
+            <q-item-label>Unknown</q-item-label>
+          </q-item-section>
+        </q-item>
+      </q-list>
+    </q-btn-dropdown>
     <!--legend end--->
     </div>
     <!-- Edit/Delete and Reset buttons -->
@@ -371,7 +380,7 @@ export default {
         autoPan: true,
         autoClose: false
       },
-      legendData: this.$store.state.geoJson.features
+      legendData: this.$store.state.legendMarker
     }
   },
   components: {
@@ -925,6 +934,20 @@ body {
 </style>
 
 <style lang="stylus" scoped>
+.legend{
+  position:absolute;
+  left:0px;
+  margin-top:120px;
+  width:160px;
+}
+.legendlist{
+  background: rgba(210, 146, 133, 0.7);
+}
+.icon{
+  height:30px;
+  width:30px;
+}
+
 .customButtonStyle {
   background-color: $accent;
 }
