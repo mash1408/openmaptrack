@@ -227,16 +227,17 @@
           />
         </q-card-section>
       </q-card> -->
-
+      <br> <br> <br>
       <q-card
         class="q-my-md bg-white"
         v-if="ShowCsvSection"
-      >
+      >   
         <q-card-section class="q-gutter-sm row items-start">
           <div id="app">
-            <FileReader @load="text=$event"></FileReader>
+           <FileReader @load="text=$event"></FileReader>
             <textarea
-              rows="8"
+              style="resize:none"
+              rows="13"
               cols="74"
               v-model="text"
             ></textarea>
@@ -252,7 +253,8 @@
             </div>
             <br>
             <textarea
-              rows="8"
+              style="resize:none"
+              rows="13"
               cols="74"
               v-model="geoJsonText"
             ></textarea>
