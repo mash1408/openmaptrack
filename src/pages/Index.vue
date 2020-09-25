@@ -13,8 +13,9 @@
             <div class="overlay">
               <!-- Main section contents-->
               <div class="absolute-center">
-                <h1 class="text-bold" style="font-size:60px; width:700px" >Heading</h1>
-                <p class="text-light mainp">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla, error in reiciendis expedita accusamus mollitia facilis deserunt nihil. Dolorum fugit tenetur temporibus optio sequi culpa laboriosam eaque facilis corporis error?
+                <h1 class="text-bold" style="font-size:60px; width:700px" >Map Parking Spaces</h1>
+                <p class="text-light text-subtitle2 mainp">
+                  Mapping and extracting location of parking spaces made easy.
                 </p>                
               </div>
             </div>
@@ -27,15 +28,21 @@
 
 <br>
     <!-- About section -->
-    <div class="row about">
+    <div class="row items-center about">
       <!-- About section image-->
       <div class="col about-img">
-        <img src="/statics/undraw_connected_world_wuay.svg" alt="">
+        <img class="vertical-middle" src="/statics/undraw_connected_world_wuay.svg" alt="">
       </div>
       <!-- About section text -->
       <div class="col q-pa-xl about-text">
         <h2 class="weight">About</h2>
-        <p> Lorem ipsum dolor sit amet consectetur adipisicing elit. Et sed tempora ut repudiandae, enim, assumenda ullam repellendus alias cum non quas numquam, ipsum deserunt molestias ipsa harum sit eum maiores!
+        <p >
+          Has it ever happened to you that you spent quite a lot of time looking
+          for parking spaces? It is very difficult to find especially in big cities.
+          This website allows you to add the location of the parking areas that you find
+          and save them for future references. Do you already have some co-ordinates? Cool!
+          You can upload those here and see them on the map. There are also options to check
+          and edit the properties of the marked locations.
         </p>
       </div>
     </div>

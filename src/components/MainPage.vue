@@ -1,18 +1,20 @@
 <template>
   <q-page class="">
+    <!-- Left Sidebar -->
      <q-drawer
         v-model="drawer"
-        show-if-above
-
         
-
+        side="right"
         :width="200"
         :breakpoint="500"
+        elevated
         bordered
+        overlay
         content-class="bg-grey-3"
       >
         <q-scroll-area class="fit">
           <q-list padding>
+            <!-- Brush component -->
             <q-item >
               <q-item-section avatar>
                 <q-icon name="brush" />
@@ -41,7 +43,7 @@
                   </q-btn-dropdown>
               </q-item-section>
             </q-item>
-
+            <!-- Add component -->
             <q-item >
               <q-item-section avatar>
                 <q-icon name="add" />
@@ -228,6 +230,7 @@
         </q-card-section>
       </q-card> -->
       <br> <br> <br>
+      <!--  Card for converting to geoJSON -->
       <q-card
         class="q-my-md bg-white"
         v-if="ShowCsvSection"
