@@ -87,8 +87,7 @@
 <br>
     <!-- Footer section -->
     <div class="footer q-pa-md bg-primary">
-      <p>Footer</p>
-      <img src="/statics/app-logo-128x128.png" alt="">
+      <h4 class="text-light">Footer</h4>
     </div>
   </q-page>
 </template>

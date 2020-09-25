@@ -2,39 +2,16 @@
   <q-layout view="lHh Lpr lFf">
     <q-header elevated class="transparent1">
       <q-toolbar > 
-        <q-btn
-          flat
-          dense
-          round
-          @click="leftDrawerOpen = !leftDrawerOpen"
-          icon="menu"
-          aria-label="Menu"
-        /> 
 
         <q-toolbar-title>
-          CSV to GeoJSON
+          OpenMapTrack
         </q-toolbar-title> 
+        <q-space ></q-space>
+        <q-btn flat round dense icon="map" v-on:click="goToMap"  />
+        <q-btn flat round dense icon="home" v-on:click="goToLanding" />
 
       </q-toolbar>
     </q-header> 
-
-
-    <q-drawer
-      v-model="leftDrawerOpen"
-      show-if-above
-      bordered
-      content-class="bg-grey-2"
-    >
-      <q-list>
-        <q-item-label header>Essential Links</q-item-label>
-        <q-item clickable tag="a" target="_blank" href="https://quasar.dev">
-          <q-item-section avatar>
-            <q-icon name="school" />
-          </q-item-section>
-          This a link
-        </q-item>  
-      </q-list>
-    </q-drawer> 
 
     <q-page-container>
       <router-view />
@@ -45,6 +22,14 @@
 <script>
 export default {
   name: 'MyLayout',
+  methods: {
+    goToLanding: function() {
+      return this.$router.push("/index")
+    },
+    goToMap: function() {
+      return this.$router.push('/')
+    }
+  },
 
   data () {
     return {
