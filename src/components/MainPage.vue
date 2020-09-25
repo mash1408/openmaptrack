@@ -931,7 +931,8 @@ export default {
       const data = this.geoJsonFeatures
       const reqData = data.map(row => ({
         geometry: row.geometry.type,
-        coordinates: row.geometry.coordinates
+        coordinates: row.geometry.coordinates,
+        icon: row.properties.icon ? row.properties.icon : ' '
       }))
       const csvData = this.convertoCsv(reqData)
       console.log(csvData)
@@ -990,7 +991,9 @@ export default {
 
         features.push({
           type: 'Feature',
-          properties: {},
+          properties: {
+            icon: data[2].replaceAll('"', '')
+          },
           geometry: {
             type: data[0].replaceAll('"', ''),
             coordinates: this.parseCoords(data)
