@@ -228,18 +228,23 @@
           />
         </div>
       </q-card>
-      <!-- <q-card>
-        <div>
-          <h3>Hello</h3>
-          <ul>
-            <li
-              v-for="list in legendData"
-              :key="list.id"
-              class="text-blue-8 text-bold"
-            >{{list.geometry.type}}</li>
-          </ul>
-        </div>
-      </q-card> -->
+    <!--Legend Section(this is the updated legend box)-->
+      <!-- <q-card class="legend-box">
+         <h4 style="margin-bottom:10px;">Legends</h4>
+         <hr>
+          <q-list >
+            <q-item
+            v-for="list in legendData"
+              :key="list.properties.id"
+              class=" text-bold box">
+              <q-item-section>
+                <q-icon></q-icon>
+              </q-item-section>
+              <q-item-section>{{list.geometry.type}}</q-item-section>
+            </q-item>
+          </q-list>
+    </q-card> -->
+    <!--legend end--->
     </div>
     <!-- Edit/Delete and Reset buttons -->
     <div
@@ -914,6 +919,15 @@ body {
   color: #fff;
   background-color: #ff702d;
 }
+.legend-box{
+  text-align: center;
+  width: 200px;
+  margin-left: 0px;
+  background: rgba(210, 146, 133, 0.7);
+}
+.box{
+  margin-top:-12px;
+  }
 </style>
 
 <style lang="stylus" scoped>

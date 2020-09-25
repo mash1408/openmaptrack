@@ -13,11 +13,8 @@
             <div class="overlay">
               <!-- Main section contents-->
               <div class="absolute-center">
-                <h1 class="text-light" style="color:">Heading</h1>
-                <p class="text-light mainp">Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-                  Mollitia, molestiae quas? Magni, nisi tempore atque saepe 
-                  dignissimos quo nemo eos harum aliquam quas nam. Eaque 
-                  nostrum dolorum rerum sapiente fugiat.
+                <h1 class="text-bold" style="font-size:60px; width:700px" >Heading</h1>
+                <p class="text-light mainp">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla, error in reiciendis expedita accusamus mollitia facilis deserunt nihil. Dolorum fugit tenetur temporibus optio sequi culpa laboriosam eaque facilis corporis error?
                 </p>                
               </div>
             </div>
@@ -37,11 +34,8 @@
       </div>
       <!-- About section text -->
       <div class="col q-pa-xl about-text">
-        <h2>About</h2>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-        Mollitia, molestiae quas? Magni, nisi tempore atque saepe 
-        dignissimos quo nemo eos harum aliquam quas nam. Eaque 
-        nostrum dolorum rerum sapiente fugiat.
+        <h2 class="weight">About</h2>
+        <p> Lorem ipsum dolor sit amet consectetur adipisicing elit. Et sed tempora ut repudiandae, enim, assumenda ullam repellendus alias cum non quas numquam, ipsum deserunt molestias ipsa harum sit eum maiores!
         </p>
       </div>
     </div>
@@ -50,34 +44,32 @@
 <br>
     <!-- Features section -->
     <h2 class="text-center">Features</h2>
-    <p class="text-center">Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-        Mollitia, molestiae quas? Magni, nisi tempore atque saepe  
-        nostrum dolorum rerum sapiente fugiat.
+    <p class="text-center" style="font-size:20px">Here are some amazing features of the tracker that you will fall in love with
     </p>
     <!-- Cards -->
     <div class="Cards">
       <!-- card1 -->
       <div class="card card1">
         <h5>Mark locations</h5>
-        <p>Monitors activity to identify project roadblocks</p>
+        <p>Mark the loaction along with the convinience of specifying the type of vehicle the parking is meant for</p>
         <img src="/statics/undraw_Map_dark_k9pw.svg" alt="">
       </div>
       <!-- card2 -->
       <div class="card card2">
         <h5>See information</h5>
-        <p>Scans our talent network to create the optimal team for your project</p>
+        <p>Have a Legend to help you read the map</p>
         <img src="statics/undraw_no_data_qbuo.svg" alt="">
       </div>
       <!-- card3 -->
       <div class="card card3">
         <h5>Download co-ordinates</h5>
-        <p>Uses data from past projects to provide better delivery estimates</p>
+        <p>Download the co-ordinates in the desired format i.e. CSV or GeoJSON</p>
         <img src="statics/undraw_download_files_aydf.svg" alt="">
       </div>
       <!-- card4 -->
       <div class="card card4">
         <h5>Upload co-ordinates</h5>
-        <p>Regularly evaluates our talent to ensure quality</p>
+        <p>Have the co-ordinates with you but don't know where to mark? Upload it and get the location marked on the map</p>
         <img src="statics/app-logo-128x128.png" alt="">
       </div>
     </div>
@@ -87,8 +79,8 @@
 <br>
     <!-- Footer section -->
     <div class="footer q-pa-md bg-primary">
-      <p>Footer</p>
-      <img src="/statics/app-logo-128x128.png" alt="">
+      <p style="color:white; font-size:20px; text-align:center">Made with <q-icon name="favorite" color="red" size="30px"/> by VueJs Team</p>
+      <!-- <img src="/statics/app-logo-128x128.png" alt=""> -->
     </div>
   </q-page>
 </template>
