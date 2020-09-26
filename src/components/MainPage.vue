@@ -635,7 +635,7 @@ export default {
 
       this.createdGeoElements = new L.FeatureGroup()
       this.drawControl = new L.Control.Draw({
-        position: 'bottomright',
+        position: 'bottomleft',
         draw: {
 
           circlemarker: true,
@@ -727,13 +727,11 @@ export default {
       this.layerGroupMarkers.addTo(this.map);
       this.layerGroupPolygons.addTo(this.map);
       this.layerGroupCircleMarkers.addTo(this.map)
-      this.map.zoomControl.setPosition('topright')
+      this.map.zoomControl.setPosition('topleft')
       //Render the geoJson data onto the map
       //this.addLayerToMap();
+
     },
-    // Create additional Control placeholders
-
-
     /***************************************************GeoJson-related Functions******************************************************/
     save () {
       var lines = this.layerGroupLines.toGeoJSON();
@@ -813,12 +811,12 @@ export default {
       var self = this
       layer.bindPopup('Markers', self.popUpOptions);
       this.layerGroupMarkers.eachLayer(function (marker) {
-        L.setOptions(marker, { riseOnHover: true });
+        L.setOptions(marker, { opacity: 0.5 });
       });
       //no need to turn off the event as it is supposed to be on till the end
-      layer.on('mouseover', function (e) {
-        layer.openPopup();
-      })
+      // layer.on('mouseover', function (e) {
+      //   layer.openPopup();
+      // })
 
     },
     addPopupsToRectangles (layer) {
