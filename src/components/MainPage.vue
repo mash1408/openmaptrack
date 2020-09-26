@@ -29,37 +29,45 @@
               <q-card
                 class=""
               >
-                <div class="col">
+                <div class="col q-pa-sm">
                   <q-btn
                     flat
                     ripple
-                    class="row"
+                    class="row full-width"
+                    align="left"
+                    icon="img:https://image.flaticon.com/icons/png/512/51/51778.png"
                     label="Car Parking"
                     @click='editCar'
                   />
                   <q-btn
                     flat
                     ripple
-                    class="row"
+                    class="row full-width"
+                    align="left"
+                    icon="img:https://cdn.iconscout.com/icon/premium/png-256-thumb/bus-1734816-1471755.png"
                     label="Bus Parking"
                     @click='editBus'
                   />
                   <q-btn
                     flat
                     ripple
-                    class="row"
+                    class="row full-width"
+                    align="left"
+                    icon="img:https://www.iconfinder.com/data/icons/eldorado-transport/40/truck_1-512.png"
                     label="Truck Parking"
                     @click='editTruck'
                   />
                   <q-btn
                     flat
                     ripple
-                    class="row"
+                    class="row full-width"
+                    align="left"
+                    icon="img:https://www.iconfinder.com/data/icons/car-11/100/taxi3-512.png"
                     label="Taxi Parking"
                     @click='editTaxi'
                   />
                   <q-btn
-                    class="customButtonStyle row"
+                    class="customButtonStyle row q-ma-md"
                     label="Stop"
                     @click="stopEditingMarkers()"
                   />
@@ -77,24 +85,30 @@
               <q-card
                 class=""
               >
-                <div class="col">
+                <div class="col q-pa-sm">
                   <q-btn
                     flat
                     ripple
-                    class="row"
+                    class="row full-width"
+                    align="left"
+                    icon="edit"
+                    color="green"
                     label="Green"
                     @click="editLines('green');"
                   />
                   <q-btn
                     flat
                     ripple
-                    class="row"
+                    class="row full-width"
+                    align="left"
+                    icon="edit"
+                    color="purple"
                     label="Purple"
                     @click="editLines('purple');"
                   />
                   <q-btn
-                    class="customButtonStyle row"
-                    label="Close"
+                    class="customButtonStyle row q-ma-md"
+                    label="Stop"
                     @click="stopEditingLines()"
                   />
                 </div>
@@ -111,24 +125,30 @@
                 <q-card
                   class=""
                 >
-                  <div class="">
+                  <div class="col q-pa-sm">
                     <q-btn
                       flat
-                    ripple
-                    class="row"
+                      ripple
+                      class="row full-width"
+                      align="left"
+                      icon="edit"
+                      color="green"
                       label="Green"
                       @click="editPolygons('green');"
                     />
                     <q-btn
                       flat
-                    ripple
-                    class="row"
+                      ripple
+                      class="row full-width"
+                      align="left"
+                      icon="edit"
+                      color="purple"
                       label="Purple"
                       @click="editPolygons('purple');"
                     />
                     <q-btn
-                      class="customButtonStyle"
-                      label="Close"
+                      class="customButtonStyle row q-ma-md"
+                      label="Stop"
                       @click="stopEditingPolygons()"
                     />
                   </div>
