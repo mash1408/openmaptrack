@@ -1,62 +1,81 @@
 <template>
   <q-page class="">
     <!-- Left Sidebar -->
-     <q-drawer
-        v-model="drawer"
-        
-        side="right"
-        :width="200"
-        :breakpoint="500"
-        elevated
-        bordered
-        overlay
-        content-class="bg-grey-3"
-      >
-        <q-scroll-area class="fit">
-          <q-list padding>
-            <!-- Brush component -->
-            <q-item >
-              <q-item-section avatar>
-                <q-icon name="brush" />
-              </q-item-section>
+    <q-drawer
+      v-model="drawer"
+      side="right"
+      :width="200"
+      :breakpoint="500"
+      elevated
+      bordered
+      overlay
+      content-class="bg-grey-3"
+    >
+      <q-scroll-area class="fit">
+        <q-list padding>
+          <!-- Brush component -->
+          <q-item>
+            <q-item-section avatar>
+              <q-icon name="brush" />
+            </q-item-section>
 
-              <q-item-section>
-                 <q-btn-dropdown color="primary" label="Draw" class="dropbtn">
-                  <q-list>
-                    <q-item clickable v-close-popup @click="this.drawMarker">
-                      <q-item-section>
-                        <q-item-label>Markers</q-item-label>
-                      </q-item-section>
-                    </q-item>
-                    <q-item clickable v-close-popup @click="this.drawLine">
-                      <q-item-section>
-                        <q-item-label>Lines</q-item-label>
-                      </q-item-section>
-                    </q-item>
-                    <q-item clickable v-close-popup @click="this.drawPolygon">
-                      <q-item-section>
-                        <q-item-label>Polygons</q-item-label>
-                      </q-item-section>
-                    </q-item>
+            <q-item-section>
+              <q-btn-dropdown
+                color="primary"
+                label="Draw"
+                class="dropbtn"
+              >
+                <q-list>
+                  <q-item
+                    clickable
+                    v-close-popup
+                    @click="this.drawMarker"
+                  >
+                    <q-item-section>
+                      <q-item-label>Markers</q-item-label>
+                    </q-item-section>
+                  </q-item>
+                  <q-item
+                    clickable
+                    v-close-popup
+                    @click="this.drawLine"
+                  >
+                    <q-item-section>
+                      <q-item-label>Lines</q-item-label>
+                    </q-item-section>
+                  </q-item>
+                  <q-item
+                    clickable
+                    v-close-popup
+                    @click="this.drawPolygon"
+                  >
+                    <q-item-section>
+                      <q-item-label>Polygons</q-item-label>
+                    </q-item-section>
+                  </q-item>
 
-                  </q-list>
-                  </q-btn-dropdown>
-              </q-item-section>
-            </q-item>
-            <!-- Add component -->
-            <q-item >
-              <q-item-section avatar>
-                <q-icon name="add" />
-              </q-item-section>
+                </q-list>
+              </q-btn-dropdown>
+            </q-item-section>
+          </q-item>
+          <!-- Add component -->
+          <q-item>
+            <q-item-section avatar>
+              <q-icon name="add" />
+            </q-item-section>
 
-               <q-item-section>
-                 <q-btn-dropdown color="primary" label="Add" class="dropbtn">
-                  <q-list>
-                    <q-item>
-                      <q-expansion-item
+            <q-item-section>
+              <q-btn-dropdown
+                color="primary"
+                label="Add"
+                class="dropbtn"
+              >
+                <q-list>
+                  <q-item>
+                    <q-expansion-item
                       expand-separator
                       label="Marker"
-                        >
+                    >
                       <q-card class="add-card">
                         <q-card-section>
                           <q-input
@@ -65,20 +84,20 @@
                           />
                         </q-card-section>
                         <q-card-section class="q-gutter-md">
-                        <q-btn
-                          class="customButtonStyle"
-                          label="Add"
-                          @click="AddPoint"
-                        />
+                          <q-btn
+                            class="customButtonStyle"
+                            label="Add"
+                            @click="AddPoint"
+                          />
                         </q-card-section>
                       </q-card>
-                      </q-expansion-item>
-                    </q-item>
-                    <q-item>
-                      <q-expansion-item
+                    </q-expansion-item>
+                  </q-item>
+                  <q-item>
+                    <q-expansion-item
                       expand-separator
                       label="Line"
-                        >
+                    >
                       <q-card class="add-card">
                         <q-card-section>
                           <q-input
@@ -88,43 +107,43 @@
                         </q-card-section>
                         <q-card-section>
                           <q-btn
-                          class="customButtonStyle"
-                          label="Add"
-                          @click="addPolyline"
+                            class="customButtonStyle"
+                            label="Add"
+                            @click="addPolyline"
                           />
                         </q-card-section>
                       </q-card>
-                      </q-expansion-item>
-                    </q-item>
-                    <q-item>
-                      <q-expansion-item
+                    </q-expansion-item>
+                  </q-item>
+                  <q-item>
+                    <q-expansion-item
                       expand-separator
                       label="Polygon"
-                        >
+                    >
                       <q-card class="add-card">
                         <q-card-section>
-                        <q-input
-                          v-model="polygonCoords"
-                          label="Coordinates"
-                        />
+                          <q-input
+                            v-model="polygonCoords"
+                            label="Coordinates"
+                          />
                         </q-card-section>
-                        <q-card-section >
+                        <q-card-section>
 
-                        <q-btn
-                          class="customButtonStyle"
-                          label="Add"
-                          @click="addPolygon"
-                        />
+                          <q-btn
+                            class="customButtonStyle"
+                            label="Add"
+                            @click="addPolygon"
+                          />
                         </q-card-section>
                       </q-card>
-                      </q-expansion-item>
-                    </q-item>
-                  </q-list>
-                  </q-btn-dropdown>
-              </q-item-section>
-            </q-item>
+                    </q-expansion-item>
+                  </q-item>
+                </q-list>
+              </q-btn-dropdown>
+            </q-item-section>
+          </q-item>
 
-            <!--<q-item clickable v-ripple>
+          <!--<q-item clickable v-ripple>
               <q-item-section avatar>
                 <q-icon name="send" />
               </q-item-section>
@@ -145,9 +164,9 @@
                 Drafts
               </q-item-section>
             </q-item> -->
-          </q-list>
-        </q-scroll-area>
-      </q-drawer>
+        </q-list>
+      </q-scroll-area>
+    </q-drawer>
 
     <div
       class="full-width q-pa-sm q-gutter-md fixed text-right	"
@@ -611,13 +630,12 @@ export default {
         attributionControl: false,
         worldCopyJump: true
       })
-
       L.control.scale({ metric: true, imperial: false }).addTo(self.map)
       L.control.attribution({ prefix: '<a href="http://leafletjs.com" title="A JS library for interactive maps" target="_blank">Leaflet</a> | 2020 © <a href="https://freethink.co.in/" target="_blank">freeTHINK(India)</a> | © <a href="http://osm.org/copyright" title="OpenStreetMap" target="_blank">OpenStreetMap</a>' }).addTo(self.map)
 
       this.createdGeoElements = new L.FeatureGroup()
       this.drawControl = new L.Control.Draw({
-        position: 'topleft',
+        position: 'bottomright',
         draw: {
 
           circlemarker: true,
@@ -709,7 +727,7 @@ export default {
       this.layerGroupMarkers.addTo(this.map);
       this.layerGroupPolygons.addTo(this.map);
       this.layerGroupCircleMarkers.addTo(this.map)
-
+      this.map.zoomControl.setPosition('topright')
       //Render the geoJson data onto the map
       //this.addLayerToMap();
     },
@@ -733,6 +751,16 @@ export default {
       this.$store.commit('addGeoElements', allFeatures);
       // this.addLayerToMap();
     },
+    setZoomPosition () {
+      var mapHalfHeight = this.map.getSize().y / 2,
+        container = this.map.zoomControl.getContainer(),
+        containerHalfHeight = parseInt(container.offsetHeight / 2),
+        containerTop = mapHalfHeight - containerHalfHeight + 'px';
+
+      container.style.position = 'absolute';
+      container.style.top = containerTop;
+    },
+
     reset () {
       this.layerGroupLines.clearLayers()
       this.layerGroupMarkers.clearLayers()
@@ -1259,6 +1287,19 @@ body {
   color: #fff;
   background-color: #ff702d;
 }
+
+.leaflet-top {
+  bottom: 0;
+}
+
+.leaflet-top .leaflet-control-zoom {
+  top: 50%;
+  transform: translateY(-50%);
+  margin-top: 0;
+}
+.leaflet-control {
+  margin-bottom: 100px;
+}
 </style>
 
 <style lang="stylus" scoped>
@@ -1294,23 +1335,6 @@ body {
 
 .center-contents {
   text-align: center;
-}
-
-.leaflet-draw-toolbar a {
-  background-image: url('https://unpkg.com/leaflet-draw@1.0.2/dist/images/spritesheet.png');
-  background-repeat: no-repeat;
-  color: transparent;
-}
-
-.leaflet-draw a {
-  display: inline-block;
-  text-align: center;
-  text-decoration: none;
-}
-
-.leaflet-mouse-marker {
-  background-color: #fff;
-  cursor: help;
 }
 </style>
 
