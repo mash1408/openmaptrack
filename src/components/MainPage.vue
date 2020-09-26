@@ -7,10 +7,10 @@
       side="right"
       :width="300"
       :breakpoint="500"
+      :height="500"
       elevated
       bordered
       overlay
-      content-class="bg-grey-3"
     >
       <q-scroll-area class="fit">
         <q-list padding>
@@ -21,101 +21,106 @@
             <!-- Edit Markers Section -->
             <q-expansion-item
               expand-separator
-              icon=""
+              icon="edit"
               label="Edit Markers"
               caption="Select Category"
             >
               <!-- Edit Markers Card -->
               <q-card
-                class=""
+                class="card_bg"
               >
-                <div class="col">
+                <div class="row">
                   <q-btn
-                    class="customButtonStyle row"
+                    class="customButtonStyle space col"
                     label="Car Parking"
                     @click='editCar'
                   />
                   <q-btn
-                    class="customButtonStyle row"
+                    class="customButtonStyle space col"
                     label="Bus Parking"
                     @click='editBus'
                   />
+                </div>
+                <div class="row">
                   <q-btn
-                    class="customButtonStyle row"
+                    class="customButtonStyle space col"
                     label="Truck Parking"
                     @click='editTruck'
                   />
                   <q-btn
-                    class="customButtonStyle row"
+                    class="customButtonStyle space col"
                     label="Taxi Parking"
                     @click='editTaxi'
                   />
+                </div>
                   <q-btn
-                    class="customButtonStyle row"
+                    class="customButtonStyle space"
+                    style="margin-left:37%"
                     label="Stop"
                     @click="stopEditingMarkers()"
                   />
-                </div>
               </q-card>
             </q-expansion-item>
             <!-- Edit Lines Section -->
             <q-expansion-item
               expand-separator
-              icon=""
+              icon="edit"
               label="Edit Lines"
               caption="Select Category"
             >
               <!-- Edit Layer-Section Lines -->
               <q-card
-                class=""
+                class="card_bg"
               >
-                <div class="col">
+                <div class="row">
                   <q-btn
-                    class="customButtonStyle  row"
+                    class="customButtonStyle space col"
                     label="Green"
                     @click="editLines('green');"
                   />
                   <q-btn
-                    class="customButtonStyle row"
+                    class="customButtonStyle space col"
                     label="Purple"
                     @click="editLines('purple');"
                   />
+                </div>
                   <q-btn
-                    class="customButtonStyle row"
+                    class="customButtonStyle space"
+                    style="margin-left:37%"
                     label="Close"
                     @click="stopEditingLines()"
                   />
-                </div>
               </q-card>
             </q-expansion-item>
             <!-- Edit Polygons Section -->
             <q-expansion-item
               expand-separator
-              icon=""
+              icon="edit"
               label="Edit Polygons"
               caption="Select Category"
             >
               <!-- Edit Layer-Section Polygons -->
                 <q-card
-                  class=""
+                  class="card_bg"
                 >
-                  <div class="">
+                  <div class="row">
                     <q-btn
-                      class="customButtonStyle"
+                      class="customButtonStyle space col"
                       label="Green"
                       @click="editPolygons('green');"
                     />
                     <q-btn
-                      class="customButtonStyle"
+                      class="customButtonStyle space col"
                       label="Purple"
                       @click="editPolygons('purple');"
                     />
+                  </div>
                     <q-btn
-                      class="customButtonStyle"
+                      class="customButtonStyle space"
+                      style="margin-left:37%"
                       label="Close"
                       @click="stopEditingPolygons()"
                     />
-                  </div>
                 </q-card>
             </q-expansion-item>
           </q-list>
@@ -1186,11 +1191,18 @@ body {
 }
 
 .closeButton {
-  float: right;
+  float: center;
 }
 
 .center-contents {
   text-align: center;
+}
+.space{
+  margin:10px 15px;
+}
+
+.card_bg{
+  background: rgba(210, 146, 133, 0.5);
 }
 </style>
 
