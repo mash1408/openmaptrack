@@ -1,5 +1,154 @@
 <template>
   <q-page class="">
+    <!-- Left Sidebar -->
+     <q-drawer
+        v-model="drawer"
+        
+        side="right"
+        :width="200"
+        :breakpoint="500"
+        elevated
+        bordered
+        overlay
+        content-class="bg-grey-3"
+      >
+        <q-scroll-area class="fit">
+          <q-list padding>
+            <!-- Brush component -->
+            <q-item >
+              <q-item-section avatar>
+                <q-icon name="brush" />
+              </q-item-section>
+
+              <q-item-section>
+                 <q-btn-dropdown color="primary" label="Draw" class="dropbtn">
+                  <q-list>
+                    <q-item clickable v-close-popup @click="this.drawMarker">
+                      <q-item-section>
+                        <q-item-label>Markers</q-item-label>
+                      </q-item-section>
+                    </q-item>
+                    <q-item clickable v-close-popup @click="this.drawLine">
+                      <q-item-section>
+                        <q-item-label>Lines</q-item-label>
+                      </q-item-section>
+                    </q-item>
+                    <q-item clickable v-close-popup @click="this.drawPolygon">
+                      <q-item-section>
+                        <q-item-label>Polygons</q-item-label>
+                      </q-item-section>
+                    </q-item>
+
+                  </q-list>
+                  </q-btn-dropdown>
+              </q-item-section>
+            </q-item>
+            <!-- Add component -->
+            <q-item >
+              <q-item-section avatar>
+                <q-icon name="add" />
+              </q-item-section>
+
+               <q-item-section>
+                 <q-btn-dropdown color="primary" label="Add" class="dropbtn">
+                  <q-list>
+                    <q-item>
+                      <q-expansion-item
+                      expand-separator
+                      label="Marker"
+                        >
+                      <q-card class="add-card">
+                        <q-card-section>
+                          <q-input
+                            v-model="point"
+                            label="Coordinates"
+                          />
+                        </q-card-section>
+                        <q-card-section class="q-gutter-md">
+                        <q-btn
+                          class="customButtonStyle"
+                          label="Add"
+                          @click="AddPoint"
+                        />
+                        </q-card-section>
+                      </q-card>
+                      </q-expansion-item>
+                    </q-item>
+                    <q-item>
+                      <q-expansion-item
+                      expand-separator
+                      label="Line"
+                        >
+                      <q-card class="add-card">
+                        <q-card-section>
+                          <q-input
+                            v-model="polylineCoords"
+                            label="Coordinates"
+                          />
+                        </q-card-section>
+                        <q-card-section>
+                          <q-btn
+                          class="customButtonStyle"
+                          label="Add"
+                          @click="addPolyline"
+                          />
+                        </q-card-section>
+                      </q-card>
+                      </q-expansion-item>
+                    </q-item>
+                    <q-item>
+                      <q-expansion-item
+                      expand-separator
+                      label="Polygon"
+                        >
+                      <q-card class="add-card">
+                        <q-card-section>
+                        <q-input
+                          v-model="polygonCoords"
+                          label="Coordinates"
+                        />
+                        </q-card-section>
+                        <q-card-section >
+
+                        <q-btn
+                          class="customButtonStyle"
+                          label="Add"
+                          @click="addPolygon"
+                        />
+                        </q-card-section>
+                      </q-card>
+                      </q-expansion-item>
+                    </q-item>
+                  </q-list>
+                  </q-btn-dropdown>
+              </q-item-section>
+            </q-item>
+
+            <!--<q-item clickable v-ripple>
+              <q-item-section avatar>
+                <q-icon name="send" />
+              </q-item-section>
+
+              <q-item-section>
+                Send
+              </q-item-section>
+            </q-item>
+
+            <q-separator />
+
+            <q-item clickable v-ripple>
+              <q-item-section avatar>
+                <q-icon name="drafts" />
+              </q-item-section>
+
+              <q-item-section>
+                Drafts
+              </q-item-section>
+            </q-item> -->
+          </q-list>
+        </q-scroll-area>
+      </q-drawer>
+
     <div
       class="full-width q-pa-sm q-gutter-md fixed text-right	"
       style="z-index: 200;"
@@ -9,7 +158,26 @@
         label="Save"
         @click="save"
       />
+      <!--this was to draw geoelements-->
+      <!-- <q-btn
+        class="customButtonStyle"
+        label="Draw-Polygon"
+        @click="this.drawPolygon"
+      />
       <q-btn
+        class="customButtonStyle"
+        label="Draw-Marker"
+        @click="this.drawMarker"
+      />
+      <q-btn
+        class="customButtonStyle"
+        label="Draw-Line"
+        @click="this.drawLine"
+      /> -->
+      <!-- end of drawing geoElement -->
+
+      <!--add geoelements-->
+      <!-- <q-btn
         class="customButtonStyle"
         label="Add PolyLine"
         @click="showPolylineSection = true"
@@ -23,7 +191,8 @@
         class="customButtonStyle"
         label="Add Point"
         @click="ShowPointSection = true"
-      />
+      /> -->
+      <!--end of add geoElements section--->
       <q-btn
         class="customButtonStyle"
         label="CSV To geoJSON"
@@ -36,7 +205,7 @@
         @click="getCsvData"
       />
 
-      <q-card
+      <!-- <q-card
         class="q-my-md bg-white"
         v-if="ShowPointSection"
       >
@@ -59,8 +228,9 @@
             @click="ShowPointSection = false"
           />
         </q-card-section>
-      </q-card>
+      </q-card> -->
       <br> <br> <br>
+      <!--  Card for converting to geoJSON -->
       <q-card
         class="q-my-md bg-white"
         v-if="ShowCsvSection"
@@ -295,11 +465,12 @@
         @click="deleteLayers();showDeleteLayersSection=true"
       />
 
-      <q-card
+      <!-- <q-card
         class="q-my-md bg-white"
         v-if="showPolylineSection"
       >
         <q-card-section>
+
           <q-input
             v-model="polylineCoords"
             label="Coordinates"
@@ -318,8 +489,8 @@
             @click="showPolylineSection = false"
           />
         </q-card-section>
-      </q-card>
-      <q-card
+      </q-card> -->
+      <!-- <q-card
         class="q-my-md bg-white"
         v-if="showPolygoneSection"
       >
@@ -342,7 +513,7 @@
             @click="showPolygoneSection = false"
           />
         </q-card-section>
-      </q-card>
+      </q-card> -->
     </div>
 
     <div class="full-width">
@@ -360,6 +531,8 @@ export default {
   name: 'app',
   data () {
     return {
+      drawer: false,
+      miniState: true,
       map: '',
       text: '',
       geoJsonText: '',
@@ -939,7 +1112,8 @@ export default {
       const data = this.geoJsonFeatures
       const reqData = data.map(row => ({
         geometry: row.geometry.type,
-        coordinates: row.geometry.coordinates
+        coordinates: row.geometry.coordinates,
+        icon: row.properties.icon ? row.properties.icon : ' '
       }))
       const csvData = this.convertoCsv(reqData)
       console.log(csvData)
@@ -998,7 +1172,9 @@ export default {
 
         features.push({
           type: 'Feature',
-          properties: {},
+          properties: {
+            icon: data[2].replaceAll('"', '')
+          },
           geometry: {
             type: data[0].replaceAll('"', ''),
             coordinates: this.parseCoords(data)
@@ -1082,15 +1258,6 @@ body {
 .customButtonStyle {
   color: #fff;
   background-color: #ff702d;
-}
-.legend-box {
-  text-align: center;
-  width: 200px;
-  margin-left: 0px;
-  background: rgba(210, 146, 133, 0.7);
-}
-.box {
-  margin-top: -12px;
 }
 </style>
 
