@@ -1297,7 +1297,8 @@ body {
   transform: translateY(-50%);
   margin-top: 0;
 }
-.leaflet-control {
+.leaflet-draw-section {
+  position: relative;
   margin-bottom: 100px;
 }
 </style>
