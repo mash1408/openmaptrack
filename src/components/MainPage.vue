@@ -7,10 +7,10 @@
       side="right"
       :width="300"
       :breakpoint="500"
+      :height="500"
       elevated
       bordered
       overlay
-      content-class="bg-grey-3"
     >
       <q-scroll-area class="fit">
         <q-list padding>
@@ -143,10 +143,29 @@
       class="full-width q-pa-sm q-gutter-md fixed text-left	"
       style="z-index: 200;"
     >
+      
+      <q-btn
+        class="customButtonStyle"
+        label="Edit"
+        @click="drawer=!drawer"
+      />
+
       <q-btn
         class="customButtonStyle"
         label="Save"
         @click="save"
+      />
+
+      <q-btn
+        class="customButtonStyle"
+        label="reset"
+        @click="reset"
+      />
+
+      <q-btn
+        class="customButtonStyle"
+        label="Delete GeoElement"
+        @click="deleteLayers();showDeleteLayersSection=true"
       />
       <!--this was to draw geoelements-->
       <!-- <q-btn
@@ -194,7 +213,6 @@
         label="Download CSV"
         @click="getCsvData"
       />
-
       <!-- <q-card
         class="q-my-md bg-white"
         v-if="ShowPointSection"
@@ -334,29 +352,17 @@
           </q-item>
         </q-list>
       </q-btn-dropdown>
-      <!--legend end--->
     </div>
+    <!--legend end--->
+
+
+
+    
     <!-- Edit/Delete and Reset buttons -->
-    <div
+    <!-- <div
       class="full-width q-pa-sm q-gutter-md q-mt-xl fixed text-left"
       style="z-index: 200;"
-    >
-      <q-btn
-        class="customButtonStyle"
-        label="Edit"
-        @click="drawer=!drawer"
-      />
-      <q-btn
-        class="customButtonStyle"
-        label="reset"
-        @click="reset"
-      />
-      <q-btn
-        class="customButtonStyle"
-        label="Delete GeoElement"
-        @click="deleteLayers();showDeleteLayersSection=true"
-      />
-
+    > -->
       <!-- <q-card
         class="q-my-md bg-white"
         v-if="showPolylineSection"
@@ -406,7 +412,7 @@
           />
         </q-card-section>
       </q-card> -->
-    </div>
+    <!-- </div> -->
 
     <div class="full-width">
       <div id="mapCanvas"></div>
@@ -1205,11 +1211,18 @@ body {
 }
 
 .closeButton {
-  float: right;
+  float: center;
 }
 
 .center-contents {
   text-align: center;
+}
+.space{
+  margin:10px 15px;
+}
+
+.card_bg{
+  background: rgba(210, 146, 133, 0.5);
 }
 </style>
 
