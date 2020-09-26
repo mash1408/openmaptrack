@@ -3,8 +3,9 @@
     <!-- Left Sidebar -->
     <q-drawer
       v-model="drawer"
+      show-if-above
       side="right"
-      :width="200"
+      :width="300"
       :breakpoint="500"
       elevated
       bordered
@@ -13,163 +14,117 @@
     >
       <q-scroll-area class="fit">
         <q-list padding>
-          <!-- Brush component -->
-          <q-item>
-            <q-item-section avatar>
-              <q-icon name="brush" />
-            </q-item-section>
-
-            <q-item-section>
-              <q-btn-dropdown
-                color="primary"
-                label="Draw"
-                class="dropbtn"
+          <!--  Close Drawer -->
+          <q-btn flat round dense icon="close" v-on:click="drawer=!drawer"  />
+          <!-- Collapsible list -->
+          <q-list bordered class="rounded-borders">
+            <!-- Edit Markers Section -->
+            <q-expansion-item
+              expand-separator
+              icon=""
+              label="Edit Markers"
+              caption="Select Category"
+            >
+              <!-- Edit Markers Card -->
+              <q-card
+                class=""
               >
-                <q-list>
-                  <q-item
-                    clickable
-                    v-close-popup
-                    @click="this.drawMarker"
-                  >
-                    <q-item-section>
-                      <q-item-label>Markers</q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item
-                    clickable
-                    v-close-popup
-                    @click="this.drawLine"
-                  >
-                    <q-item-section>
-                      <q-item-label>Lines</q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item
-                    clickable
-                    v-close-popup
-                    @click="this.drawPolygon"
-                  >
-                    <q-item-section>
-                      <q-item-label>Polygons</q-item-label>
-                    </q-item-section>
-                  </q-item>
-
-                </q-list>
-              </q-btn-dropdown>
-            </q-item-section>
-          </q-item>
-          <!-- Add component -->
-          <q-item>
-            <q-item-section avatar>
-              <q-icon name="add" />
-            </q-item-section>
-
-            <q-item-section>
-              <q-btn-dropdown
-                color="primary"
-                label="Add"
-                class="dropbtn"
+                <div class="col">
+                  <q-btn
+                    class="customButtonStyle row"
+                    label="Car Parking"
+                    @click='editCar'
+                  />
+                  <q-btn
+                    class="customButtonStyle row"
+                    label="Bus Parking"
+                    @click='editBus'
+                  />
+                  <q-btn
+                    class="customButtonStyle row"
+                    label="Truck Parking"
+                    @click='editTruck'
+                  />
+                  <q-btn
+                    class="customButtonStyle row"
+                    label="Taxi Parking"
+                    @click='editTaxi'
+                  />
+                  <q-btn
+                    class="customButtonStyle row"
+                    label="Stop"
+                    @click="stopEditingMarkers()"
+                  />
+                </div>
+              </q-card>
+            </q-expansion-item>
+            <!-- Edit Lines Section -->
+            <q-expansion-item
+              expand-separator
+              icon=""
+              label="Edit Lines"
+              caption="Select Category"
+            >
+              <!-- Edit Layer-Section Lines -->
+              <q-card
+                class=""
               >
-                <q-list>
-                  <q-item>
-                    <q-expansion-item
-                      expand-separator
-                      label="Marker"
-                    >
-                      <q-card class="add-card">
-                        <q-card-section>
-                          <q-input
-                            v-model="point"
-                            label="Coordinates"
-                          />
-                        </q-card-section>
-                        <q-card-section class="q-gutter-md">
-                          <q-btn
-                            class="customButtonStyle"
-                            label="Add"
-                            @click="AddPoint"
-                          />
-                        </q-card-section>
-                      </q-card>
-                    </q-expansion-item>
-                  </q-item>
-                  <q-item>
-                    <q-expansion-item
-                      expand-separator
-                      label="Line"
-                    >
-                      <q-card class="add-card">
-                        <q-card-section>
-                          <q-input
-                            v-model="polylineCoords"
-                            label="Coordinates"
-                          />
-                        </q-card-section>
-                        <q-card-section>
-                          <q-btn
-                            class="customButtonStyle"
-                            label="Add"
-                            @click="addPolyline"
-                          />
-                        </q-card-section>
-                      </q-card>
-                    </q-expansion-item>
-                  </q-item>
-                  <q-item>
-                    <q-expansion-item
-                      expand-separator
-                      label="Polygon"
-                    >
-                      <q-card class="add-card">
-                        <q-card-section>
-                          <q-input
-                            v-model="polygonCoords"
-                            label="Coordinates"
-                          />
-                        </q-card-section>
-                        <q-card-section>
-
-                          <q-btn
-                            class="customButtonStyle"
-                            label="Add"
-                            @click="addPolygon"
-                          />
-                        </q-card-section>
-                      </q-card>
-                    </q-expansion-item>
-                  </q-item>
-                </q-list>
-              </q-btn-dropdown>
-            </q-item-section>
-          </q-item>
-
-          <!--<q-item clickable v-ripple>
-              <q-item-section avatar>
-                <q-icon name="send" />
-              </q-item-section>
-
-              <q-item-section>
-                Send
-              </q-item-section>
-            </q-item>
-
-            <q-separator />
-
-            <q-item clickable v-ripple>
-              <q-item-section avatar>
-                <q-icon name="drafts" />
-              </q-item-section>
-
-              <q-item-section>
-                Drafts
-              </q-item-section>
-            </q-item> -->
+                <div class="col">
+                  <q-btn
+                    class="customButtonStyle  row"
+                    label="Green"
+                    @click="editLines('green');"
+                  />
+                  <q-btn
+                    class="customButtonStyle row"
+                    label="Purple"
+                    @click="editLines('purple');"
+                  />
+                  <q-btn
+                    class="customButtonStyle row"
+                    label="Close"
+                    @click="stopEditingLines()"
+                  />
+                </div>
+              </q-card>
+            </q-expansion-item>
+            <!-- Edit Polygons Section -->
+            <q-expansion-item
+              expand-separator
+              icon=""
+              label="Edit Polygons"
+              caption="Select Category"
+            >
+              <!-- Edit Layer-Section Polygons -->
+                <q-card
+                  class=""
+                >
+                  <div class="">
+                    <q-btn
+                      class="customButtonStyle"
+                      label="Green"
+                      @click="editPolygons('green');"
+                    />
+                    <q-btn
+                      class="customButtonStyle"
+                      label="Purple"
+                      @click="editPolygons('purple');"
+                    />
+                    <q-btn
+                      class="customButtonStyle"
+                      label="Close"
+                      @click="stopEditingPolygons()"
+                    />
+                  </div>
+                </q-card>
+            </q-expansion-item>
+          </q-list>
         </q-list>
       </q-scroll-area>
     </q-drawer>
 
     <div
-      class="full-width q-pa-sm q-gutter-md fixed text-right	"
+      class="full-width q-pa-sm q-gutter-md fixed text-left	"
       style="z-index: 200;"
     >
       <q-btn
@@ -313,97 +268,9 @@
 
         </div>
       </q-card>
-      <!-- Edit Layer Section-Markers -->
-      <q-card
-        class="customStyleCard "
-        v-if="showIconSection"
-      >
-        <div class="center-contents">
-          <h3>Select Category</h3>
-        </div>
-
-        <div class="center-contents absolute-bottom">
-          <q-btn
-            class="q-ml-xs q-mb-xs q-mr-xs customButtonStyle"
-            label="Car Parking"
-            @click='editCar'
-          />
-          <q-btn
-            class="q-ml-xs q-mb-xs q-mr-xs customButtonStyle"
-            label="Bus Parking"
-            @click='editBus'
-          />
-          <q-btn
-            class="q-ml-xs q-mb-xs q-mr-xs customButtonStyle"
-            label="Truck Parking"
-            @click='editTruck'
-          />
-          <q-btn
-            class=" q-ml-xs q-mb-xs q-mr-xs customButtonStyle"
-            label="Taxi Parking"
-            @click='editTaxi'
-          />
-          <q-btn
-            class="q-mb-xs customButtonStyle closeButton"
-            label="Close"
-            @click="stopEditingMarkers();showIconSection = false"
-          />
-        </div>
-      </q-card>
-      <!-- Edit Layer-Section Lines -->
-      <q-card
-        class="customStyleCard "
-        v-if="showLinesEditSection"
-      >
-        <div class="center-contents">
-          <h3>Select Category</h3>
-        </div>
-
-        <div class="center-contents absolute-bottom">
-          <q-btn
-            class="q-mb-xs q-ml-xs q-mr-xs customButtonStyle"
-            label="Green"
-            @click="editLines('green');"
-          />
-          <q-btn
-            class="q-mb-xs q-ml-xs q-mr-xs customButtonStyle"
-            label="Purple"
-            @click="editLines('purple');"
-          />
-          <q-btn
-            class="q-mb-xs customButtonStyle closeButton"
-            label="Close"
-            @click="stopEditingLines();showLinesEditSection = false"
-          />
-        </div>
-      </q-card>
-      <!-- Edit Layer-Section Polygons -->
-      <q-card
-        class="customStyleCard "
-        v-if="showPolygonsEditSection"
-      >
-        <div class="center-contents">
-          <h3>Select Category</h3>
-        </div>
-
-        <div class="center-contents absolute-bottom">
-          <q-btn
-            class="q-mb-xs q-ml-xs q-mr-xs customButtonStyle"
-            label="Green"
-            @click="editPolygons('green');"
-          />
-          <q-btn
-            class="q-mb-xs q-ml-xs q-mr-xs customButtonStyle"
-            label="Purple"
-            @click="editPolygons('purple');"
-          />
-          <q-btn
-            class="q-mb-xs customButtonStyle closeButton"
-            label="Close"
-            @click="stopEditingPolygons();showPolygonsEditSection = false"
-          />
-        </div>
-      </q-card>
+      
+      
+      
       <!--Legend Section-->
       <q-btn-dropdown
         label="Legends"
@@ -455,28 +322,18 @@
     </div>
     <!-- Edit/Delete and Reset buttons -->
     <div
-      class="full-width q-pa-sm q-gutter-md q-mt-xl fixed text-right"
+      class="full-width q-pa-sm q-gutter-md q-mt-xl fixed text-left"
       style="z-index: 200;"
     >
       <q-btn
         class="customButtonStyle"
+        label="Edit"
+        @click="drawer=!drawer"
+      />
+      <q-btn
+        class="customButtonStyle"
         label="reset"
         @click="reset"
-      />
-      <q-btn
-        class="customButtonStyle"
-        label="Edit Markers"
-        @click="showIconSection=true"
-      />
-      <q-btn
-        class="customButtonStyle"
-        label="Edit Lines"
-        @click="showLinesEditSection=true"
-      />
-      <q-btn
-        class="customButtonStyle"
-        label="Edit Polygons"
-        @click="showPolygonsEditSection=true"
       />
       <q-btn
         class="customButtonStyle"
@@ -550,7 +407,7 @@ export default {
   name: 'app',
   data () {
     return {
-      drawer: false,
+      drawer: true,
       miniState: true,
       map: '',
       text: '',
