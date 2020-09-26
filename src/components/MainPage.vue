@@ -17,7 +17,7 @@
           <!--  Close Drawer -->
           <q-btn flat round dense icon="close" v-on:click="drawer=!drawer"  />
           <!-- Collapsible list -->
-          <q-list bordered class="rounded-borders">
+          <q-list bordered class="rounded-borders sidebar-list">
             <!-- Edit Markers Section -->
             <q-expansion-item
               expand-separator
@@ -31,22 +31,30 @@
               >
                 <div class="col">
                   <q-btn
-                    class="customButtonStyle row"
+                    flat
+                    ripple
+                    class="row"
                     label="Car Parking"
                     @click='editCar'
                   />
                   <q-btn
-                    class="customButtonStyle row"
+                    flat
+                    ripple
+                    class="row"
                     label="Bus Parking"
                     @click='editBus'
                   />
                   <q-btn
-                    class="customButtonStyle row"
+                    flat
+                    ripple
+                    class="row"
                     label="Truck Parking"
                     @click='editTruck'
                   />
                   <q-btn
-                    class="customButtonStyle row"
+                    flat
+                    ripple
+                    class="row"
                     label="Taxi Parking"
                     @click='editTaxi'
                   />
@@ -71,12 +79,16 @@
               >
                 <div class="col">
                   <q-btn
-                    class="customButtonStyle  row"
+                    flat
+                    ripple
+                    class="row"
                     label="Green"
                     @click="editLines('green');"
                   />
                   <q-btn
-                    class="customButtonStyle row"
+                    flat
+                    ripple
+                    class="row"
                     label="Purple"
                     @click="editLines('purple');"
                   />
@@ -101,12 +113,16 @@
                 >
                   <div class="">
                     <q-btn
-                      class="customButtonStyle"
+                      flat
+                    ripple
+                    class="row"
                       label="Green"
                       @click="editPolygons('green');"
                     />
                     <q-btn
-                      class="customButtonStyle"
+                      flat
+                    ripple
+                    class="row"
                       label="Purple"
                       @click="editPolygons('purple');"
                     />
@@ -1155,6 +1171,9 @@ body {
 .leaflet-draw-section {
   position: relative;
   margin-bottom: 100px;
+}
+.sidebar-list q-btn {
+  width: 100%;
 }
 </style>
 
