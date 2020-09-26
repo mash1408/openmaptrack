@@ -444,7 +444,7 @@ export default {
 
       this.createdGeoElements = new L.FeatureGroup()
       this.drawControl = new L.Control.Draw({
-        position: 'bottomright',
+        position: 'topleft',
         draw: {
 
           circlemarker: true,
@@ -462,7 +462,9 @@ export default {
             },
           },
           marker: {
-
+            shapeOptions: {
+              riseOnHover: true,
+            },
           },
           polyline: {
             allowIntersection: false,
@@ -609,6 +611,9 @@ export default {
     addPopupsToMarkers (layer) {
       var self = this
       layer.bindPopup('Markers', self.popUpOptions);
+      this.layerGroupMarkers.eachLayer(function (marker) {
+        L.setOptions(marker, { riseOnHover: true });
+      });
       //no need to turn off the event as it is supposed to be on till the end
       layer.on('mouseover', function (e) {
         layer.openPopup();
@@ -641,6 +646,8 @@ export default {
         console.log('Draw end marker');
         self.map.off("draw:drawstop");
       })
+
+
 
     },
     drawLine () {
@@ -735,7 +742,8 @@ export default {
           console.log(e);
           var icon = "https://www.iconfinder.com/data/icons/eldorado-transport/40/truck_1-512.png"
           self.updateMarkersIcon(icon, layer)
-          e.target._icon.setAttribute("src", icon)
+          layer = icon
+          // e.target._icon.setAttribute("src", icon)
         });
       });
       return;
@@ -1119,6 +1127,23 @@ body {
 
 .center-contents {
   text-align: center;
+}
+
+.leaflet-draw-toolbar a {
+  background-image: url('https://unpkg.com/leaflet-draw@1.0.2/dist/images/spritesheet.png');
+  background-repeat: no-repeat;
+  color: transparent;
+}
+
+.leaflet-draw a {
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+}
+
+.leaflet-mouse-marker {
+  background-color: #fff;
+  cursor: help;
 }
 </style>
 
