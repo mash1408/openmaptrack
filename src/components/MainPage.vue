@@ -15,9 +15,18 @@
       <q-scroll-area class="fit">
         <q-list padding>
           <!--  Close Drawer -->
-          <q-btn flat round dense icon="close" v-on:click="drawer=!drawer"  />
+          <q-btn
+            flat
+            round
+            dense
+            icon="close"
+            v-on:click="drawer=!drawer"
+          />
           <!-- Collapsible list -->
-          <q-list bordered class="rounded-borders">
+          <q-list
+            bordered
+            class="rounded-borders"
+          >
             <!-- Edit Markers Section -->
             <q-expansion-item
               expand-separator
@@ -26,9 +35,7 @@
               caption="Select Category"
             >
               <!-- Edit Markers Card -->
-              <q-card
-                class=""
-              >
+              <q-card class="">
                 <div class="col">
                   <q-btn
                     class="customButtonStyle row"
@@ -66,9 +73,7 @@
               caption="Select Category"
             >
               <!-- Edit Layer-Section Lines -->
-              <q-card
-                class=""
-              >
+              <q-card class="">
                 <div class="col">
                   <q-btn
                     class="customButtonStyle  row"
@@ -96,27 +101,25 @@
               caption="Select Category"
             >
               <!-- Edit Layer-Section Polygons -->
-                <q-card
-                  class=""
-                >
-                  <div class="">
-                    <q-btn
-                      class="customButtonStyle"
-                      label="Green"
-                      @click="editPolygons('green');"
-                    />
-                    <q-btn
-                      class="customButtonStyle"
-                      label="Purple"
-                      @click="editPolygons('purple');"
-                    />
-                    <q-btn
-                      class="customButtonStyle"
-                      label="Close"
-                      @click="stopEditingPolygons()"
-                    />
-                  </div>
-                </q-card>
+              <q-card class="">
+                <div class="">
+                  <q-btn
+                    class="customButtonStyle"
+                    label="Green"
+                    @click="editPolygons('green');"
+                  />
+                  <q-btn
+                    class="customButtonStyle"
+                    label="Purple"
+                    @click="editPolygons('purple');"
+                  />
+                  <q-btn
+                    class="customButtonStyle"
+                    label="Close"
+                    @click="stopEditingPolygons()"
+                  />
+                </div>
+              </q-card>
             </q-expansion-item>
           </q-list>
         </q-list>
@@ -268,13 +271,11 @@
 
         </div>
       </q-card>
-      
-      
-      
+
       <!--Legend Section-->
       <q-btn-dropdown
         label="Legends"
-        class="legend customButtonStyle"
+        class="legend customButtonStyle "
         dropdown-icon="change_history"
       >
         <q-list>
@@ -492,7 +493,7 @@ export default {
 
       this.createdGeoElements = new L.FeatureGroup()
       this.drawControl = new L.Control.Draw({
-        position: 'bottomleft',
+        position: 'topleft',
         draw: {
 
           circlemarker: true,
@@ -606,15 +607,7 @@ export default {
       this.$store.commit('addGeoElements', allFeatures);
       // this.addLayerToMap();
     },
-    setZoomPosition () {
-      var mapHalfHeight = this.map.getSize().y / 2,
-        container = this.map.zoomControl.getContainer(),
-        containerHalfHeight = parseInt(container.offsetHeight / 2),
-        containerTop = mapHalfHeight - containerHalfHeight + 'px';
 
-      container.style.position = 'absolute';
-      container.style.top = containerTop;
-    },
 
     reset () {
       this.layerGroupLines.clearLayers()
@@ -753,23 +746,65 @@ export default {
     },
 
     /***************************************************Edit/Delete Functions******************************************************/
-
+    updateColor (col, layer) {
+      var feature = layer.feature = layer.feature || {};
+      feature.type = "Feature"
+      feature["properties"] = feature["properties"] || {};
+      feature.properties["color"] = col;
+    },
     editLines (col) {
+      var self = this
       this.layerGroupLines.eachLayer(function (layer) {
         layer.on('click', function (e) {
           layer.setStyle({
-            color: col
-          })
+            color: col,
 
+          })
+          self.updateColor(col, layer)
         });
       });
     },
     editPolygons (col) {
+      var self = this
       this.layerGroupPolygons.eachLayer(function (layer) {
         layer.on('click', function (e) {
           layer.setStyle({
             color: col
           })
+          self.updateColor(col, layer)
+        });
+      });
+    },
+    editRectangles (col) {
+      var self = this
+      this.layerGroupRectangles.eachLayer(function (layer) {
+        layer.on('click', function (e) {
+          layer.setStyle({
+            color: col
+          })
+          self.updateColor(col, layer)
+        });
+      });
+    },
+    editCircles (col) {
+      var self = this
+      this.layerGroupCircles.eachLayer(function (layer) {
+        layer.on('click', function (e) {
+          layer.setStyle({
+            color: col
+          })
+          self.updateColor(col, layer)
+        });
+      });
+    },
+    editCircleMarkers (col) {
+      var self = this
+      this.layerGroupCircleMarkers.eachLayer(function (layer) {
+        layer.on('click', function (e) {
+          layer.setStyle({
+            color: col
+          })
+          self.updateColor(col, layer)
         });
       });
     },
@@ -849,7 +884,22 @@ export default {
     stopEditingLines () {
       var self = this;
       this.layerGroupLines.eachLayer(function (layer) {
+        console.log('Lines stop');
+        layer.off('click');
 
+      })
+    },
+    stopEditingRectangles () {
+      var self = this;
+      this.layerGroupLines.eachLayer(function (layer) {
+        console.log('Lines stop');
+        layer.off('click');
+
+      })
+    },
+    stopEditingCircleMarkers () {
+      var self = this;
+      this.layerGroupLines.eachLayer(function (layer) {
         console.log('Lines stop');
         layer.off('click');
 
@@ -866,6 +916,18 @@ export default {
         layer.off('click')
       })
       this.layerGroupPolygons.eachLayer(function (layer) {
+        console.log('stop')
+        layer.off('click')
+      })
+      this.layerGroupRectangles.eachLayer(function (layer) {
+        console.log('stop')
+        layer.off('click')
+      })
+      this.layerGroupCircles.eachLayer(function (layer) {
+        console.log('stop')
+        layer.off('click')
+      })
+      this.layerGroupCircleMarkers.eachLayer(function (layer) {
         console.log('stop')
         layer.off('click')
       })
@@ -890,6 +952,27 @@ export default {
         layer.on('click', function (e) {
           console.log('deleted')
           self.layerGroupPolygons.removeLayer(layer)
+          layer.off('click')
+        })
+      })
+      this.layerGroupRectangles.eachLayer(function (layer) {
+        layer.on('click', function (e) {
+          console.log('deleted')
+          self.layerGroupCircles.removeLayer(layer)
+          layer.off('click')
+        })
+      })
+      this.layerGroupCircles.eachLayer(function (layer) {
+        layer.on('click', function (e) {
+          console.log('deleted')
+          self.layerGroupCircles.removeLayer(layer)
+          layer.off('click')
+        })
+      })
+      this.layerGroupCircleMarkers.eachLayer(function (layer) {
+        layer.on('click', function (e) {
+          console.log('deleted')
+          self.layerGroupCircleMarkers.removeLayer(layer)
           layer.off('click')
         })
       })
@@ -1143,18 +1226,18 @@ body {
   background-color: #ff702d;
 }
 
-.leaflet-top {
-  bottom: 0;
-}
-
-.leaflet-top .leaflet-control-zoom {
-  top: 50%;
+.leaflet-control-zoom {
   transform: translateY(-50%);
-  margin-top: 0;
+  top: 50px;
+  bottom: 0;
 }
 .leaflet-draw-section {
   position: relative;
-  margin-bottom: 100px;
+  margin-top: 250px;
+}
+.leaflet-touch .leaflet-bar {
+  border: none;
+  background-clip: padding-box;
 }
 </style>
 
