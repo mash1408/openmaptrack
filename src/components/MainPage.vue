@@ -12,6 +12,7 @@
       bordered
       overlay
     >
+
       <q-scroll-area class="fit">
         <q-list padding>
           <!--  Close Drawer -->
@@ -23,14 +24,10 @@
             v-on:click="drawer=!drawer"
           />
           <!-- Collapsible list -->
-<<<<<<< HEAD
           <q-list
             bordered
-            class="rounded-borders"
+            class="rounded-borders sidebar-list"
           >
-=======
-          <q-list bordered class="rounded-borders sidebar-list">
->>>>>>> 5572f4c9b9f5d2d91af6142686c9cff7ee05b53d
             <!-- Edit Markers Section -->
             <q-expansion-item
               expand-separator
@@ -39,15 +36,8 @@
               caption="Select Category"
             >
               <!-- Edit Markers Card -->
-<<<<<<< HEAD
               <q-card class="">
-                <div class="col">
-=======
-              <q-card
-                class=""
-              >
                 <div class="col q-pa-sm">
->>>>>>> 5572f4c9b9f5d2d91af6142686c9cff7ee05b53d
                   <q-btn
                     flat
                     ripple
@@ -100,15 +90,8 @@
               caption="Select Category"
             >
               <!-- Edit Layer-Section Lines -->
-<<<<<<< HEAD
               <q-card class="">
-                <div class="col">
-=======
-              <q-card
-                class=""
-              >
                 <div class="col q-pa-sm">
->>>>>>> 5572f4c9b9f5d2d91af6142686c9cff7ee05b53d
                   <q-btn
                     flat
                     ripple
@@ -145,59 +128,35 @@
               caption="Select Category"
             >
               <!-- Edit Layer-Section Polygons -->
-<<<<<<< HEAD
               <q-card class="">
-                <div class="">
+                <div class="col q-pa-sm">
                   <q-btn
-                    class="customButtonStyle"
+                    flat
+                    ripple
+                    class="row full-width"
+                    align="left"
+                    icon="edit"
+                    color="green"
                     label="Green"
                     @click="editPolygons('green');"
                   />
                   <q-btn
-                    class="customButtonStyle"
+                    flat
+                    ripple
+                    class="row full-width"
+                    align="left"
+                    icon="edit"
+                    color="purple"
                     label="Purple"
                     @click="editPolygons('purple');"
                   />
                   <q-btn
-                    class="customButtonStyle"
-                    label="Close"
+                    class="customButtonStyle row q-ma-md"
+                    label="Stop"
                     @click="stopEditingPolygons()"
                   />
                 </div>
               </q-card>
-=======
-                <q-card
-                  class=""
-                >
-                  <div class="col q-pa-sm">
-                    <q-btn
-                      flat
-                      ripple
-                      class="row full-width"
-                      align="left"
-                      icon="edit"
-                      color="green"
-                      label="Green"
-                      @click="editPolygons('green');"
-                    />
-                    <q-btn
-                      flat
-                      ripple
-                      class="row full-width"
-                      align="left"
-                      icon="edit"
-                      color="purple"
-                      label="Purple"
-                      @click="editPolygons('purple');"
-                    />
-                    <q-btn
-                      class="customButtonStyle row q-ma-md"
-                      label="Stop"
-                      @click="stopEditingPolygons()"
-                    />
-                  </div>
-                </q-card>
->>>>>>> 5572f4c9b9f5d2d91af6142686c9cff7ee05b53d
             </q-expansion-item>
           </q-list>
         </q-list>
@@ -208,7 +167,7 @@
       class="full-width q-pa-sm q-gutter-md fixed text-left	"
       style="z-index: 200;"
     >
-      
+
       <q-btn
         class="customButtonStyle"
         label="Edit"
@@ -418,15 +377,12 @@
     </div>
     <!--legend end--->
 
-
-
-    
     <!-- Edit/Delete and Reset buttons -->
     <!-- <div
       class="full-width q-pa-sm q-gutter-md q-mt-xl fixed text-left"
       style="z-index: 200;"
     > -->
-      <!-- <q-card
+    <!-- <q-card
         class="q-my-md bg-white"
         v-if="showPolylineSection"
       >
@@ -451,7 +407,7 @@
           />
         </q-card-section>
       </q-card> -->
-      <!-- <q-card
+    <!-- <q-card
         class="q-my-md bg-white"
         v-if="showPolygoneSection"
       >
@@ -518,6 +474,7 @@ export default {
       layerGroupRectangles: new L.layerGroup(),
       layerGroupCircles: new L.layerGroup(),
       layerGroupCircleMarkers: new L.layerGroup(),
+      layerGroupType: new L.layerGroup(),
       createdGeoElements: "",
       popUpOptions: {
         autoPan: true,
@@ -670,6 +627,8 @@ export default {
       this.layerGroupPolygons.addTo(this.map);
       this.layerGroupCircleMarkers.addTo(this.map)
       this.map.zoomControl.setPosition('topleft')
+
+
       //Render the geoJson data onto the map
       //this.addLayerToMap();
 
@@ -1362,11 +1321,12 @@ body {
 .center-contents {
   text-align: center;
 }
-.space{
-  margin:10px 15px;
+
+.space {
+  margin: 10px 15px;
 }
 
-.card_bg{
+.card_bg {
   background: rgba(210, 146, 133, 0.5);
 }
 </style>

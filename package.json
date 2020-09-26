@@ -16,6 +16,8 @@
     "axios": "^0.18.1",
     "csvtojson": "^2.0.10",
     "leaflet": "^1.6.0",
+    "leaflet-draw-toolbar": "^0.3.0-alpha.1",
+    "leaflet-toolbar": "^0.4.0-alpha.2",
     "quasar": "^1.0.0",
     "vue-resource": "^1.5.1",
     "vue2-leaflet": "^2.4.2",
