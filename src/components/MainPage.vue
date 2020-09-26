@@ -7,10 +7,10 @@
       side="right"
       :width="300"
       :breakpoint="500"
+      :height="500"
       elevated
       bordered
       overlay
-      content-class="bg-grey-3"
     >
       <q-scroll-area class="fit">
         <q-list padding>
@@ -23,10 +23,14 @@
             v-on:click="drawer=!drawer"
           />
           <!-- Collapsible list -->
+<<<<<<< HEAD
           <q-list
             bordered
             class="rounded-borders"
           >
+=======
+          <q-list bordered class="rounded-borders sidebar-list">
+>>>>>>> 5572f4c9b9f5d2d91af6142686c9cff7ee05b53d
             <!-- Edit Markers Section -->
             <q-expansion-item
               expand-separator
@@ -35,30 +39,53 @@
               caption="Select Category"
             >
               <!-- Edit Markers Card -->
+<<<<<<< HEAD
               <q-card class="">
                 <div class="col">
+=======
+              <q-card
+                class=""
+              >
+                <div class="col q-pa-sm">
+>>>>>>> 5572f4c9b9f5d2d91af6142686c9cff7ee05b53d
                   <q-btn
-                    class="customButtonStyle row"
+                    flat
+                    ripple
+                    class="row full-width"
+                    align="left"
+                    icon="img:https://image.flaticon.com/icons/png/512/51/51778.png"
                     label="Car Parking"
                     @click='editCar'
                   />
                   <q-btn
-                    class="customButtonStyle row"
+                    flat
+                    ripple
+                    class="row full-width"
+                    align="left"
+                    icon="img:https://cdn.iconscout.com/icon/premium/png-256-thumb/bus-1734816-1471755.png"
                     label="Bus Parking"
                     @click='editBus'
                   />
                   <q-btn
-                    class="customButtonStyle row"
+                    flat
+                    ripple
+                    class="row full-width"
+                    align="left"
+                    icon="img:https://www.iconfinder.com/data/icons/eldorado-transport/40/truck_1-512.png"
                     label="Truck Parking"
                     @click='editTruck'
                   />
                   <q-btn
-                    class="customButtonStyle row"
+                    flat
+                    ripple
+                    class="row full-width"
+                    align="left"
+                    icon="img:https://www.iconfinder.com/data/icons/car-11/100/taxi3-512.png"
                     label="Taxi Parking"
                     @click='editTaxi'
                   />
                   <q-btn
-                    class="customButtonStyle row"
+                    class="customButtonStyle row q-ma-md"
                     label="Stop"
                     @click="stopEditingMarkers()"
                   />
@@ -73,21 +100,38 @@
               caption="Select Category"
             >
               <!-- Edit Layer-Section Lines -->
+<<<<<<< HEAD
               <q-card class="">
                 <div class="col">
+=======
+              <q-card
+                class=""
+              >
+                <div class="col q-pa-sm">
+>>>>>>> 5572f4c9b9f5d2d91af6142686c9cff7ee05b53d
                   <q-btn
-                    class="customButtonStyle  row"
+                    flat
+                    ripple
+                    class="row full-width"
+                    align="left"
+                    icon="edit"
+                    color="green"
                     label="Green"
                     @click="editLines('green');"
                   />
                   <q-btn
-                    class="customButtonStyle row"
+                    flat
+                    ripple
+                    class="row full-width"
+                    align="left"
+                    icon="edit"
+                    color="purple"
                     label="Purple"
                     @click="editLines('purple');"
                   />
                   <q-btn
-                    class="customButtonStyle row"
-                    label="Close"
+                    class="customButtonStyle row q-ma-md"
+                    label="Stop"
                     @click="stopEditingLines()"
                   />
                 </div>
@@ -101,6 +145,7 @@
               caption="Select Category"
             >
               <!-- Edit Layer-Section Polygons -->
+<<<<<<< HEAD
               <q-card class="">
                 <div class="">
                   <q-btn
@@ -120,6 +165,39 @@
                   />
                 </div>
               </q-card>
+=======
+                <q-card
+                  class=""
+                >
+                  <div class="col q-pa-sm">
+                    <q-btn
+                      flat
+                      ripple
+                      class="row full-width"
+                      align="left"
+                      icon="edit"
+                      color="green"
+                      label="Green"
+                      @click="editPolygons('green');"
+                    />
+                    <q-btn
+                      flat
+                      ripple
+                      class="row full-width"
+                      align="left"
+                      icon="edit"
+                      color="purple"
+                      label="Purple"
+                      @click="editPolygons('purple');"
+                    />
+                    <q-btn
+                      class="customButtonStyle row q-ma-md"
+                      label="Stop"
+                      @click="stopEditingPolygons()"
+                    />
+                  </div>
+                </q-card>
+>>>>>>> 5572f4c9b9f5d2d91af6142686c9cff7ee05b53d
             </q-expansion-item>
           </q-list>
         </q-list>
@@ -130,10 +208,29 @@
       class="full-width q-pa-sm q-gutter-md fixed text-left	"
       style="z-index: 200;"
     >
+      
+      <q-btn
+        class="customButtonStyle"
+        label="Edit"
+        @click="drawer=!drawer"
+      />
+
       <q-btn
         class="customButtonStyle"
         label="Save"
         @click="save"
+      />
+
+      <q-btn
+        class="customButtonStyle"
+        label="reset"
+        @click="reset"
+      />
+
+      <q-btn
+        class="customButtonStyle"
+        label="Delete GeoElement"
+        @click="deleteLayers();showDeleteLayersSection=true"
       />
       <!--this was to draw geoelements-->
       <!-- <q-btn
@@ -181,7 +278,6 @@
         label="Download CSV"
         @click="getCsvData"
       />
-
       <!-- <q-card
         class="q-my-md bg-white"
         v-if="ShowPointSection"
@@ -319,29 +415,17 @@
           </q-item>
         </q-list>
       </q-btn-dropdown>
-      <!--legend end--->
     </div>
+    <!--legend end--->
+
+
+
+    
     <!-- Edit/Delete and Reset buttons -->
-    <div
+    <!-- <div
       class="full-width q-pa-sm q-gutter-md q-mt-xl fixed text-left"
       style="z-index: 200;"
-    >
-      <q-btn
-        class="customButtonStyle"
-        label="Edit"
-        @click="drawer=!drawer"
-      />
-      <q-btn
-        class="customButtonStyle"
-        label="reset"
-        @click="reset"
-      />
-      <q-btn
-        class="customButtonStyle"
-        label="Delete GeoElement"
-        @click="deleteLayers();showDeleteLayersSection=true"
-      />
-
+    > -->
       <!-- <q-card
         class="q-my-md bg-white"
         v-if="showPolylineSection"
@@ -391,7 +475,7 @@
           />
         </q-card-section>
       </q-card> -->
-    </div>
+    <!-- </div> -->
 
     <div class="full-width">
       <div id="mapCanvas"></div>
@@ -1239,6 +1323,9 @@ body {
   border: none;
   background-clip: padding-box;
 }
+.sidebar-list q-btn {
+  width: 100%;
+}
 </style>
 
 <style lang="stylus" scoped>
@@ -1269,11 +1356,18 @@ body {
 }
 
 .closeButton {
-  float: right;
+  float: center;
 }
 
 .center-contents {
   text-align: center;
+}
+.space{
+  margin:10px 15px;
+}
+
+.card_bg{
+  background: rgba(210, 146, 133, 0.5);
 }
 </style>
 
