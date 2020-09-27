@@ -164,84 +164,6 @@
                 </div>
               </q-card>
             </q-expansion-item>
-            <!-- Edit rectangles Section -->
-            <q-expansion-item
-              expand-separator
-              v-model="qrectangles"
-              icon=""
-              label="Edit Rectangles"
-              caption="Select Category"
-            >
-              <!-- Edit Layer-Section Rectangles -->
-              <q-card class="">
-                <div class="col q-pa-sm">
-                  <q-btn
-                    flat
-                    ripple
-                    class="row full-width"
-                    align="left"
-                    icon="edit"
-                    color="green"
-                    label="Green"
-                    @click="editRectangles('green');"
-                  />
-                  <q-btn
-                    flat
-                    ripple
-                    class="row full-width"
-                    align="left"
-                    icon="edit"
-                    color="purple"
-                    label="Purple"
-                    @click="editRectangles('purple');"
-                  />
-                  <q-btn
-                    class="customButtonStyle row q-ma-md"
-                    label="Stop"
-                    @click="qrectangles=false;stopEditingRectangles()"
-                  />
-                </div>
-              </q-card>
-            </q-expansion-item>
-            <!-- Edit CircleMarkers Section -->
-            <q-expansion-item
-              expand-separator
-              v-model="qcirclemarkers"
-              icon=""
-              label="Edit CirclesMarkers"
-              caption="Select Category"
-            >
-              <!-- Edit Layer-Section Circles -->
-              <q-card class="">
-                <div class="col q-pa-sm">
-                  <q-btn
-                    flat
-                    ripple
-                    class="row full-width"
-                    align="left"
-                    icon="edit"
-                    color="green"
-                    label="Green"
-                    @click="editCircleMarkers('green');"
-                  />
-                  <q-btn
-                    flat
-                    ripple
-                    class="row full-width"
-                    align="left"
-                    icon="edit"
-                    color="purple"
-                    label="Purple"
-                    @click="editCircleMarkers('purple');"
-                  />
-                  <q-btn
-                    class="customButtonStyle row q-ma-md"
-                    label="Stop"
-                    @click="stopEditingCircleMarkers();qcirclemarkers=false"
-                  />
-                </div>
-              </q-card>
-            </q-expansion-item>
             <!-- Edit Circles Section -->
             <q-expansion-item
               expand-separator
@@ -276,12 +198,117 @@
                   <q-btn
                     class="customButtonStyle row q-ma-md"
                     label="Stop"
-                    @click="qcircles=false;stopEditingCircles()"
+                    @click="stopEditingCircles();qcircles=false"
                   />
                 </div>
               </q-card>
             </q-expansion-item>
-            <!-- Manual Addition Section -->
+            <!-- Edit Rectangles Section -->
+            <q-expansion-item
+              expand-separator
+              v-model="qrectangles"
+              icon=""
+              label="Edit Rectangles"
+              caption="Select Category"
+            >
+              <!-- Edit Layer-Section Rectangles -->
+              <q-card class="">
+                <div class="col q-pa-sm">
+                  <q-btn
+                    flat
+                    ripple
+                    class="row full-width"
+                    align="left"
+                    icon="edit"
+                    color="green"
+                    label="Green"
+                    @click="editRectangles('green');"
+                  />
+                  <q-btn
+                    flat
+                    ripple
+                    class="row full-width"
+                    align="left"
+                    icon="edit"
+                    color="purple"
+                    label="Purple"
+                    @click="editRectangles('purple');"
+                  />
+                  <q-btn
+                    class="customButtonStyle row q-ma-md"
+                    label="Stop"
+                    @click="stopEditingRectangles();qrectangles=false"
+                  />
+                </div>
+              </q-card>
+            </q-expansion-item>
+            <!-- Edit CircleMarkers Section -->
+            <q-expansion-item
+              expand-separator
+              v-model="qcirclemarkers"
+              icon=""
+              label="Edit CircleMarkers"
+              caption="Select Category"
+            >
+              <!-- Edit Layer-Section CircleMarkers -->
+              <q-card class="">
+                <div class="col q-pa-sm">
+                  <q-btn
+                    flat
+                    ripple
+                    class="row full-width"
+                    align="left"
+                    icon="edit"
+                    color="green"
+                    label="Green"
+                    @click="editCircleMarkers('green');"
+                  />
+                  <q-btn
+                    flat
+                    ripple
+                    class="row full-width"
+                    align="left"
+                    icon="edit"
+                    color="purple"
+                    label="Purple"
+                    @click="editCircleMarkers('purple');"
+                  />
+                  <q-btn
+                    class="customButtonStyle row q-ma-md"
+                    label="Stop"
+                    @click="stopEditingCircleMarkers();qcirclemarkers=false"
+                  />
+                </div>
+              </q-card>
+            </q-expansion-item>
+            <!-- Delete Section -->
+            <q-expansion-item
+              expand-separator
+              v-model="del"
+              icon=""
+              label="Delete"
+              caption="Click on items you wish to delete"
+            >
+              <!-- Delete Layer-Section All -->
+              <q-card class="">
+                <div class="col q-pa-sm">
+                  <q-btn
+                    flat
+                    ripple
+                    class="row full-width"
+                    align="left"
+                    label="Delete GeoElement"
+                    @click="deleteLayers()"
+                  />
+                  <q-btn
+                    class="customButtonStyle row q-ma-md"
+                    label="Stop"
+                    @click="stopDeletingLayers();del=false"
+                  />
+                </div>
+              </q-card>
+            </q-expansion-item>
+            <!-- Add Manually -->
             <q-expansion-item
               expand-separator
               v-model="manualAdd"
@@ -352,13 +379,13 @@
     </q-drawer>
 
     <div
-      class="full-width q-pa-sm q-gutter-md fixed text-left	"
+      class="full-width q-pa-sm q-gutter-md fixed text-center "
       style="z-index: 200;"
     >
 
       <q-btn
         class="customButtonStyle"
-        label="Edit"
+        label="Edit/Delete"
         @click="drawer=!drawer"
       />
       <!-- save dialog -->
@@ -409,12 +436,6 @@
         class="customButtonStyle"
         label="reset"
         @click="reset"
-      />
-
-      <q-btn
-        class="customButtonStyle"
-        label="Delete GeoElement"
-        @click="deleteLayers();showDeleteLayersSection=true"
       />
       <q-btn
         class="customButtonStyle"
@@ -474,25 +495,6 @@
 
         </q-card-section>
       </q-card>
-      <!-- Delete layer Section -->
-      <q-card
-        class="q-mt-lg customStyleCard"
-        v-if="showDeleteLayersSection"
-      >
-        <div class="center-contents">
-          <h4>Click On Items You Wish To Delete</h4>
-
-        </div>
-        <div class="absolute-bottom center-contents">
-          <p class="q-ml-xl absolute-left">Click cancel to <b>STOP</b></p>
-          <q-btn
-            class="q-mb-xs customButtonStyle"
-            label="Cancel"
-            @click="stopDeletingLayers();showDeleteLayersSection = false"
-          />
-
-        </div>
-      </q-card>
 
       <!--Legend Section-->
       <q-btn-dropdown
@@ -500,21 +502,23 @@
         class="legend customButtonStyle "
         dropdown-icon="change_history"
       >
-        <q-list>
+        <q-list dense>
           <q-item
             v-for="list in legendData"
             :key="list.label"
           >
-            <q-item-section><img
+            <q-item-section avatar>
+              <img
                 class="icon"
                 :src="list.source"
-              ></q-item-section>
+              >
+            </q-item-section>
             <q-item-section>
-              <q-item-label>{{list.label}}</q-item-label>
+              <q-item-label class="text-caption">{{list.label}}</q-item-label>
             </q-item-section>
           </q-item>
           <q-item>
-            <q-item-section>
+            <q-item-section avatar>
               <q-avatar
                 square
                 bordered
@@ -523,11 +527,11 @@
               />
             </q-item-section>
             <q-item-section>
-              <q-item-label>Unknown</q-item-label>
+              <q-item-label class="text-caption">Unknown</q-item-label>
             </q-item-section>
           </q-item>
           <q-item>
-            <q-item-section>
+            <q-item-section avatar>
               <q-avatar
                 square
                 bordered
@@ -536,7 +540,7 @@
               />
             </q-item-section>
             <q-item-section>
-              <q-item-label>Unknown</q-item-label>
+              <q-item-label class="text-caption">Unknown</q-item-label>
             </q-item-section>
           </q-item>
         </q-list>
@@ -594,6 +598,7 @@ export default {
       qrectangles: false,
       qcircles: false,
       manualAdd: false,
+      del: false,
       confirmSave: false,
       defaultIcon: "",
       popUpOptions: {
@@ -1377,6 +1382,7 @@ export default {
   }
 }
 </script>
+
 <style>
 #mapCanvas {
   z-index: 100;
@@ -1402,7 +1408,7 @@ body {
 }
 .leaflet-draw-section {
   position: relative;
-  margin-top: 250px;
+  margin-top: 10vh;
 }
 .leaflet-touch .leaflet-bar {
   border: none;
@@ -1417,7 +1423,7 @@ body {
 .legend {
   position: absolute;
   left: 0px;
-  margin-top: 120px;
+  margin-top: 35vh;
   width: 160px;
 }
 
@@ -1426,8 +1432,8 @@ body {
 }
 
 .icon {
-  height: 30px;
-  width: 30px;
+  height: 20px;
+  width: 20px;
 }
 
 .customButtonStyle {
