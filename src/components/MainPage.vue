@@ -158,6 +158,32 @@
                 </div>
               </q-card>
             </q-expansion-item>
+            <!-- Delete Section -->
+            <q-expansion-item
+              expand-separator
+              icon=""
+              label="Delete"
+              caption="Click on items you wish to delete"
+            >
+              <!-- Delete Layer-Section All -->
+              <q-card class="">
+                <div class="col q-pa-sm">
+                  <q-btn
+                    flat
+                    ripple
+                    class="row full-width"
+                    align="left"
+                    label="Delete GeoElement"
+                    @click="deleteLayers()"
+                  />
+                  <q-btn
+                    class="customButtonStyle row q-ma-md"
+                    label="Stop"
+                    @click="stopDeletingLayers()"
+                  />
+                </div>
+              </q-card>
+            </q-expansion-item>
           </q-list>
         </q-list>
       </q-scroll-area>
@@ -170,7 +196,7 @@
 
       <q-btn
         class="customButtonStyle"
-        label="Edit"
+        label="Edit/Delete"
         @click="drawer=!drawer"
       />
 
@@ -184,12 +210,6 @@
         class="customButtonStyle"
         label="reset"
         @click="reset"
-      />
-
-      <q-btn
-        class="customButtonStyle"
-        label="Delete GeoElement"
-        @click="deleteLayers();showDeleteLayersSection=true"
       />
       <!--this was to draw geoelements-->
       <!-- <q-btn
@@ -306,25 +326,6 @@
           />
 
         </q-card-section>
-      </q-card>
-      <!-- Delete layer Section -->
-      <q-card
-        class="q-mt-lg customStyleCard"
-        v-if="showDeleteLayersSection"
-      >
-        <div class="center-contents">
-          <h4>Click On Items You Wish To Delete</h4>
-
-        </div>
-        <div class="absolute-bottom center-contents">
-          <p class="q-ml-xl absolute-left">Click cancel to <b>STOP</b></p>
-          <q-btn
-            class="q-mb-xs customButtonStyle"
-            label="Cancel"
-            @click="stopDeletingLayers();showDeleteLayersSection = false"
-          />
-
-        </div>
       </q-card>
 
       <!--Legend Section-->
@@ -1251,83 +1252,84 @@ export default {
   }
 }
 </script>
+
 <style>
-#mapCanvas {
-  z-index: 100;
-  height: 100vh;
-  position: relative;
-}
+  #mapCanvas {
+    z-index: 100;
+    height: 100vh;
+    position: relative;
+  }
 
-textarea {
-  background-color: #fff;
-}
-body {
-  background-color: rgb(158, 158, 158);
-}
-.customButtonStyle {
-  color: #fff;
-  background-color: #ff702d;
-}
+  textarea {
+    background-color: #fff;
+  }
+  body {
+    background-color: rgb(158, 158, 158);
+  }
+  .customButtonStyle {
+    color: #fff;
+    background-color: #ff702d;
+  }
 
-.leaflet-control-zoom {
-  transform: translateY(-50%);
-  top: 50px;
-  bottom: 0;
-}
-.leaflet-draw-section {
-  position: relative;
-  margin-top: 250px;
-}
-.leaflet-touch .leaflet-bar {
-  border: none;
-  background-clip: padding-box;
-}
-.sidebar-list q-btn {
-  width: 100%;
-}
+  .leaflet-control-zoom {
+    transform: translateY(-50%);
+    top: 50px;
+    bottom: 0;
+  }
+  .leaflet-draw-section {
+    position: relative;
+    margin-top: 250px;
+  }
+  .leaflet-touch .leaflet-bar {
+    border: none;
+    background-clip: padding-box;
+  }
+  .sidebar-list q-btn {
+    width: 100%;
+  }
 </style>
 
 <style lang="stylus" scoped>
-.legend {
-  position: absolute;
-  left: 0px;
-  margin-top: 120px;
-  width: 160px;
-}
+  .legend {
+    position: absolute;
+    left: 0px;
+    margin-top: 120px;
+    width: 160px;
+  }
 
-.legendlist {
-  background: rgba(210, 146, 133, 0.7);
-}
+  .legendlist {
+    background: rgba(210, 146, 133, 0.7);
+  }
 
-.icon {
-  height: 30px;
-  width: 30px;
-}
+  .icon {
+    height: 30px;
+    width: 30px;
+  }
 
-.customButtonStyle {
-  background-color: $accent;
-}
+  .customButtonStyle {
+    background-color: $accent;
+  }
 
-.customStyleCard {
-  top: 20px;
-  height: 100px;
-  background: rgba(210, 146, 133, 0.7);
-}
+  .customStyleCard {
+    top: 20px;
+    height: 100px;
+    background: rgba(210, 146, 133, 0.7);
+  }
 
-.closeButton {
-  float: center;
-}
+  .closeButton {
+    float: center;
+  }
 
-.center-contents {
-  text-align: center;
-}
+  .center-contents {
+    text-align: center;
+  }
 
-.space {
-  margin: 10px 15px;
-}
+  .space {
+    margin: 10px 15px;
+  }
 
-.card_bg {
-  background: rgba(210, 146, 133, 0.5);
-}
+  .card_bg {
+    background: rgba(210, 146, 133, 0.5);
+  }
 </style>
 
