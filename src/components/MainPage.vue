@@ -13,7 +13,10 @@
       overlay
     >
 
-      <q-scroll-area class="fit">
+      <q-scroll-area
+        class="fit"
+        style="height: 200px; max-width: 300px;"
+      >
         <q-list padding>
           <!--  Close Drawer -->
           <q-btn
@@ -31,6 +34,7 @@
             <!-- Edit Markers Section -->
             <q-expansion-item
               expand-separator
+              v-model="qmarkers"
               icon=""
               label="Edit Markers"
               caption="Select Category"
@@ -77,7 +81,7 @@
                   <q-btn
                     class="customButtonStyle row q-ma-md"
                     label="Stop"
-                    @click="stopEditingMarkers()"
+                    @click="stopEditingMarkers();qmarkers=false"
                   />
                 </div>
               </q-card>
@@ -85,6 +89,7 @@
             <!-- Edit Lines Section -->
             <q-expansion-item
               expand-separator
+              v-model="qlines"
               icon=""
               label="Edit Lines"
               caption="Select Category"
@@ -115,7 +120,7 @@
                   <q-btn
                     class="customButtonStyle row q-ma-md"
                     label="Stop"
-                    @click="stopEditingLines()"
+                    @click="stopEditingLines();qlines=false"
                   />
                 </div>
               </q-card>
@@ -123,6 +128,7 @@
             <!-- Edit Polygons Section -->
             <q-expansion-item
               expand-separator
+              v-model="qpolygons"
               icon=""
               label="Edit Polygons"
               caption="Select Category"
@@ -153,9 +159,80 @@
                   <q-btn
                     class="customButtonStyle row q-ma-md"
                     label="Stop"
-                    @click="stopEditingPolygons()"
+                    @click="stopEditingPolygons();qpolygons=false"
                   />
                 </div>
+              </q-card>
+            </q-expansion-item>
+            <q-expansion-item
+              expand-separator
+              v-model="manualAdd"
+              icon=""
+              label="Add Manually"
+              caption="Select Category"
+            >
+              <!-- Manual Addition Section -->
+              <q-card class="q-my-md bg-white">
+                <q-card-section>
+                  <p> Enter coordinates for point</p>
+                  <q-input
+                    v-model="point"
+                    label="Coordinates"
+                  />
+                </q-card-section>
+                <q-card-section class="q-gutter-md">
+
+                  <q-btn
+                    class="customButtonStyle"
+                    label="Add"
+                    @click="AddPoint"
+                  />
+                  <q-btn
+                    class="customButtonStyle"
+                    label="Close"
+                    @click="manualAdd=false"
+                  />
+                </q-card-section>
+                <q-card-section>
+                  <p> Enter coordinates for Line</p>
+                  <q-input
+                    v-model="polylineCoords"
+                    label="Coordinates"
+                  />
+                </q-card-section>
+                <q-card-section class="q-gutter-md">
+
+                  <q-btn
+                    class="customButtonStyle"
+                    label="Add"
+                    @click="addPolyline"
+                  />
+                  <q-btn
+                    class="customButtonStyle"
+                    label="Close"
+                    @click="manualAdd=false"
+                  />
+                </q-card-section>
+                <q-card-section>
+                  <p> Enter coordinates for Line</p>
+                  <q-input
+                    v-model="polygonCoords"
+                    label="Coordinates"
+                  />
+                </q-card-section>
+                <q-card-section class="q-gutter-md">
+
+                  <q-btn
+                    class="customButtonStyle"
+                    label="Add"
+                    @click="addPolygon"
+                  />
+                  <q-btn
+                    class="customButtonStyle"
+                    label="Close"
+                    @click="manualAdd=false"
+                  />
+                </q-card-section>
               </q-card>
             </q-expansion-item>
           </q-list>
@@ -178,6 +255,11 @@
         class="customButtonStyle"
         label="Save"
         @click="save"
+      />
+      <q-btn
+        class="customButtonStyle"
+        label="Add"
+        @click="drawer=!drawer;manualAdd=true"
       />
 
       <q-btn
@@ -237,30 +319,7 @@
         label="Download CSV"
         @click="getCsvData"
       />
-      <!-- <q-card
-        class="q-my-md bg-white"
-        v-if="ShowPointSection"
-      >
-        <q-card-section>
-          <q-input
-            v-model="point"
-            label="Coordinates"
-          />
-        </q-card-section>
-        <q-card-section class="q-gutter-md">
 
-          <q-btn
-            class="customButtonStyle"
-            label="Add"
-            @click="AddPoint"
-          />
-          <q-btn
-            class="customButtonStyle"
-            label="Close"
-            @click="ShowPointSection = false"
-          />
-        </q-card-section>
-      </q-card> -->
       <br> <br> <br>
       <!--  Card for converting to geoJSON -->
       <q-card
@@ -476,6 +535,10 @@ export default {
       layerGroupCircleMarkers: new L.layerGroup(),
       layerGroupType: new L.layerGroup(),
       createdGeoElements: "",
+      qmarkers: false,
+      qlines: false,
+      qpolygons: false,
+      manualAdd: false,
       defaultIcon: "",
       popUpOptions: {
         autoPan: true,
@@ -531,8 +594,19 @@ export default {
         worldCopyJump: true
       })
       L.control.scale({ metric: true, imperial: false }).addTo(self.map)
-      L.control.attribution({ prefix: '<a href="http://leafletjs.com" title="A JS library for interactive maps" target="_blank">Leaflet</a> | 2020 © <a href="https://freethink.co.in/" target="_blank">freeTHINK(India)</a> | © <a href="http://osm.org/copyright" title="OpenStreetMap" target="_blank">OpenStreetMap</a>' }).addTo(self.map)
+      L.control.attribution({
+        prefix: '<a href="http://leafletjs.com" title="A JS library for interactive maps" target="_blank">Leaflet</a> | 2020 © <a href="https://freethink.co.in/" target="_blank">freeTHINK(India)</a> | © <a href="http://osm.org/copyright" title="OpenStreetMap" target="_blank">OpenStreetMap</a> |  <a href="https://www.flaticon.com/auth title="A JS library for interactive maps" target="_blank">Leaflet</a> | 2020 © <a href="https://freethink.co.in/" target="_blank">freeTHINK(India)</a> | © <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> Icon </a>'
+      }).addTo(self.map)
 
+      this.defaultIcon = {
+        iconUrl: 'my-icon.png',
+        iconSize: [38, 95],
+        iconAnchor: [22, 94],
+        popupAnchor: [-3, -76],
+        shadowUrl: 'my-icon-shadow.png',
+        shadowSize: [68, 95],
+        shadowAnchor: [22, 94]
+      }
       this.createdGeoElements = new L.FeatureGroup()
       //Creating a custom icon
       this.defaultIcon = L.icon({
