@@ -267,7 +267,7 @@
     </q-drawer>
 
     <div
-      class="full-width q-pa-sm q-gutter-md fixed text-left	"
+      class="full-width q-pa-sm q-gutter-md fixed text-center "
       style="z-index: 200;"
     >
 
@@ -393,21 +393,23 @@
         class="legend customButtonStyle "
         dropdown-icon="change_history"
       >
-        <q-list>
+        <q-list dense>
           <q-item
             v-for="list in legendData"
             :key="list.label"
           >
-            <q-item-section><img
+            <q-item-section avatar>
+              <img
                 class="icon"
                 :src="list.source"
-              ></q-item-section>
+              >
+            </q-item-section>
             <q-item-section>
-              <q-item-label>{{list.label}}</q-item-label>
+              <q-item-label class="text-caption">{{list.label}}</q-item-label>
             </q-item-section>
           </q-item>
           <q-item>
-            <q-item-section>
+            <q-item-section avatar>
               <q-avatar
                 square
                 bordered
@@ -416,11 +418,11 @@
               />
             </q-item-section>
             <q-item-section>
-              <q-item-label>Unknown</q-item-label>
+              <q-item-label class="text-caption">Unknown</q-item-label>
             </q-item-section>
           </q-item>
           <q-item>
-            <q-item-section>
+            <q-item-section avatar>
               <q-avatar
                 square
                 bordered
@@ -429,7 +431,7 @@
               />
             </q-item-section>
             <q-item-section>
-              <q-item-label>Unknown</q-item-label>
+              <q-item-label class="text-caption">Unknown</q-item-label>
             </q-item-section>
           </q-item>
         </q-list>
@@ -1362,7 +1364,7 @@ export default {
   }
   .leaflet-draw-section {
     position: relative;
-    margin-top: 250px;
+    margin-top: 10vh;
   }
   .leaflet-touch .leaflet-bar {
     border: none;
@@ -1377,7 +1379,7 @@ export default {
   .legend {
     position: absolute;
     left: 0px;
-    margin-top: 120px;
+    margin-top: 35vh;
     width: 160px;
   }
 
@@ -1386,8 +1388,8 @@ export default {
   }
 
   .icon {
-    height: 30px;
-    width: 30px;
+    height: 20px;
+    width: 20px;
   }
 
   .customButtonStyle {
