@@ -476,6 +476,7 @@ export default {
       layerGroupCircleMarkers: new L.layerGroup(),
       layerGroupType: new L.layerGroup(),
       createdGeoElements: "",
+      defaultIcon: "",
       popUpOptions: {
         autoPan: true,
         autoClose: false
@@ -533,6 +534,16 @@ export default {
       L.control.attribution({ prefix: '<a href="http://leafletjs.com" title="A JS library for interactive maps" target="_blank">Leaflet</a> | 2020 © <a href="https://freethink.co.in/" target="_blank">freeTHINK(India)</a> | © <a href="http://osm.org/copyright" title="OpenStreetMap" target="_blank">OpenStreetMap</a>' }).addTo(self.map)
 
       this.createdGeoElements = new L.FeatureGroup()
+      //Creating a custom icon
+      this.defaultIcon = L.icon({
+        iconUrl: '../statics/icons/map-marker.png',
+        iconSize: [38, 38],
+        iconAnchor: [19, 38],
+        popupAnchor: [1, -30],
+        shadowSize: [68, 95],
+        shadowAnchor: [22, 94]
+      });
+
       this.drawControl = new L.Control.Draw({
         position: 'topleft',
         draw: {
@@ -552,6 +563,7 @@ export default {
             },
           },
           marker: {
+            icon: this.defaultIcon,
             shapeOptions: {
               riseOnHover: true,
             },
@@ -703,13 +715,11 @@ export default {
     addPopupsToMarkers (layer) {
       var self = this
       layer.bindPopup('Markers', self.popUpOptions);
-      this.layerGroupMarkers.eachLayer(function (marker) {
-        L.setOptions(marker, { opacity: 0.5 });
-      });
+      console.log('add popup')
       //no need to turn off the event as it is supposed to be on till the end
-      // layer.on('mouseover', function (e) {
-      //   layer.openPopup();
-      // })
+      layer.on('mouseover', function (e) {
+        layer.openPopup();
+      })
 
     },
     addPopupsToRectangles (layer) {
