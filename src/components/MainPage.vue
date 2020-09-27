@@ -164,6 +164,124 @@
                 </div>
               </q-card>
             </q-expansion-item>
+            <!-- Edit rectangles Section -->
+            <q-expansion-item
+              expand-separator
+              v-model="qrectangles"
+              icon=""
+              label="Edit Rectangles"
+              caption="Select Category"
+            >
+              <!-- Edit Layer-Section Rectangles -->
+              <q-card class="">
+                <div class="col q-pa-sm">
+                  <q-btn
+                    flat
+                    ripple
+                    class="row full-width"
+                    align="left"
+                    icon="edit"
+                    color="green"
+                    label="Green"
+                    @click="editRectangles('green');"
+                  />
+                  <q-btn
+                    flat
+                    ripple
+                    class="row full-width"
+                    align="left"
+                    icon="edit"
+                    color="purple"
+                    label="Purple"
+                    @click="editRectangles('purple');"
+                  />
+                  <q-btn
+                    class="customButtonStyle row q-ma-md"
+                    label="Stop"
+                    @click="qrectangles=false;stopEditingRectangles()"
+                  />
+                </div>
+              </q-card>
+            </q-expansion-item>
+            <!-- Edit CircleMarkers Section -->
+            <q-expansion-item
+              expand-separator
+              v-model="qcirclemarkers"
+              icon=""
+              label="Edit CirclesMarkers"
+              caption="Select Category"
+            >
+              <!-- Edit Layer-Section Circles -->
+              <q-card class="">
+                <div class="col q-pa-sm">
+                  <q-btn
+                    flat
+                    ripple
+                    class="row full-width"
+                    align="left"
+                    icon="edit"
+                    color="green"
+                    label="Green"
+                    @click="editCircleMarkers('green');"
+                  />
+                  <q-btn
+                    flat
+                    ripple
+                    class="row full-width"
+                    align="left"
+                    icon="edit"
+                    color="purple"
+                    label="Purple"
+                    @click="editCircleMarkers('purple');"
+                  />
+                  <q-btn
+                    class="customButtonStyle row q-ma-md"
+                    label="Stop"
+                    @click="stopEditingCircleMarkers();qcirclemarkers=false"
+                  />
+                </div>
+              </q-card>
+            </q-expansion-item>
+            <!-- Edit Circles Section -->
+            <q-expansion-item
+              expand-separator
+              v-model="qcircles"
+              icon=""
+              label="Edit Circles"
+              caption="Select Category"
+            >
+              <!-- Edit Layer-Section Circles -->
+              <q-card class="">
+                <div class="col q-pa-sm">
+                  <q-btn
+                    flat
+                    ripple
+                    class="row full-width"
+                    align="left"
+                    icon="edit"
+                    color="green"
+                    label="Green"
+                    @click="editCircles('green');"
+                  />
+                  <q-btn
+                    flat
+                    ripple
+                    class="row full-width"
+                    align="left"
+                    icon="edit"
+                    color="purple"
+                    label="Purple"
+                    @click="editCircles('purple');"
+                  />
+                  <q-btn
+                    class="customButtonStyle row q-ma-md"
+                    label="Stop"
+                    @click="qcircles=false;stopEditingCircles()"
+                  />
+                </div>
+              </q-card>
+            </q-expansion-item>
+            <!-- Manual Addition Section -->
             <q-expansion-item
               expand-separator
               v-model="manualAdd"
@@ -171,7 +289,6 @@
               label="Add Manually"
               caption="Select Category"
             >
-              <!-- Manual Addition Section -->
               <q-card class="q-my-md bg-white">
                 <q-card-section>
                   <p> Enter coordinates for point</p>
@@ -179,19 +296,19 @@
                     v-model="point"
                     label="Coordinates"
                   />
-                </q-card-section>
-                <q-card-section class="q-gutter-md">
-
                   <q-btn
-                    class="customButtonStyle"
+                    class="q-ml-xs q-mt-xs customButtonStyle"
                     label="Add"
                     @click="AddPoint"
                   />
                   <q-btn
-                    class="customButtonStyle"
+                    class="q-ml-xs q-mt-xs customButtonStyle"
                     label="Close"
                     @click="manualAdd=false"
                   />
+                </q-card-section>
+                <q-card-section class="q-gutter-md">
+
                 </q-card-section>
                 <q-card-section>
                   <p> Enter coordinates for Line</p>
@@ -199,36 +316,30 @@
                     v-model="polylineCoords"
                     label="Coordinates"
                   />
-                </q-card-section>
-                <q-card-section class="q-gutter-md">
-
                   <q-btn
-                    class="customButtonStyle"
+                    class="q-ml-xs q-mt-xs customButtonStyle"
                     label="Add"
                     @click="addPolyline"
                   />
                   <q-btn
-                    class="customButtonStyle"
+                    class=" q-ml-xs q-mt-xs customButtonStyle"
                     label="Close"
                     @click="manualAdd=false"
                   />
                 </q-card-section>
                 <q-card-section>
-                  <p> Enter coordinates for Line</p>
+                  <p> Enter coordinates for Polygon</p>
                   <q-input
                     v-model="polygonCoords"
                     label="Coordinates"
                   />
-                </q-card-section>
-                <q-card-section class="q-gutter-md">
-
                   <q-btn
-                    class="customButtonStyle"
+                    class=" q-ml-xs q-mt-xs customButtonStyle"
                     label="Add"
                     @click="addPolygon"
                   />
                   <q-btn
-                    class="customButtonStyle"
+                    class=" q-ml-xs q-mt-xs customButtonStyle"
                     label="Close"
                     @click="manualAdd=false"
                   />
@@ -250,12 +361,44 @@
         label="Edit"
         @click="drawer=!drawer"
       />
-
+      <!-- save dialog -->
       <q-btn
         class="customButtonStyle"
         label="Save"
-        @click="save"
+        @click="confirmSave=true"
       />
+      <q-dialog
+        v-model="confirmSave"
+        persistent
+      >
+        <q-card>
+          <q-card-section class="row items-center">
+            <q-avatar
+              icon="cloud_upload"
+              color="pink-10"
+              text-color="white"
+            />
+            <span class="q-ml-sm">This will save the changes globally</span>
+          </q-card-section>
+
+          <q-card-actions align="right">
+            <q-btn
+              flat
+              label="Cancel"
+              class="customButtonStyle"
+              v-close-popup
+            />
+            <q-btn
+              flat
+              label="Save"
+              class="customButtonStyle"
+              v-close-popup
+              @click="save"
+            />
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
+
       <q-btn
         class="customButtonStyle"
         label="Add"
@@ -273,41 +416,6 @@
         label="Delete GeoElement"
         @click="deleteLayers();showDeleteLayersSection=true"
       />
-      <!--this was to draw geoelements-->
-      <!-- <q-btn
-        class="customButtonStyle"
-        label="Draw-Polygon"
-        @click="this.drawPolygon"
-      />
-      <q-btn
-        class="customButtonStyle"
-        label="Draw-Marker"
-        @click="this.drawMarker"
-      />
-      <q-btn
-        class="customButtonStyle"
-        label="Draw-Line"
-        @click="this.drawLine"
-      /> -->
-      <!-- end of drawing geoElement -->
-
-      <!--add geoelements-->
-      <!-- <q-btn
-        class="customButtonStyle"
-        label="Add PolyLine"
-        @click="showPolylineSection = true"
-      />
-      <q-btn
-        class="customButtonStyle"
-        label="Add Polygon"
-        @click="showPolygoneSection = true"
-      />
-      <q-btn
-        class="customButtonStyle"
-        label="Add Point"
-        @click="ShowPointSection = true"
-      /> -->
-      <!--end of add geoElements section--->
       <q-btn
         class="customButtonStyle"
         label="CSV To geoJSON"
@@ -436,62 +544,6 @@
     </div>
     <!--legend end--->
 
-    <!-- Edit/Delete and Reset buttons -->
-    <!-- <div
-      class="full-width q-pa-sm q-gutter-md q-mt-xl fixed text-left"
-      style="z-index: 200;"
-    > -->
-    <!-- <q-card
-        class="q-my-md bg-white"
-        v-if="showPolylineSection"
-      >
-        <q-card-section>
-
-          <q-input
-            v-model="polylineCoords"
-            label="Coordinates"
-          />
-        </q-card-section>
-        <q-card-section class="q-gutter-md">
-
-          <q-btn
-            class="customButtonStyle"
-            label="Add"
-            @click="addPolyline"
-          />
-          <q-btn
-            class="customButtonStyle"
-            label="Close"
-            @click="showPolylineSection = false"
-          />
-        </q-card-section>
-      </q-card> -->
-    <!-- <q-card
-        class="q-my-md bg-white"
-        v-if="showPolygoneSection"
-      >
-        <q-card-section>
-          <q-input
-            v-model="polygonCoords"
-            label="Coordinates"
-          />
-        </q-card-section>
-        <q-card-section class="q-gutter-md">
-
-          <q-btn
-            class="customButtonStyle"
-            label="Add"
-            @click="addPolygon"
-          />
-          <q-btn
-            class="customButtonStyle"
-            label="Close"
-            @click="showPolygoneSection = false"
-          />
-        </q-card-section>
-      </q-card> -->
-    <!-- </div> -->
-
     <div class="full-width">
       <div id="mapCanvas"></div>
     </div>
@@ -538,7 +590,11 @@ export default {
       qmarkers: false,
       qlines: false,
       qpolygons: false,
+      qcirclemarkers: false,
+      qrectangles: false,
+      qcircles: false,
       manualAdd: false,
+      confirmSave: false,
       defaultIcon: "",
       popUpOptions: {
         autoPan: true,
@@ -1016,6 +1072,13 @@ export default {
 
       })
     },
+    stopEditingCircles () {
+      var self = this;
+      this.layerGroupLines.eachLayer(function (layer) {
+        console.log('Lines stop');
+        layer.off('click');
+      })
+    },
     stopEditingRectangles () {
       var self = this;
       this.layerGroupLines.eachLayer(function (layer) {
@@ -1118,28 +1181,7 @@ export default {
       this.layerGroupMarkers.addLayer(marker)
       this.point = ''
     },
-    // Convert () {
-    //   var temp = []
-    //   var lines = this.text.split('\n')
-    //   for (var i = 0; i < lines.length; i++) {
-    //     var obj = {
-    //       'type': '',
-    //       'coordinates': []
-    //     }
-    //     var currentline = lines[i].split(',')
-    //     obj.type = currentline[0]
-    //     for (var j = 1; j < currentline.length; j++) {
-    //       currentline[j] = parseFloat(currentline[j])
-    //     }
-    //     if (currentline[0] === 'Point') { for (j = 1; j < currentline.length; j = j + 2) { obj.coordinates.push(currentline[j], currentline[j + 1]) } }
-    //     if (currentline[0] === 'LineString') { for (j = 1; j < currentline.length; j = j + 2) { obj.coordinates.push([currentline[j], currentline[j + 1]]) } }
-    //     if (currentline[0] === 'Polygon') { for (j = 1; j < currentline.length; j = j + 2) { temp.push([currentline[j], currentline[j + 1]]) } obj.coordinates.push(temp) }
-    //     this.myLines.push(obj)
-    //     this.myLinesString.push(JSON.stringify(obj))
-    //     console.log(this.myLines)
-    //   }
-    //   this.text = ''
-    // },
+
     getBaseMap: function () {
       var southWest5to6 = L.latLng(3.776559, 55.986328), northEast5to6 = L.latLng(36.456636, 104.501953), boundSet5to6 = L.latLngBounds(southWest5to6, northEast5to6)
       var southWest7to10 = L.latLng(4.653080, 67.763672), northEast7to10 = L.latLng(29.573457, 89.208984), boundSet7to10 = L.latLngBounds(southWest7to10, northEast7to10)
