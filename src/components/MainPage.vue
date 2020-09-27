@@ -188,6 +188,8 @@
                     @click="stopDeletingLayers()"
                   />
                 </div>
+              </q-card>
+            </q-expansion-item>
             <q-expansion-item
               expand-separator
               v-model="manualAdd"
