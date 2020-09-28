@@ -31,283 +31,6 @@
             bordered
             class="rounded-borders sidebar-list"
           >
-            <!-- Edit Markers Section -->
-            <q-expansion-item
-              expand-separator
-              v-model="qmarkers"
-              icon=""
-              label="Edit Markers"
-              caption="Select Category"
-            >
-              <!-- Edit Markers Card -->
-              <q-card class="">
-                <div class="col q-pa-sm">
-                  <q-btn
-                    flat
-                    ripple
-                    class="row full-width"
-                    align="left"
-                    icon="img:https://image.flaticon.com/icons/png/512/51/51778.png"
-                    label="Car Parking"
-                    @click='editCar'
-                  />
-                  <q-btn
-                    flat
-                    ripple
-                    class="row full-width"
-                    align="left"
-                    icon="img:https://cdn.iconscout.com/icon/premium/png-256-thumb/bus-1734816-1471755.png"
-                    label="Bus Parking"
-                    @click='editBus'
-                  />
-                  <q-btn
-                    flat
-                    ripple
-                    class="row full-width"
-                    align="left"
-                    icon="img:https://www.iconfinder.com/data/icons/eldorado-transport/40/truck_1-512.png"
-                    label="Truck Parking"
-                    @click='editTruck'
-                  />
-                  <q-btn
-                    flat
-                    ripple
-                    class="row full-width"
-                    align="left"
-                    icon="img:https://www.iconfinder.com/data/icons/car-11/100/taxi3-512.png"
-                    label="Taxi Parking"
-                    @click='editTaxi'
-                  />
-                  <q-btn
-                    class="customButtonStyle row q-ma-md"
-                    label="Stop"
-                    @click="stopEditingMarkers();qmarkers=false"
-                  />
-                </div>
-              </q-card>
-            </q-expansion-item>
-            <!-- Edit Lines Section -->
-            <q-expansion-item
-              expand-separator
-              v-model="qlines"
-              icon=""
-              label="Edit Lines"
-              caption="Select Category"
-            >
-              <!-- Edit Layer-Section Lines -->
-              <q-card class="">
-                <div class="col q-pa-sm">
-                  <q-btn
-                    flat
-                    ripple
-                    class="row full-width"
-                    align="left"
-                    icon="edit"
-                    color="green"
-                    label="Green"
-                    @click="editLines('green');"
-                  />
-                  <q-btn
-                    flat
-                    ripple
-                    class="row full-width"
-                    align="left"
-                    icon="edit"
-                    color="purple"
-                    label="Purple"
-                    @click="editLines('purple');"
-                  />
-                  <q-btn
-                    class="customButtonStyle row q-ma-md"
-                    label="Stop"
-                    @click="stopEditingLines();qlines=false"
-                  />
-                </div>
-              </q-card>
-            </q-expansion-item>
-            <!-- Edit Polygons Section -->
-            <q-expansion-item
-              expand-separator
-              v-model="qpolygons"
-              icon=""
-              label="Edit Polygons"
-              caption="Select Category"
-            >
-              <!-- Edit Layer-Section Polygons -->
-              <q-card class="">
-                <div class="col q-pa-sm">
-                  <q-btn
-                    flat
-                    ripple
-                    class="row full-width"
-                    align="left"
-                    icon="edit"
-                    color="green"
-                    label="Green"
-                    @click="editPolygons('green');"
-                  />
-                  <q-btn
-                    flat
-                    ripple
-                    class="row full-width"
-                    align="left"
-                    icon="edit"
-                    color="purple"
-                    label="Purple"
-                    @click="editPolygons('purple');"
-                  />
-                  <q-btn
-                    class="customButtonStyle row q-ma-md"
-                    label="Stop"
-                    @click="stopEditingPolygons();qpolygons=false"
-                  />
-                </div>
-              </q-card>
-            </q-expansion-item>
-            <!-- Edit Circles Section -->
-            <q-expansion-item
-              expand-separator
-              v-model="qcircles"
-              icon=""
-              label="Edit Circles"
-              caption="Select Category"
-            >
-              <!-- Edit Layer-Section Circles -->
-              <q-card class="">
-                <div class="col q-pa-sm">
-                  <q-btn
-                    flat
-                    ripple
-                    class="row full-width"
-                    align="left"
-                    icon="edit"
-                    color="green"
-                    label="Green"
-                    @click="editCircles('green');"
-                  />
-                  <q-btn
-                    flat
-                    ripple
-                    class="row full-width"
-                    align="left"
-                    icon="edit"
-                    color="purple"
-                    label="Purple"
-                    @click="editCircles('purple');"
-                  />
-                  <q-btn
-                    class="customButtonStyle row q-ma-md"
-                    label="Stop"
-                    @click="stopEditingCircles();qcircles=false"
-                  />
-                </div>
-              </q-card>
-            </q-expansion-item>
-            <!-- Edit Rectangles Section -->
-            <q-expansion-item
-              expand-separator
-              v-model="qrectangles"
-              icon=""
-              label="Edit Rectangles"
-              caption="Select Category"
-            >
-              <!-- Edit Layer-Section Rectangles -->
-              <q-card class="">
-                <div class="col q-pa-sm">
-                  <q-btn
-                    flat
-                    ripple
-                    class="row full-width"
-                    align="left"
-                    icon="edit"
-                    color="green"
-                    label="Green"
-                    @click="editRectangles('green');"
-                  />
-                  <q-btn
-                    flat
-                    ripple
-                    class="row full-width"
-                    align="left"
-                    icon="edit"
-                    color="purple"
-                    label="Purple"
-                    @click="editRectangles('purple');"
-                  />
-                  <q-btn
-                    class="customButtonStyle row q-ma-md"
-                    label="Stop"
-                    @click="stopEditingRectangles();qrectangles=false"
-                  />
-                </div>
-              </q-card>
-            </q-expansion-item>
-            <!-- Edit CircleMarkers Section -->
-            <q-expansion-item
-              expand-separator
-              v-model="qcirclemarkers"
-              icon=""
-              label="Edit CircleMarkers"
-              caption="Select Category"
-            >
-              <!-- Edit Layer-Section CircleMarkers -->
-              <q-card class="">
-                <div class="col q-pa-sm">
-                  <q-btn
-                    flat
-                    ripple
-                    class="row full-width"
-                    align="left"
-                    icon="edit"
-                    color="green"
-                    label="Green"
-                    @click="editCircleMarkers('green');"
-                  />
-                  <q-btn
-                    flat
-                    ripple
-                    class="row full-width"
-                    align="left"
-                    icon="edit"
-                    color="purple"
-                    label="Purple"
-                    @click="editCircleMarkers('purple');"
-                  />
-                  <q-btn
-                    class="customButtonStyle row q-ma-md"
-                    label="Stop"
-                    @click="stopEditingCircleMarkers();qcirclemarkers=false"
-                  />
-                </div>
-              </q-card>
-            </q-expansion-item>
-            <!-- Delete Section -->
-            <q-expansion-item
-              expand-separator
-              v-model="del"
-              icon=""
-              label="Delete"
-              caption="Click on items you wish to delete"
-            >
-              <!-- Delete Layer-Section All -->
-              <q-card class="">
-                <div class="col q-pa-sm">
-                  <q-btn
-                    flat
-                    ripple
-                    class="row full-width"
-                    align="left"
-                    label="Delete GeoElement"
-                    @click="deleteLayers()"
-                  />
-                  <q-btn
-                    class="customButtonStyle row q-ma-md"
-                    label="Stop"
-                    @click="stopDeletingLayers();del=false"
-                  />
-                </div>
-              </q-card>
-            </q-expansion-item>
             <!-- Add Manually -->
             <q-expansion-item
               expand-separator
@@ -373,9 +96,87 @@
                 </q-card-section>
               </q-card>
             </q-expansion-item>
+            <!-- add two more expansion list for csv to geoJson and download geoJson -->
+            <q-expansion-item
+              expand-separator
+              icon=""
+              label="CSV to GeoJSON"
+              caption="Select Category"
+            >
+              <q-btn
+                class="customButtonStyle"
+                label="CSV To geoJSON"
+                @click="ShowCsvSection = true"
+              />
+
+              <q-btn
+                class="customButtonStyle"
+                label="Download CSV"
+                @click="getCsvData"
+              />
+
+              <br> <br> <br>
+              <!--  Card for converting to geoJSON -->
+              <q-card
+                class="q-my-md bg-white"
+                v-if="ShowCsvSection"
+              >
+                <q-card-section class="q-gutter-sm row items-start">
+                  <div id="app">
+                    <FileReader @load="text=$event"></FileReader>
+                    <textarea
+                      style="resize:none"
+                      rows="13"
+                      cols="74"
+                      v-model="text"
+                    ></textarea>
+                    <br>
+                  </div>
+                  <div>
+                    <div>
+                      <q-btn
+                        @click="Convert"
+                        class="customButtonStyle"
+                        label="Convert to geoJSON"
+                      />
+                    </div>
+                    <br>
+                    <textarea
+                      style="resize:none"
+                      rows="13"
+                      cols="74"
+                      v-model="geoJsonText"
+                    ></textarea>
+                  </div>
+                  <q-btn
+                    class="customButtonStyle"
+                    label="Add to Map"
+                    @click="AddToMap"
+                  />
+                  <q-btn
+                    class="customButtonStyle"
+                    label="Close"
+                    @click="ShowCsvSection = false"
+                  />
+
+                </q-card-section>
+              </q-card>
+            </q-expansion-item>
+            <!-- Help Section -->
+            <q-expansion-item
+              expand-separator
+              v-model="manualAdd"
+              icon=""
+              label="Add Manually"
+              caption="Select Category"
+            >
+
+            </q-expansion-item>
+
           </q-list>
         </q-list>
       </q-scroll-area>
+
     </q-drawer>
 
     <div
@@ -384,8 +185,9 @@
     >
 
       <q-btn
-        class="customButtonStyle"
-        label="Edit/Delete"
+        round
+        color="red"
+        icon="directions"
         @click="drawer=!drawer"
       />
       <!-- save dialog -->
@@ -426,75 +228,45 @@
         </q-card>
       </q-dialog>
 
+      <!-- save end -->
+      <!-- reset -->
       <q-btn
         class="customButtonStyle"
-        label="Add"
-        @click="drawer=!drawer;manualAdd=true"
+        label="Reset"
+        @click="confirmReset=true"
       />
-
-      <q-btn
-        class="customButtonStyle"
-        label="reset"
-        @click="reset"
-      />
-      <q-btn
-        class="customButtonStyle"
-        label="CSV To geoJSON"
-        @click="ShowCsvSection = true"
-      />
-
-      <q-btn
-        class="customButtonStyle"
-        label="Download CSV"
-        @click="getCsvData"
-      />
-
-      <br> <br> <br>
-      <!--  Card for converting to geoJSON -->
-      <q-card
-        class="q-my-md bg-white"
-        v-if="ShowCsvSection"
+      <q-dialog
+        v-model="confirmReset"
+        persistent
       >
-        <q-card-section class="q-gutter-sm row items-start">
-          <div id="app">
-            <FileReader @load="text=$event"></FileReader>
-            <textarea
-              style="resize:none"
-              rows="13"
-              cols="74"
-              v-model="text"
-            ></textarea>
-            <br>
-          </div>
-          <div>
-            <div>
-              <q-btn
-                @click="Convert"
-                class="customButtonStyle"
-                label="Convert to geoJSON"
-              />
-            </div>
-            <br>
-            <textarea
-              style="resize:none"
-              rows="13"
-              cols="74"
-              v-model="geoJsonText"
-            ></textarea>
-          </div>
-          <q-btn
-            class="customButtonStyle"
-            label="Add to Map"
-            @click="AddToMap"
-          />
-          <q-btn
-            class="customButtonStyle"
-            label="Close"
-            @click="ShowCsvSection = false"
-          />
+        <q-card>
+          <q-card-section class="row items-center">
+            <q-avatar
+              icon="layers_clear"
+              color="pink-10"
+              text-color="white"
+            />
+            <span class="q-ml-sm">Are you sure you want to reset</span>
+          </q-card-section>
 
-        </q-card-section>
-      </q-card>
+          <q-card-actions align="right">
+            <q-btn
+              flat
+              label="Keep Working"
+              class="customButtonStyle"
+              v-close-popup
+            />
+            <q-btn
+              flat
+              label="OK"
+              class="customButtonStyle"
+              v-close-popup
+              @click="reset"
+            />
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
+      <!-- reset end -->
 
       <!--Legend Section-->
       <q-btn-dropdown
@@ -545,8 +317,8 @@
           </q-item>
         </q-list>
       </q-btn-dropdown>
+      <!--legend end--->
     </div>
-    <!--legend end--->
 
     <div class="full-width">
       <div id="mapCanvas"></div>
@@ -583,12 +355,8 @@ export default {
       polygonCoords: [],
       polylineCoords: [],
       baseLayerGroup: new L.layerGroup(),
-      layerGroupLines: new L.layerGroup(),
-      layerGroupMarkers: new L.layerGroup(),
-      layerGroupPolygons: new L.layerGroup(),
-      layerGroupRectangles: new L.layerGroup(),
-      layerGroupCircles: new L.layerGroup(),
-      layerGroupCircleMarkers: new L.layerGroup(),
+      layerGroupCentral: new L.layerGroup(),
+
       layerGroupType: new L.layerGroup(),
       createdGeoElements: "",
       qmarkers: false,
@@ -600,10 +368,13 @@ export default {
       manualAdd: false,
       del: false,
       confirmSave: false,
+      confirmReset: false,
       defaultIcon: "",
+      popUpContentMarker: '',
       popUpOptions: {
         autoPan: true,
-        autoClose: false
+        autoClose: true,
+        'className': 'custom-popup'
       },
       legendData: this.$store.state.legendMarker
     }
@@ -659,16 +430,8 @@ export default {
         prefix: '<a href="http://leafletjs.com" title="A JS library for interactive maps" target="_blank">Leaflet</a> | 2020 © <a href="https://freethink.co.in/" target="_blank">freeTHINK(India)</a> | © <a href="http://osm.org/copyright" title="OpenStreetMap" target="_blank">OpenStreetMap</a> |  <a href="https://www.flaticon.com/auth title="A JS library for interactive maps" target="_blank">Leaflet</a> | 2020 © <a href="https://freethink.co.in/" target="_blank">freeTHINK(India)</a> | © <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> Icon </a>'
       }).addTo(self.map)
 
-      this.defaultIcon = {
-        iconUrl: 'my-icon.png',
-        iconSize: [38, 95],
-        iconAnchor: [22, 94],
-        popupAnchor: [-3, -76],
-        shadowUrl: 'my-icon-shadow.png',
-        shadowSize: [68, 95],
-        shadowAnchor: [22, 94]
-      }
-      this.createdGeoElements = new L.FeatureGroup()
+
+      this.createdGeoElements = new L.featureGroup(this.layerGroupCentral).addTo(this.map)
       //Creating a custom icon
       this.defaultIcon = L.icon({
         iconUrl: '../statics/icons/map-marker.png',
@@ -680,23 +443,11 @@ export default {
       });
 
       this.drawControl = new L.Control.Draw({
-        position: 'topleft',
+        position: 'bottomleft',
+
         draw: {
-
-          circlemarker: true,
-          rectangle: true,
-          circle: true,
-          toolbar: {
-            buttons: {
-              polygon: 'Draw an awesome polygon'
-            }
-          },
-
-          circle: {
-            shapeOptions: {
-              color: 'steelblue'
-            },
-          },
+          circlemarker: false,
+          circle: false,
           marker: {
             icon: this.defaultIcon,
             shapeOptions: {
@@ -712,7 +463,7 @@ export default {
               timeout: 2500
             },
             shapeOptions: {
-              color: 'red'
+              color: 'blue'
             },
           },
           polygon: {
@@ -720,9 +471,22 @@ export default {
             showLength: true,
             metric: ['km', 'm'],
             shapeOptions: {
-              color: 'red'
+              color: 'blue'
+            },
+          },
+          rectangle: {
+            showArea: true,
+            showLength: true,
+            metric: ['km', 'm'],
+            shapeOptions: {
+              color: 'blue'
             },
           }
+        },
+        edit: {
+          featureGroup: this.createdGeoElements,
+          remove: true,
+          edit: false,
         }
       });
       self.map.addControl(this.drawControl);
@@ -732,48 +496,52 @@ export default {
         var layerType = e.layerType;
         var layer = e.layer;
         if (layerType === 'marker') {
-          self.drawMarker();
-          self.layerGroupMarkers.addLayer(layer);
-          self.addPopupsToMarkers(layer);
+          self.draw(layer)
+          layer.bindPopup(self.getPopUpMarker(layer), self.popUpOptions)
+          self.createdGeoElements.addLayer(layer)
         }
         else if (layerType === 'polyline') {
-          self.drawLine();
-          self.layerGroupLines.addLayer(layer);
-          self.addPopupsToLines(layer);
+          self.draw(layer)
+          layer.bindPopup(self.getPopUpLine(layer), self.popUpOptions)
+          self.createdGeoElements.addLayer(layer)
         }
         else if (layerType === 'polygon') {
-          self.drawPolygon();
-          self.layerGroupPolygons.addLayer(layer);
-          self.addPopupsToPolygons(layer);
+          self.draw(layer)
+          layer.bindPopup(self.getPopUpPolygon(layer), self.popUpOptions)
+          self.createdGeoElements.addLayer(layer)
         }
         else if (layerType === 'rectangle') {
-          self.drawRectangle();
-          console.log('ping')
-          self.layerGroupRectangles.addLayer(layer);
-          console.log(JSON.stringify(self.layerGroupRectangles.toGeoJSON(), null, 2))
-          self.addPopupsToRectangles(layer);
-        }
-        else if (layerType === 'circle') {
-          self.drawCircle();
-          self.layerGroupCircles.addLayer(layer);
-          self.addPopupsToCircles(layer);
-        }
-        else if (layerType === 'circlemarker') {
-          self.drawCircleMarkers();
-          self.layerGroupCircleMarkers.addLayer(layer);
-          self.addPopupsToCircleMarkers(layer);
+          self.draw(layer)
+          layer.bindPopup(self.getPopUpRectangle(layer), self.popUpOptions)
+          self.createdGeoElements.addLayer(layer)
         }
       });
 
-      this.baseLayerGroup.addTo(this.map);
+      this.baseLayerGroup.addTo(this.map)
 
-      this.layerGroupCircles.addTo(this.map)
-      this.layerGroupRectangles.addTo(this.map)
-      this.layerGroupLines.addTo(this.map);
-      this.layerGroupMarkers.addTo(this.map);
-      this.layerGroupPolygons.addTo(this.map);
-      this.layerGroupCircleMarkers.addTo(this.map)
+      this.layerGroupCentral.addTo(this.map)
+
+
+
+      var colored = L.tileLayer(
+        'https://cartodb-basemaps-{s}.global.ssl.fastly.net/rastertiles/voyager/{z}/{x}/{y}.png',
+        {
+          maxZoom: 18,
+          attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attribution">CARTO</a>',
+        }
+      );
+
+      var baseMaps = {
+        "BaseMap": baseLayer,
+        "Colored": colored
+      };
+
+      var overlayMaps = {
+
+      }
       this.map.zoomControl.setPosition('topleft')
+
+      L.control.layers(baseMaps, null, { position: 'topleft' }).addTo(this.map);
 
 
       //Render the geoJson data onto the map
@@ -781,30 +549,115 @@ export default {
 
     },
     /***************************************************GeoJson-related Functions******************************************************/
-    save () {
-      var lines = this.layerGroupLines.toGeoJSON();
-      var circles = this.layerGroupCircles.toGeoJSON();
-      var circleMarkers = this.layerGroupCircleMarkers.toGeoJSON();
-      var rectangles = this.layerGroupRectangles.toGeoJSON()
-      var markers = this.layerGroupMarkers.toGeoJSON();
-      var polygons = this.layerGroupPolygons.toGeoJSON();
-      var allFeatures = lines.features.concat(markers.features.concat
-        (polygons.features.concat
-          (circles.features.concat
-            (rectangles.features.concat(circleMarkers.features)))));
+    getPopUpMarker (layer) {
+      var container = L.DomUtil.create('div'),
+        DeleteMarker = this.createButton('Delete Layer', container, "customButton"),
+        p = this.createP('Select Type Of Parking', container, "customText")
+      var carParking = this.createButton('', container, "carParking")
+      var taxiParking = this.createButton('', container, "taxiParking")
+      var truckParking = this.createButton('', container, "truckParking")
+      var busParking = this.createButton('', container, "busParking")
 
-      console.log(JSON.stringify(allFeatures, null, 2))
-      this.$store.commit('addGeoElements', allFeatures);
-      // this.addLayerToMap();
+      L.DomEvent.on(DeleteMarker, 'click', () => {
+        this.layerGroupCentral.removeLayer(layer)
+      });
+
+      L.DomEvent.on(carParking, 'click', () => {
+        this.updateIcon(layer, 'https://image.flaticon.com/icons/png/512/51/51778.png')
+      });
+      L.DomEvent.on(taxiParking, 'click', () => {
+        this.updateIcon(layer, 'https://www.iconfinder.com/data/icons/car-11/100/taxi3-512.png')
+      });
+      L.DomEvent.on(truckParking, 'click', () => {
+        this.updateIcon(layer, 'https://www.iconfinder.com/data/icons/eldorado-transport/40/truck_1-512.png')
+      });
+      L.DomEvent.on(busParking, 'click', () => {
+        this.updateIcon(layer, 'https://cdn.iconscout.com/icon/premium/png-256-thumb/bus-1734816-1471755.png')
+      });
+      return container
+    },
+    getPopUpLine (layer) {
+      var container = L.DomUtil.create('div'),
+        DeleteMarker = this.createButton('Delete Layer', container, "customButton"),
+        p = this.createP('What Type Of Parking Lot?', container, "customText")
+      var paid = this.createButton('Paid', container, "customPaid"),
+        unpaid = this.createButton('Free', container, "customUnpaid")
+      L.DomEvent.on(DeleteMarker, 'click', () => {
+        this.layerGroupCentral.removeLayer(layer)
+      });
+
+      L.DomEvent.on(unpaid, 'click', () => {
+        this.editColor('green', layer)
+      });
+      L.DomEvent.on(paid, 'click', () => {
+        this.editColor('red', layer)
+      });
+      return container
+    },
+    getPopUpPolygon (layer) {
+      var container = L.DomUtil.create('div'),
+        DeleteMarker = this.createButton('Delete Layer', container, "customButton"),
+        p = this.createP('What Type Of Parking Lot?', container, "customText")
+      var paid = this.createButton('Paid', container, "customPaid"),
+        unpaid = this.createButton('Free', container, "customUnpaid")
+
+      L.DomEvent.on(DeleteMarker, 'click', () => {
+        this.layerGroupCentral.removeLayer(layer)
+      });
+      L.DomEvent.on(unpaid, 'click', () => {
+        this.editColor('green', layer)
+      });
+      L.DomEvent.on(paid, 'click', () => {
+        this.editColor('red', layer)
+      });
+      return container
+    },
+    getPopUpRectangle (layer) {
+      var container = L.DomUtil.create('div'),
+        DeleteMarker = this.createButton('Delete Layer', container, "customButton"),
+        p = this.createP('What Type Of Parking Lot?', container, "customText")
+      var paid = this.createButton('Paid', container, "customPaid"),
+        unpaid = this.createButton('Free', container, "customUnpaid")
+
+      L.DomEvent.on(DeleteMarker, 'click', () => {
+        this.layerGroupCentral.removeLayer(layer)
+      });
+      L.DomEvent.on(unpaid, 'click', () => {
+        this.editColor('green', layer)
+      });
+      L.DomEvent.on(paid, 'click', () => {
+        this.editColor('red', layer)
+      });
+      return container
     },
 
-
+    save () {
+      var central = this.layerGroupCentral.toGeoJSON()
+      console.log(JSON.stringify(central.features, null, 2))
+      this.$store.commit('addGeoElements', central.features);
+      // this.addLayerToMap();
+    },
+    draw (layer) {
+      var self = this
+      self.layerGroupCentral.addLayer(layer);
+      // self.map.off("draw:draw");
+    },
     reset () {
-      this.layerGroupLines.clearLayers()
-      this.layerGroupMarkers.clearLayers()
-      this.layerGroupPolygons.clearLayers()
-      this.layerGroupCircles.clearLayers()
-      this.layerGroupRectangles.clearLayers()
+      this.layerGroupCentral.clearLayers()
+    },
+    createButton (label, container, className) {
+      var btn = L.DomUtil.create('button', '', container);
+      btn.setAttribute('type', 'button');
+      btn.innerHTML = label;
+      btn.className = className
+      return btn;
+    },
+    createP (label, container, className) {
+      var p = L.DomUtil.create('p', '', container);
+      p.setAttribute('type', 'p');
+      p.innerHTML = label;
+      p.className = className
+      return p;
     },
     getGeoJsonLayer () {
       var baseLayer = L.geoJSON(this.geoJson, {
@@ -819,182 +672,23 @@ export default {
     addLayerToMap () {
       this.baseLayerGroup.addLayer(this.getGeoJsonLayer())
     },
-    /***************************************************Popup Functions******************************************************/
-    addPopupsToLines (layer) {
-      var self = this
-      layer.bindPopup('Lines', self.popUpOptions);
-      //no need to turn off the event as it is supposed to be on till the end
-      layer.on('mouseover', function (e) {
-        layer.openPopup();
-      })
 
-    },
-    addPopupsToPolygons (layer) {
-      var self = this
-      layer.bindPopup('Polygons', self.popUpOptions);
-      //no need to turn off the event as it is supposed to be on till the end
-      layer.on('mouseover', function (e) {
-        layer.openPopup();
-      })
-
-    },
-    addPopupsToCircleMarkers (layer) {
-      var self = this
-      layer.bindPopup('Markers', self.popUpOptions);
-      //no need to turn off the event as it is supposed to be on till the end
-      layer.on('mouseover', function (e) {
-        layer.openPopup();
-      })
-
-    },
-    addPopupsToMarkers (layer) {
-      var self = this
-      layer.bindPopup('Markers', self.popUpOptions);
-      console.log('add popup')
-      //no need to turn off the event as it is supposed to be on till the end
-      layer.on('mouseover', function (e) {
-        layer.openPopup();
-      })
-
-    },
-    addPopupsToRectangles (layer) {
-      var self = this
-      layer.bindPopup('Rectangles', self.popUpOptions);
-      //no need to turn off the event as it is supposed to be on till the end
-      layer.on('mouseover', function (e) {
-        layer.openPopup();
-      })
-
-    },
-    addPopupsToCircles (layer) {
-      var self = this
-      layer.bindPopup('circles', self.popUpOptions);
-      //no need to turn off the event as it is supposed to be on till the end
-      layer.on('mouseover', function (e) {
-        layer.openPopup();
-      })
-
-    },
-    /***************************************************Draw Functions******************************************************/
-    drawMarker () {
-      //using a pointer to this object, as this does'nt reference within the on query
-      var self = this;
-      this.map.on("draw:drawstop", function (e) {
-        console.log('Draw end marker');
-        self.map.off("draw:drawstop");
-      })
-
-
-
-    },
-    drawLine () {
-      //using a pointer to this object, as this does'nt reference within the on query
-      var self = this;
-      this.map.on("draw:drawstop", function (e) {
-        console.log("draw end line")
-        self.map.off("draw:drawstop");
-      });
-
-    },
-    drawPolygon () {
-      //using a pointer to this object, as this does'nt reference within the on query
-      var self = this;
-      this.map.on("draw:drawstop", function (e) {
-        console.log('draw end polygon')
-        self.map.off("draw:drawstop");
-      });
-
-    },
-    drawCircle () {
-      //using a pointer to this object, as this does'nt reference within the on query
-      var self = this;
-      this.map.on("draw:drawstop", function (e) {
-        console.log('draw end circle')
-        self.map.off("draw:drawstop");
-      });
-
-    },
-    drawCircleMarkers () {
-      //using a pointer to this object, as this does'nt reference within the on query
-      var self = this;
-      this.map.on("draw:drawstop", function (e) {
-        console.log('draw end circle')
-        self.map.off("draw:drawstop");
-      });
-      console.log(' stop draw circle marker')
-    },
-    drawRectangle () {
-      //using a pointer to this object, as this does'nt reference within the on query
-      var self = this;
-      this.map.on("draw:drawstop", function (e) {
-        console.log('draw end rectangle')
-        self.map.off("draw:drawstop");
-      });
-
-    },
-
-    /***************************************************Edit/Delete Functions******************************************************/
     updateColor (col, layer) {
       var feature = layer.feature = layer.feature || {};
       feature.type = "Feature"
       feature["properties"] = feature["properties"] || {};
       feature.properties["color"] = col;
     },
-    editLines (col) {
-      var self = this
-      this.layerGroupLines.eachLayer(function (layer) {
-        layer.on('click', function (e) {
-          layer.setStyle({
-            color: col,
-
-          })
-          self.updateColor(col, layer)
-        });
-      });
+    editColor (col, layer) {
+      layer.setStyle({
+        color: col
+      })
+      this.updateColor(col, layer)
     },
-    editPolygons (col) {
-      var self = this
-      this.layerGroupPolygons.eachLayer(function (layer) {
-        layer.on('click', function (e) {
-          layer.setStyle({
-            color: col
-          })
-          self.updateColor(col, layer)
-        });
-      });
-    },
-    editRectangles (col) {
-      var self = this
-      this.layerGroupRectangles.eachLayer(function (layer) {
-        layer.on('click', function (e) {
-          layer.setStyle({
-            color: col
-          })
-          self.updateColor(col, layer)
-        });
-      });
-    },
-    editCircles (col) {
-      var self = this
-      this.layerGroupCircles.eachLayer(function (layer) {
-        layer.on('click', function (e) {
-          layer.setStyle({
-            color: col
-          })
-          self.updateColor(col, layer)
-        });
-      });
-    },
-    editCircleMarkers (col) {
-      var self = this
-      this.layerGroupCircleMarkers.eachLayer(function (layer) {
-        layer.on('click', function (e) {
-          layer.setStyle({
-            color: col
-          })
-          self.updateColor(col, layer)
-        });
-      });
+    updateIcon (layer, icon) {
+      layer._icon.setAttribute("src", icon)
+      console.log(layer)
+      this.updateMarkersIcon()
     },
     updateMarkersIcon (icon, layer) {
       var feature = layer.feature = layer.feature || {};
@@ -1002,182 +696,7 @@ export default {
       feature["properties"] = feature["properties"] || {};
       feature.properties["icon"] = icon;
     },
-    editCar () {
-      var self = this
-      this.layerGroupMarkers.eachLayer(function (layer) {
-        layer.on('click', function (e) {
-          console.log(e);
-          var icon = "https://image.flaticon.com/icons/png/512/51/51778.png"
-          self.updateMarkersIcon(icon, layer)
-          e.target._icon.setAttribute("src", icon)
-        });
-      });
-      return;
-    },
-    editTruck () {
-      var self = this
-      this.layerGroupMarkers.eachLayer(function (layer) {
-        layer.on('click', function (e) {
-          console.log(e);
-          var icon = "https://www.iconfinder.com/data/icons/eldorado-transport/40/truck_1-512.png"
-          self.updateMarkersIcon(icon, layer)
-          layer = icon
-          // e.target._icon.setAttribute("src", icon)
-        });
-      });
-      return;
-    },
-    editBus () {
-      var self = this
-      this.layerGroupMarkers.eachLayer(function (layer) {
-        layer.on('click', function (e) {
-          console.log(e);
-          var icon = "https://cdn.iconscout.com/icon/premium/png-256-thumb/bus-1734816-1471755.png"
-          self.updateMarkersIcon(icon, layer)
-          e.target._icon.setAttribute("src", icon)
-        });
-      });
-      return;
-    },
-    editTaxi () {
-      var self = this
-      this.layerGroupMarkers.eachLayer(function (layer) {
-        layer.on('click', function (e) {
-          console.log(e);
-          var icon = "https://www.iconfinder.com/data/icons/car-11/100/taxi3-512.png"
-          self.updateMarkersIcon(icon, layer)
-          e.target._icon.setAttribute("src", icon)
-        });
-      });
-      return;
-    },
-    stopEditingMarkers () {
-      var self = this
-      this.layerGroupMarkers.eachLayer(function (layer) {
 
-        console.log('Markers stop');
-        layer.off('click');
-
-      })
-    },
-    stopEditingPolygons () {
-      var self = this;
-      this.layerGroupPolygons.eachLayer(function (layer) {
-
-        console.log('Polygons stop');
-        layer.off('click');
-
-      })
-    },
-    stopEditingLines () {
-      var self = this;
-      this.layerGroupLines.eachLayer(function (layer) {
-        console.log('Lines stop');
-        layer.off('click');
-
-      })
-    },
-    stopEditingCircles () {
-      var self = this;
-      this.layerGroupLines.eachLayer(function (layer) {
-        console.log('Lines stop');
-        layer.off('click');
-      })
-    },
-    stopEditingRectangles () {
-      var self = this;
-      this.layerGroupLines.eachLayer(function (layer) {
-        console.log('Lines stop');
-        layer.off('click');
-
-      })
-    },
-    stopEditingCircleMarkers () {
-      var self = this;
-      this.layerGroupLines.eachLayer(function (layer) {
-        console.log('Lines stop');
-        layer.off('click');
-
-      })
-    },
-    stopDeletingLayers () {
-      var self = this
-      this.layerGroupMarkers.eachLayer(function (layer) {
-        console.log('stop')
-        layer.off('click')
-      })
-      this.layerGroupLines.eachLayer(function (layer) {
-        console.log('stop')
-        layer.off('click')
-      })
-      this.layerGroupPolygons.eachLayer(function (layer) {
-        console.log('stop')
-        layer.off('click')
-      })
-      this.layerGroupRectangles.eachLayer(function (layer) {
-        console.log('stop')
-        layer.off('click')
-      })
-      this.layerGroupCircles.eachLayer(function (layer) {
-        console.log('stop')
-        layer.off('click')
-      })
-      this.layerGroupCircleMarkers.eachLayer(function (layer) {
-        console.log('stop')
-        layer.off('click')
-      })
-    },
-    deleteLayers () {
-      var self = this
-      this.layerGroupMarkers.eachLayer(function (layer) {
-        layer.on('click', function (e) {
-          console.log('deleted')
-          self.layerGroupMarkers.removeLayer(layer)
-          layer.off('click')
-        })
-      })
-      this.layerGroupLines.eachLayer(function (layer) {
-        layer.on('click', function (e) {
-          console.log('deleted')
-          self.layerGroupLines.removeLayer(layer)
-          layer.off('click')
-        })
-      })
-      this.layerGroupPolygons.eachLayer(function (layer) {
-        layer.on('click', function (e) {
-          console.log('deleted')
-          self.layerGroupPolygons.removeLayer(layer)
-          layer.off('click')
-        })
-      })
-      this.layerGroupRectangles.eachLayer(function (layer) {
-        layer.on('click', function (e) {
-          console.log('deleted')
-          self.layerGroupCircles.removeLayer(layer)
-          layer.off('click')
-        })
-      })
-      this.layerGroupCircles.eachLayer(function (layer) {
-        layer.on('click', function (e) {
-          console.log('deleted')
-          self.layerGroupCircles.removeLayer(layer)
-          layer.off('click')
-        })
-      })
-      this.layerGroupCircleMarkers.eachLayer(function (layer) {
-        layer.on('click', function (e) {
-          console.log('deleted')
-          self.layerGroupCircleMarkers.removeLayer(layer)
-          layer.off('click')
-        })
-      })
-    },
-    setCoordinates (lng, lat) {
-      if (this.selectPoint == true) {
-        // console.log(lng,lat)
-        this.point = lng + ',' + lat
-      }
-    },
     /***************************************************Manual Add Functions******************************************************/
     AddPoint () {
 
@@ -1398,22 +917,80 @@ body {
 }
 .customButtonStyle {
   color: #fff;
-  background-color: #ff702d;
+  background-color: #720505;
+}
+.customText {
+  color: rgb(104, 23, 9);
+}
+.customButton {
+  color: #fff;
+  background-color: #720505;
+}
+.customPaid {
+  color: #fff;
+  background-color: red;
+}
+.customUnpaid {
+  color: #fff;
+  background-color: green;
+}
+.carParking {
+  background-image: url("https://image.flaticon.com/icons/png/512/51/51778.png");
+  background-size: cover;
+  width: 40px;
+  height: 40px;
+}
+.busParking {
+  background-image: url("https://cdn.iconscout.com/icon/premium/png-256-thumb/bus-1734816-1471755.png");
+  background-size: cover;
+  width: 40px;
+  height: 40px;
+}
+.truckParking {
+  background-image: url("https://www.iconfinder.com/data/icons/eldorado-transport/40/truck_1-512.png");
+  background-size: cover;
+  width: 40px;
+  height: 40px;
+}
+.taxiParking {
+  background-image: url("https://www.iconfinder.com/data/icons/car-11/100/taxi3-512.png");
+  background-size: cover;
+  width: 40px;
+  height: 40px;
+}
+.custom-popup .leaflet-popup-content-wrapper {
+  background: whitesmoke;
+  color: #fff;
+  font-size: 16px;
+  /* line-height: 24px; */
+}
+.custom-popup .leaflet-popup-content-wrapper a {
+  color: whitesmoke;
 }
 
 .leaflet-control-zoom {
   transform: translateY(-50%);
-  top: 50px;
+  top: 320px;
   bottom: 0;
 }
-.leaflet-draw-section {
-  position: relative;
-  margin-top: 10vh;
-}
+
 .leaflet-touch .leaflet-bar {
   border: none;
   background-clip: padding-box;
 }
+.leaflet-bottom {
+  bottom: 25px;
+}
+.leaflet-div-icon {
+  background: radial-gradient(
+    circle,
+    rgb(238, 229, 233) 0%,
+    rgba(80, 78, 78, 0.778) 81%
+  );
+  border: none;
+  border-radius: 10px;
+}
+
 .sidebar-list q-btn {
   width: 100%;
 }
