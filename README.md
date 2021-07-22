@@ -1,3 +1,4 @@
+link to cordova application: https://drive.google.com/file/d/1uvOFAGShx2ZXjCUQfV5MR6gRBYZ-87sJ/view
 # Quasar App (final_proj)
 
 A Quasar Framework app
